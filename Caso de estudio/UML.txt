@@ -38,6 +38,7 @@ Escolar --> ConsPlan
 Escolar --> ConsMat
 Escolar --> CECOA
 Escolar --> CMat
+Escolar --> PList
 
 Alumnos --> Reval
 Alumnos --> ConsPlan
