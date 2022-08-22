@@ -8,4 +8,5 @@ Usuario_Registrado --> init
 Usuario_Registrado --> Cliente
 Usuario_Registrado --> Propietario
 Usuario_Registrado --> Administrador
+
 @enduml
