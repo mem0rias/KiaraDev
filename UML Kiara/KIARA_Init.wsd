@@ -1,0 +1,51 @@
+@startuml KIARA
+left to right direction
+:Usuario_No_Registrado:
+:Usuario_Registrado:
+:Cliente:
+:Propietario:
+:Agente_Inmobiliario:
+:Administrador:
+(Registrarse) as (reg)
+(Iniciar Sesion) as (init)
+(Cambiar Idioma de pagina) as (traduccion)
+(Visualizar Propiedades) as (consultprop)
+(Visualiza estatus de tramite) as (consultProc)
+(Solicita informacion) as (solicinfo)
+(Subir documentos) as (upload_docs)
+(Descargar documentos) as (download_docs)
+(Registrar Propiedades) as (RegisProp)
+(Registrar propuesta de propiedad) as (RegisPropuesta)
+(Editar propiedades) as (Editar_propiedades)
+(Ingresar al registro de propiedades) as (RegRev)
+(Añadir reseña de proceso) as (review)
+(Visualiza datos de contacto) as (contact)
+
+Usuario_No_Registrado -- reg
+Usuario_No_Registrado -- consultprop
+Usuario_No_Registrado -- traduccion
+
+
+Usuario_Registrado -- init
+Usuario_Registrado <-- Cliente
+Cliente <-- Propietario
+Propietario <-- Agente_Inmobiliario
+Agente_Inmobiliario <-- Administrador
+
+Usuario_Registrado -- consultprop
+Usuario_Registrado -- traduccion
+Cliente  -- consultProc
+Cliente -- solicinfo
+Cliente -- upload_docs
+Cliente -- download_docs
+Cliente -- review
+Cliente -- contact
+
+Propietario -- RegisPropuesta
+
+
+Agente_Inmobiliario -- RegisProp
+Agente_Inmobiliario -- Editar_propiedades
+
+Administrador -- RegRev
+@enduml

@@ -1,0 +1,5 @@
+@startuml
+:Usuario_NoReg:
+(Registrar_Usuario) as (Reginit) 
+Usuario_NoReg --> Reginit
+@enduml
