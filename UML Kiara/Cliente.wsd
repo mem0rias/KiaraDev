@@ -1,12 +1,7 @@
-@startuml KIARA
-:Usuario_Registrado:
+@startuml KIARA_Cliente
+
 :Cliente:
-:Propietario:
-:Administrador:
-(Iniciar Sesion) as (init)
-Usuario_Registrado --> init
-Usuario_Registrado --> Cliente
-Usuario_Registrado --> Propietario
-Usuario_Registrado --> Administrador
+(Romper cosas) as (init)
+Cliente --> init
 
 @enduml
