@@ -1,51 +1,95 @@
 @startuml KIARA
+
+'Direccion de las acciones/Actores
 left to right direction
+'Actores del sistema
 :Usuario_No_Registrado:
 :Usuario_Registrado:
 :Cliente:
 :Propietario:
 :Agente_Inmobiliario:
 :Administrador:
-(Registrarse) as (reg)
-(Iniciar Sesion) as (init)
+'Cosas de Usuario no registrado
+(Registrar Usuario) as (reg)
 (Cambiar Idioma de pagina) as (traduccion)
-(Visualizar Propiedades) as (consultprop)
-(Visualiza estatus de tramite) as (consultProc)
+(Consultar Propiedades) as (consultprop)
+'Cosas de usuario
+(Iniciar Sesion) as (init)
+(Cerrar Sesion) as (Logout)
+(Restablecer contraseña) as (fPassword)
+'Cosas de cliente
+(Consulta estatus de tramite) as (consultProc)
+(Consulta notificaciones) as (CNotifs)
 (Solicita informacion) as (solicinfo)
-(Subir documentos) as (upload_docs)
-(Descargar documentos) as (download_docs)
-(Registrar Propiedades) as (RegisProp)
-(Registrar propuesta de propiedad) as (RegisPropuesta)
-(Editar propiedades) as (Editar_propiedades)
-(Ingresar al registro de propiedades) as (RegRev)
+(Registrar Expediente) as (upload_docs)
+(Descargar Expediente) as (download_docs)
 (Añadir reseña de proceso) as (review)
-(Visualiza datos de contacto) as (contact)
+(Consultar datos de contacto) as (contact)
+'Cosas de Propietario
+(Registrar propuesta de propiedad) as (RegisPropuesta)
+(Solicitar baja de propiedad) as (BajaProp)
+'Cosas de Agente Inmobiliario
+(Registrar Propiedades) as (RegisProp)
+(Editar propiedades) as (Editar_propiedades)
+(Registar Expediente de Cliente) as (RegexpC)
+(Descargar Expediente de Cliente) as (DescexpC)
+(Aprobar Expediente) as (AproveExp)
+(Revocar Expediente) as (RevocExp)
+(Notificar al cliente de actualizacion de estado) as (Notificar) 
+(Terminar Operacion inmobiliaria) as (tOperacion)
+(Autorizar baja de propiedad) as (bPropiedad)
+'Cosas de Administrador
+(Asignar Privilegios a roles) as (SetPrivs)
+(Quitar Privilegios a roles)  as (RmPrivs)
+(Añadir Roles) as (addRoles)
+(Modificar Roles) as (ModRoles)
+(Quitar Roles) as (rmRoles)
+(Eliminar Cuentas) as (rmAccount)
+(Generar reportes de BD) as (BDReport)
+(Ingresar al registro de propiedades) as (RegRev)
 
+'Herencias
+Usuario_No_Registrado <|-- Usuario_Registrado
+Usuario_Registrado <|-- Cliente
+Cliente <|-- Propietario
+Propietario <|-- Agente_Inmobiliario
+Agente_Inmobiliario <|-- Administrador
+'Acciones de usuario no registrado
 Usuario_No_Registrado -- reg
 Usuario_No_Registrado -- consultprop
 Usuario_No_Registrado -- traduccion
-
-
+'Acciones de Usuario Registrado
 Usuario_Registrado -- init
-Usuario_Registrado <-- Cliente
-Cliente <-- Propietario
-Propietario <-- Agente_Inmobiliario
-Agente_Inmobiliario <-- Administrador
-
-Usuario_Registrado -- consultprop
-Usuario_Registrado -- traduccion
-Cliente  -- consultProc
+Usuario_Registrado -- Logout
+Usuario_Registrado -- fPassword
+'Acciones de Cliente
+Cliente -- consultProc
 Cliente -- solicinfo
 Cliente -- upload_docs
 Cliente -- download_docs
 Cliente -- review
 Cliente -- contact
-
+Cliente -- CNotifs
+'Acciones de Propietario
 Propietario -- RegisPropuesta
-
-
+Propietario -- BajaProp
+'Acciones de Agente Inmobiliario
 Agente_Inmobiliario -- RegisProp
 Agente_Inmobiliario -- Editar_propiedades
-
+Agente_Inmobiliario -- DescexpC
+Agente_Inmobiliario -- RegexpC
+Agente_Inmobiliario -- AproveExp
+Agente_Inmobiliario -- RevocExp
+Agente_Inmobiliario -- Notificar
+Agente_Inmobiliario -- tOperacion
+Agente_Inmobiliario -- bPropiedad
+'Acciones de administrador
 Administrador -- RegRev
+Administrador -- SetPrivs
+Administrador -- RmPrivs
+Administrador -- addRoles
+Administrador -- rmRoles
+Administrador -- rmAccount
+Administrador -- BDReport
+Administrador -- ModRoles
 @enduml

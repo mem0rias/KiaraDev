@@ -2,6 +2,6 @@
 
 :Cliente:
 (Romper cosas) as (init)
-Cliente --> init
+Cliente <-- init
 
 @enduml
