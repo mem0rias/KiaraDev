@@ -1,7 +1,7 @@
 @startuml KIARA
 
 'Direccion de las acciones/Actores
-left to right direction
+'left to right direction
 'Actores del sistema
 :Usuario_No_Registrado:
 :Usuario_Registrado:
@@ -11,7 +11,6 @@ left to right direction
 :Administrador:
 'Cosas de Usuario no registrado
 (Registrar Usuario) as (reg)
-(Cambiar Idioma de pagina) as (traduccion)
 (Consultar Propiedades) as (consultprop)
 'Cosas de usuario
 (Iniciar Sesion) as (init)
@@ -19,25 +18,22 @@ left to right direction
 (Restablecer contraseña) as (fPassword)
 'Cosas de cliente
 (Consulta estatus de tramite) as (consultProc)
-(Consulta notificaciones) as (CNotifs)
-(Solicita informacion) as (solicinfo)
+(Registro de solicitud de informacion) as (solicinfo)
 (Registrar Expediente) as (upload_docs)
 (Descargar Expediente) as (download_docs)
 (Añadir reseña de proceso) as (review)
-(Consultar datos de contacto) as (contact)
 'Cosas de Propietario
 (Registrar propuesta de propiedad) as (RegisPropuesta)
 (Solicitar baja de propiedad) as (BajaProp)
 'Cosas de Agente Inmobiliario
 (Registrar Propiedades) as (RegisProp)
 (Editar propiedades) as (Editar_propiedades)
-(Registar Expediente de Cliente) as (RegexpC)
-(Descargar Expediente de Cliente) as (DescexpC)
-(Aprobar Expediente) as (AproveExp)
-(Revocar Expediente) as (RevocExp)
-(Notificar al cliente de actualizacion de estado) as (Notificar) 
+'Consideracion de unir en uno solo no?
+(Consultar Expediente de Cliente) as (DescexpC)
+'Aqui dentro va la notificacion
+(Aprobar Expediente) as (AproveExp) 
+(Cancelar Expediente) as (RevocExp)
 (Terminar Operacion inmobiliaria) as (tOperacion)
-(Autorizar baja de propiedad) as (bPropiedad)
 'Cosas de Administrador
 (Asignar Privilegios a roles) as (SetPrivs)
 (Quitar Privilegios a roles)  as (RmPrivs)
@@ -46,7 +42,7 @@ left to right direction
 (Quitar Roles) as (rmRoles)
 (Eliminar Cuentas) as (rmAccount)
 (Generar reportes de BD) as (BDReport)
-(Ingresar al registro de propiedades) as (RegRev)
+(Ingresar al historial de propiedades) as (RegRev)
 
 'Herencias
 Usuario_No_Registrado <|-- Usuario_Registrado
@@ -57,7 +53,6 @@ Agente_Inmobiliario <|-- Administrador
 'Acciones de usuario no registrado
 Usuario_No_Registrado -- reg
 Usuario_No_Registrado -- consultprop
-Usuario_No_Registrado -- traduccion
 'Acciones de Usuario Registrado
 Usuario_Registrado -- init
 Usuario_Registrado -- Logout
@@ -68,8 +63,6 @@ Cliente -- solicinfo
 Cliente -- upload_docs
 Cliente -- download_docs
 Cliente -- review
-Cliente -- contact
-Cliente -- CNotifs
 'Acciones de Propietario
 Propietario -- RegisPropuesta
 Propietario -- BajaProp
@@ -77,12 +70,9 @@ Propietario -- BajaProp
 Agente_Inmobiliario -- RegisProp
 Agente_Inmobiliario -- Editar_propiedades
 Agente_Inmobiliario -- DescexpC
-Agente_Inmobiliario -- RegexpC
 Agente_Inmobiliario -- AproveExp
 Agente_Inmobiliario -- RevocExp
-Agente_Inmobiliario -- Notificar
 Agente_Inmobiliario -- tOperacion
-Agente_Inmobiliario -- bPropiedad
 'Acciones de administrador
 Administrador -- RegRev
 Administrador -- SetPrivs
