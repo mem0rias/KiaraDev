@@ -6,7 +6,6 @@
 :Usuario_No_Registrado:
 :Usuario_Registrado:
 :Cliente:
-:Propietario:
 :Agente_Inmobiliario:
 :Administrador:
 'Cosas de Usuario no registrado
@@ -22,9 +21,6 @@
 (Registrar Expediente) as (upload_docs)
 (Consultar Expediente) as (download_docs)
 (Añadir reseña de proceso) as (review)
-'Cosas de Propietario
-(Registrar propuesta de propiedad) as (RegisPropuesta)
-(Solicitar baja de propiedad) as (BajaProp)
 'Cosas de Agente Inmobiliario
 (Registrar Propiedades) as (RegisProp)
 (Editar propiedades) as (Editar_propiedades)
@@ -47,8 +43,7 @@
 'Herencias
 Usuario_No_Registrado <|-- Usuario_Registrado
 Usuario_Registrado <|-- Cliente
-Cliente <|-- Propietario
-Propietario <|-- Agente_Inmobiliario
+Cliente <|-- Agente_Inmobiliario
 Agente_Inmobiliario <|-- Administrador
 'Acciones de usuario no registrado
 Usuario_No_Registrado -- reg
@@ -63,9 +58,6 @@ Cliente -- solicinfo
 Cliente -- upload_docs
 Cliente -- download_docs
 Cliente -- review
-'Acciones de Propietario
-Propietario -- RegisPropuesta
-Propietario -- BajaProp
 'Acciones de Agente Inmobiliario
 Agente_Inmobiliario -- RegisProp
 Agente_Inmobiliario -- Editar_propiedades
