@@ -39,6 +39,7 @@
 (Eliminar Cuentas) as (rmAccount)
 (Generar reportes de BD) as (BDReport)
 (Ingresar al historial de propiedades) as (RegRev)
+(Aprobar Reseña de cliente) as (AproveReview)
 
 'Herencias
 Usuario_No_Registrado <|-- Usuario_Registrado
@@ -74,4 +75,5 @@ Administrador -- rmRoles
 Administrador -- rmAccount
 Administrador -- BDReport
 Administrador -- ModRoles
+Administrador -- AproveReview
 @enduml
