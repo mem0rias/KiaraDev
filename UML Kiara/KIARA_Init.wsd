@@ -20,7 +20,7 @@
 (Consulta estatus de tramite) as (consultProc)
 (Registro de solicitud de informacion) as (solicinfo)
 (Registrar Expediente) as (upload_docs)
-(Descargar Expediente) as (download_docs)
+(Consultar Expediente) as (download_docs)
 (Añadir reseña de proceso) as (review)
 'Cosas de Propietario
 (Registrar propuesta de propiedad) as (RegisPropuesta)
