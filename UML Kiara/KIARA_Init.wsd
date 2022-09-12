@@ -54,9 +54,10 @@ Usuario_Registrado -- init
 Usuario_Registrado -- Logout
 Usuario_Registrado -- fPassword
 'Acciones de Cliente
-Cliente -- consultProc
+Cliente -- consultProc 
+download_docs .> upload_docs : include
 Cliente -- solicinfo
-Cliente -- upload_docs
+'Cliente -- upload_docs
 Cliente -- download_docs
 Cliente -- review
 'Acciones de Agente Inmobiliario
