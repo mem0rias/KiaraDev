@@ -18,7 +18,7 @@
 'Cosas de cliente
 (Consulta estatus de tramite) as (consultProc)
 (Registro de solicitud de informacion) as (solicinfo)
-(Registrar Expediente) as (upload_docs)
+(Añadir Archivo) as (upload_docs)
 (Consultar Expediente) as (download_docs)
 (Añadir reseña de proceso) as (review)
 'Cosas de Agente Inmobiliario
