@@ -1,0 +1,20 @@
+.index {
+	width: 100%;
+}
+
+.main-container{
+	padding-top: 0px;
+	margin: 0px;
+}
+
+.index .banner {
+	padding: 170px 100px;
+	margin: 0px;
+	background-image: url('images/queretaro.jpg') ;
+	background-size: cover;
+}
+
+.container-fluid {
+	padding-top: 50px;
+	padding: 35px;
+}
