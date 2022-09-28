@@ -17,16 +17,18 @@ CREATE TABLE kiaraaa.clip_prop_r (
   Etapa int(10) NOT NULL,
   IdPropiedad int(10) NOT NULL,
   IdRol_Cliente int(10) NOT NULL,
-  Fecha_inicio datetime DEFAULT NULL,
-  Fecha_fin datetime DEFAULT NULL,
+  Fecha_inicio longtext DEFAULT NULL,
+  Fecha_fin longtext DEFAULT NULL,
   URL varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `Estatus Etapa` smallint(6) DEFAULT NULL,
   `Comentario Etapa` varchar(255) DEFAULT NULL,
   PRIMARY KEY (IdUsuario, IdPropiedad, IdRol_Cliente, Etapa)
 )
 ENGINE = INNODB,
+AVG_ROW_LENGTH = 273,
 CHARACTER SET utf8mb4,
 COLLATE utf8mb4_general_ci;
+
 
 
 -- Tabla Resultante CLIP-PROP - Compra
@@ -35,14 +37,15 @@ CREATE TABLE kiaraaa.cli_p_prop (
   Paso int(10) NOT NULL,
   IdPropiedad int(10) NOT NULL,
   IdRol_Cliente int(10) NOT NULL,
-  Fecha_inicio datetime DEFAULT NULL,
-  Fecha_fin datetime DEFAULT NULL,
+  Fecha_inicio longtext DEFAULT NULL,
+  Fecha_fin longtext DEFAULT NULL,
   URL varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `Estatus Etapa` smallint(6) DEFAULT NULL,
   `Comentario Etapa` varchar(255) DEFAULT NULL,
   PRIMARY KEY (IdUsuario, Paso, IdPropiedad, IdRol_Cliente)
 )
 ENGINE = INNODB,
+AVG_ROW_LENGTH = 292,
 CHARACTER SET utf8mb4,
 COLLATE utf8mb4_general_ci;
 
