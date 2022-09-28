@@ -1,3 +1,5 @@
+
+-- Tabla de Herencia Cliente
 CREATE TABLE kiaraaa.cliente (
   IdUsuario int(10) NOT NULL,
   IdRol_Cliente int(10) NOT NULL,
@@ -12,6 +14,7 @@ ALTER TABLE kiaraaa.cliente
 ADD CONSTRAINT FK_cliente_IdUsuario FOREIGN KEY (IdUsuario)
 REFERENCES kiaraaa.usuario (IdUsuario) ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- Tabla de Relacion Cliente Propiedad Etapa - Renta
 CREATE TABLE kiaraaa.clip_prop_r (
   IdUsuario int(10) NOT NULL,
   Etapa int(10) NOT NULL,
@@ -20,6 +23,8 @@ CREATE TABLE kiaraaa.clip_prop_r (
   Fecha_inicio datetime DEFAULT NULL,
   Fecha_fin datetime DEFAULT NULL,
   URL varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `Estatus Etapa` smallint(6) DEFAULT NULL,
+  `Comentario Etapa` varchar(255) DEFAULT NULL,
   PRIMARY KEY (IdUsuario, IdPropiedad, IdRol_Cliente, Etapa)
 )
 ENGINE = INNODB,
@@ -38,31 +43,34 @@ ALTER TABLE kiaraaa.clip_prop_r
 ADD CONSTRAINT FK_clip_prop_r_IdPropiedad FOREIGN KEY (IdPropiedad)
 REFERENCES kiaraaa.propiedades (IdPropiedad) ON DELETE CASCADE ON UPDATE CASCADE;
 
-CREATE TABLE kiaraaa.cli_p_prop (
+-- Tabla Resultante CLIP-PROP+ Renta
+CREATE TABLE kiaraaa.clip_prop_r (
   IdUsuario int(10) NOT NULL,
-  Paso int(10) NOT NULL,
+  Etapa int(10) NOT NULL,
   IdPropiedad int(10) NOT NULL,
   IdRol_Cliente int(10) NOT NULL,
   Fecha_inicio datetime DEFAULT NULL,
   Fecha_fin datetime DEFAULT NULL,
   URL varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  PRIMARY KEY (IdUsuario, Paso, IdPropiedad, IdRol_Cliente)
+  `Estatus Etapa` smallint(6) DEFAULT NULL,
+  `Comentario Etapa` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (IdUsuario, IdPropiedad, IdRol_Cliente, Etapa)
 )
 ENGINE = INNODB,
 CHARACTER SET utf8mb4,
 COLLATE utf8mb4_general_ci;
 
-ALTER TABLE kiaraaa.cli_p_prop
-ADD CONSTRAINT FK_cli_p_prop FOREIGN KEY (IdUsuario, IdRol_Cliente)
+ALTER TABLE kiaraaa.clip_prop_r
+ADD CONSTRAINT FK_clip_prop_r FOREIGN KEY (IdUsuario, IdRol_Cliente)
 REFERENCES kiaraaa.cliente (IdUsuario, IdRol_Cliente) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE kiaraaa.cli_p_prop
-ADD CONSTRAINT FK_cli_p_prop_IdPropiedad FOREIGN KEY (IdPropiedad)
-REFERENCES kiaraaa.propiedades (IdPropiedad) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE kiaraaa.clip_prop_r
+ADD CONSTRAINT FK_clip_prop_r_Etapa FOREIGN KEY (Etapa)
+REFERENCES kiaraaa.proceso_renta (Etapa) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE kiaraaa.cli_p_prop
-ADD CONSTRAINT FK_cli_p_prop_Paso FOREIGN KEY (Paso)
-REFERENCES kiaraaa.proceso_comp (Etapa) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE kiaraaa.clip_prop_r
+ADD CONSTRAINT FK_clip_prop_r_IdPropiedad FOREIGN KEY (IdPropiedad)
+REFERENCES kiaraaa.propiedades (IdPropiedad) ON DELETE CASCADE ON UPDATE CASCADE;
 
 CREATE TABLE kiaraaa.comercial (
   IdPropiedad int(10) NOT NULL,
@@ -80,6 +88,8 @@ ALTER TABLE kiaraaa.comercial
 ADD CONSTRAINT FK_comercial_IdPropiedad FOREIGN KEY (IdPropiedad)
 REFERENCES kiaraaa.propiedades (IdPropiedad) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+ -- Tabla de Empleados (ISA Herencia)
 CREATE TABLE kiaraaa.empleado (
   IdUsuario int(10) NOT NULL,
   IdRol_Empleado int(10) NOT NULL,
@@ -93,6 +103,7 @@ ALTER TABLE kiaraaa.empleado
 ADD CONSTRAINT FK_empleado_IdUsuario FOREIGN KEY (IdUsuario)
 REFERENCES kiaraaa.usuario (IdUsuario) ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- Tabla de Asignacion Empleado - Propiedad
 CREATE TABLE kiaraaa.emp_prop (
   IdUsuario int(10) NOT NULL,
   IdPropiedad int(10) NOT NULL,
@@ -120,6 +131,8 @@ CREATE TABLE kiaraaa.proceso_comp (
 ENGINE = INNODB,
 CHARACTER SET utf8mb4,
 COLLATE utf8mb4_general_ci;
+
+-- Tabla con etapas de renta 
 
 CREATE TABLE kiaraaa.proceso_renta (
   Etapa int(10) NOT NULL,
@@ -151,6 +164,7 @@ AVG_ROW_LENGTH = 2730,
 CHARACTER SET utf8mb4,
 COLLATE utf8mb4_general_ci;
 
+-- Tabla de herencia ISA Propiedad - Residencial 
 CREATE TABLE kiaraaa.residencial (
   IdPropiedad int(10) NOT NULL,
   Baños int(10) DEFAULT NULL,
@@ -169,6 +183,8 @@ COLLATE utf8mb4_general_ci;
 ALTER TABLE kiaraaa.residencial
 ADD CONSTRAINT FK_residencial_IdPropiedad FOREIGN KEY (IdPropiedad)
 REFERENCES kiaraaa.propiedades (IdPropiedad) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Tabla de herencia ISA Propiedad - Terreno
 
 CREATE TABLE kiaraaa.terreno (
   IdPropiedad int(10) NOT NULL,
@@ -189,6 +205,8 @@ COLLATE utf8mb4_general_ci;
 ALTER TABLE kiaraaa.terreno
 ADD CONSTRAINT FK_terreno_IdPropiedad FOREIGN KEY (IdPropiedad)
 REFERENCES kiaraaa.propiedades (IdPropiedad) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Tabla de USUario
 
 CREATE TABLE kiaraaa.usuario (
   IdUsuario int(10) NOT NULL,
