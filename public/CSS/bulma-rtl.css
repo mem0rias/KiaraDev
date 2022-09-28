@@ -5408,7 +5408,7 @@ button.dropdown-item.is-active {
 .navbar {
   background-color: white;
   min-height: 3.25rem;
-  position: relative;
+  position: center;
   z-index: 30;
 }
 

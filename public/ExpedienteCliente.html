@@ -4,50 +4,65 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Kiara</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   </head>
   <body>
     <header>
-        <nav class="navbar navbar-expand-md ">
-            <a class="navbar-brand" href="#"><img src="https://scontent-qro1-1.xx.fbcdn.net/v/t1.6435-9/104814190_1184204361938469_1422758129587659503_n.png?_nc_cat=110&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeEz44nVN2hdh55fS42YFppEvbZP9cCMnDy9tk_1wIycPDhmnIqVHpYkQXu3DKH6JwPEQOs2kbZMdmVR5A6PL-JR&_nc_ohc=c0Hbu9w0APkAX_YLVgr&_nc_ht=scontent-qro1-1.xx&oh=00_AT-77QIghBOUlf-h6_Xpd3b_xyQCrfXkoAoisCxCnD6nEQ&oe=63463A6D" width="100" height="100" class="d-inline-block align-top" alt=""></a>   
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-        
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item active">
-                <a class="nav-link" href="#">¿Quienes somos?</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Propiedades</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Contacto</a>
-                </li>
-            </ul>
-                <button class="btn btn-light my-sm-0">Perfil</button>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="https://bulma.io"><img src="https://scontent-qro1-1.xx.fbcdn.net/v/t1.6435-9/104814190_1184204361938469_1422758129587659503_n.png?_nc_cat=110&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeEz44nVN2hdh55fS42YFppEvbZP9cCMnDy9tk_1wIycPDhmnIqVHpYkQXu3DKH6JwPEQOs2kbZMdmVR5A6PL-JR&_nc_ohc=c0Hbu9w0APkAX_YLVgr&_nc_ht=scontent-qro1-1.xx&oh=00_AT-77QIghBOUlf-h6_Xpd3b_xyQCrfXkoAoisCxCnD6nEQ&oe=63463A6D" width="100" height="150" class="d-inline-block align-top" alt=""></a>
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+      
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item">
+              ¿Quienes somos?
+            </a>
+      
+            <a class="navbar-item">
+              Propiedades
+            </a>
+
+            <a class="navbar-item">
+              Contacto
+            </a>
+            
+          </div>
+      
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                <a class="button is-primary">
+                  <strong>Perfil</strong>
+                </a>
+              </div>
             </div>
-        </nav>
+          </div>
+        </div>
+      </nav>
     </header>
 
 
     <section class="main-container">
-      <h2 class="h4 mb-4"><i class="fi-edit text-primary fs-5 mt-n1 me-2 naranja"></i>Tu Expediente</h2>
-      <div class="contenedor">
+      <div class="container is-max-widescreen">
+      <h1 class="title">Tu Expediente</h1>
+      
         <form class="box">
           <div class="field">
             <label class="label"> Identificación oficial </label>
             <button class="button is-primary">Subir archivo</button>
-            
           </div>
         </form>
-      </div>
+      
 
       <div class="container-fluid-2">
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        </div>
+        <button class="button is-primary">Guardar</button>
+      </div>
     </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
