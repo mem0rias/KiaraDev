@@ -1,0 +1,59 @@
+<%- include('./includes/head.ejs') %>
+<br>   
+<br>    
+<div class="columns">
+        <div class="column is-4"></div>
+        <div class="has-background-light column is-4 box">
+            <div id="title" class="has-text-centered box has-background-white">
+                <h1 class="is-size-1"> Registro de usuario </h1>
+            </div>
+            
+            <br>
+            <div>
+                <form action="/inicio" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <h2> Nombre(s)</h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input class="input" type="text" id="nombre" name="nombre">
+                    <br><br>
+                    <h2> Primer Apellido </h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input class="input" type="text" id="nombre" name="A1">
+                    <br><br>
+                    <h2> Segundo Apellido </h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input class="input" type="text" id="nombre" name="A2">
+                    <br><br>
+                    <h2> Correo Electronico </h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input class="input" type="text" id="nombre" name="Email">
+                    <br><br>
+                    <h2> Estado Civil</h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <select class="input" name="ECiv" id="ECiv">
+                        <option value="Soltero"> Soltero</option>
+                        <option value="Casado"> Casado</option>
+                    </select>
+                    <br><br>
+                    <h2> Ocupacion </h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input class="input" type="text" id="nombre" name="Ocupacion">
+                    <br><br>
+                    <h2> Telefono </h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input  class="input"type="text" id="nombre" name="Tel">
+                    <br><br>
+                    <h2> Contraseña </h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input  class="input"type="password" id="nombre" name="password">
+                    <br><br>
+                    <input  class="button has-text-centered is-primary" type="submit" id="enviar" name="enviar" value="Registrar">
+                    
+                </form>
+            </div>  
+        </div> 
+        <div class="column is-4"></div> 
+    </div>
+    
+    
+<%- include('./includes/footer.ejs') %>

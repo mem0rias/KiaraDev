@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.0.0/animate.min.css"/>
+    <title>Lab 17</title>
+    <div id="nav" class="has-background-light box">
+        <form action="/seleccion" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+            <div class="columns">
+                <div class="column is-1"></div>
+                <div class="column has-text-centered is-flex is-vcentered">
+                    <br>
+                    <button class="button is-primary is-fullwidth" type="submit" id="boton" name="boton" value="/inicio"> Registrar usuario</button>
+                    <br>
+                </div>
+                <div class="column has-text-centered is-flex is-vcentered">
+                    <br>
+                    <button class="button is-primary is-fullwidth" type="submit" id="boton" name="boton" value="/editar"> Editar Usuario</button>
+                    <br>
+                </div>
+                <div class="column has-text-centered is-flex is-vcentered">
+                    <br>
+                    <button class="button is-primary is-fullwidth" type="submit" id="boton" name="boton" value="/pregs"> Preguntas Lab</button>
+                    <br>
+                </div>
+                <div class="column has-text-centered is-flex is-vcentered">
+                    <br>
+                    <button class="button is-primary is-fullwidth" type="submit" id="boton" name="boton" value="/expediente/revisar"> Revisar Expediente</button>
+                    <br>
+                </div>
+                <div class="column has-text-centered is-flex is-vcentered">
+                    <br>
+                    <% if(sesion != '') { logbot = 'Cerrar Sesion'; logpath = '/logout'} else {logbot = 'Iniciar Sesion'; logpath = '/login'} %>
+                    <button class="button is-primary is-fullwidth" type="submit" id="boton" name="boton" value="<%= logpath %>"> <%= logbot %></button>
+                    <br>
+                </div>
+                <div class="column is-1"></div>
+            </div>
+        </form>
+    </div>
+</head>
+<body>

@@ -1,0 +1,25 @@
+
+<script>
+    const busqueda_asinc = () => {
+
+        let conss = document.getElementById('consulta').value;
+        console.log(conss);
+        fetch('/editar2/' + conss , {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(result => {
+            return result.json();
+        }).then(data => {
+            
+
+            
+            console.log(data);
+            //bulmaToast.toast({ message: 'Hello There' })
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+    document.getElementById('consulta').onchange = busqueda_asinc;
+</script>

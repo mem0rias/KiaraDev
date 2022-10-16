@@ -1,0 +1,80 @@
+<%- include('./includes/head.ejs') %>
+<br>   
+<br>    
+<div class="columns">
+        <div class="column is-4"></div>
+        <div class="has-background-light column is-4 box">
+            <div id="title" class="has-text-centered box has-background-white">
+                <h1 class="is-size-1"> Editar Usuario </h1>
+                
+            </div> 
+            <br>
+            <% if(nombres != 'undefined') { %>
+            <div>
+                <form action="/editar2" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                    <select class="input" name="consulta" id="consulta">
+                        <% for(let element of nombres) { %>
+                            <% let name = element.nombre + " " + element.Primer_Apellido + " " + element.Segundo_Apellido; %>
+                            <% let name2 = element.nombre + "^" + element.Primer_Apellido + "^" + element.Segundo_Apellido; %>
+                            <option value="<%= name2 %>"> <%= name %> </option>
+                        <% } %>
+                    </select>
+                    <br>
+                    <br>
+                    <button class="button is-primary is-fullwidth" type="submit" id="boton" name="boton" value="/editar"> Seleccionar Usuario</button>
+                    
+                </form>
+                
+                
+
+                
+            </div> 
+            <% } else {%>
+                <h1> La base de datos esta vacia</h1>
+            <% } %>
+
+            <% if(busqueda != 0) { %>
+                <form action="/load" method="POST">
+                    <h2> Nombre(s)</h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input class="input" type="text" id="nombre" name="nombre" value="<%= info.nombre %>">
+                    <br><br>
+                    <h2> Primer Apellido </h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input class="input" type="text" id="nombre" name="A1" value="<%= info.Primer_Apellido %>">
+                    <br><br>
+                    <h2> Segundo Apellido </h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input class="input" type="text" id="nombre" name="A2" value="<%= info.Segundo_Apellido %>">
+                    <br><br>
+                    <h2> Correo Electronico </h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input class="input" type="text" id="nombre" name="Email" value="<%= info.Correo_Electronico %>">
+                    <br><br>
+                    <h2> Estado Civil</h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <select class="input" name="ECiv" id="ECiv">
+                        <option value="Soltero" <% if(info.Estado_Civil == "Soltero") {%> selected <%}%>> Soltero</option>
+                        <option value="Casado" <% if(info.Estado_Civil == "Casado") {%> selected <%}%>> Casado</option>
+                    </select>
+                    <br><br>
+                    <h2> Ocupacion </h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input class="input" type="text" id="nombre" name="Ocupacion" value="<%= info.Ocupacion %>">
+                    <br><br>
+                    <h2> Telefono </h2>
+                    <h2 class="has-text-danger"> *</h2>
+                    <input  class="input"type="text" id="nombre" name="Tel" value="<%= info.Telefono %>">
+                    <br><br>
+                    <% let name2 = info.nombre + "^" + info.Primer_Apellido + "^" + info.Segundo_Apellido; %>
+                    <button  class="button has-text-centered is-primary" type="submit" id="enviar" name="enviar" value="<%=name2%>"> Actualizar </button>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                </form>
+            <% } %>
+        </div> 
+        <div class="column is-4"></div> 
+    </div>
+    
+<%- include('./busqueda_ajax.ejs') %> 
+<%- include('./includes/footer.ejs') %>
