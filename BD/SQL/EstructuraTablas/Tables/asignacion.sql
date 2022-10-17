@@ -1,0 +1,20 @@
+﻿CREATE TABLE asignacion (
+  IdEmpleado INT(10) NOT NULL AUTO_INCREMENT,
+  IdPropiedad INT(10) NOT NULL,
+  fecha_asignacion DATETIME DEFAULT NULL,
+  PRIMARY KEY (IdEmpleado, IdPropiedad)
+)
+ENGINE = INNODB,
+AUTO_INCREMENT = 3,
+AVG_ROW_LENGTH = 16384,
+CHARACTER SET utf8mb4,
+COLLATE utf8mb4_general_ci,
+ROW_FORMAT = DYNAMIC;
+
+ALTER TABLE asignacion 
+  ADD CONSTRAINT FK_asignacion_IdEmpleado FOREIGN KEY (IdEmpleado)
+    REFERENCES usuario(IdUsuario) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE asignacion 
+  ADD CONSTRAINT FK_asignacion_IdPropiedad FOREIGN KEY (IdPropiedad)
+    REFERENCES propiedades(IdPropiedad) ON DELETE CASCADE ON UPDATE CASCADE;
