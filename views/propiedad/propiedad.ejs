@@ -1,0 +1,29 @@
+<a href="/propiedades/<%=propiedad.IdPropiedad%>">
+<div class="card shadow-lg is-cursor-pointer">
+    <div class="card-image cover-image is-overflow-hidden">
+        <figure class="image is-4by3">
+          <img src="<%=propiedad.Imagenes%>">
+        </figure>
+      </div>
+    <div class="card-content">
+      <p class="subtitle">
+        <%= propiedad.Descripcion %> 
+      </p>
+      <p class="subtitle">
+        <%= propiedad.Colonia %>
+      </p>
+    </div>
+    <footer class="card-footer">
+      <p class="card-footer-item">
+        <span>
+          Habitaciones <%= propiedad.Habitaciones %> 
+        </span>
+      </p>
+      <p class="card-footer-item is-small">
+        <span>
+          <%= propiedad.Precio %> 
+        </span>
+      </p>
+    </footer>
+  </div>
+</a>

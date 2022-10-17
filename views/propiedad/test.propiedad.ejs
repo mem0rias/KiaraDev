@@ -1,0 +1,9 @@
+
+
+        <% if (propiedad.length > 0) { %>
+            <% for (let p of propiedad  ) { %>
+                <%- include('propiedad.ejs', {propiedad: p}) %>
+            <% } %>
+        <% }  %>
+
+    
