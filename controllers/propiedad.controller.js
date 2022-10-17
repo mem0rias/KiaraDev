@@ -20,7 +20,7 @@ exports.get_propiedades = (request, response, next) => {
 exports.get_one = (request, response, next) => {
     Propiedad.fetchOne(request.params.id).then( ([rows, fieldData]) => {
             console.log(rows);
-            var monto = rows[0].Precio
+            var monto = rows[0].Precio;
             precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
              Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
                 if (res.length > 0){
@@ -69,25 +69,18 @@ exports.get_one = (request, response, next) => {
 
 
 exports.get_new = (request, response, next) => {
-    Propiedad.fetchAll()
-        .then(([rows, fieldData]) => {
-            console.log(rows);
-            response.render(path.join('robots','new.ejs'), {
-                info: '',
-                Pro: '',
-            }); 
-        })
-        .catch( error => { 
-            console.log(error)
-        });
+    response.render(path.join('propiedad', 'propiedad.registrar.ejs'));
     
 };
 
 exports.post_new = (request, response, next) => {
     
+    console.log(request.body.descripcion);
     console.log(request.body);
-    const Propiedad = new Propiedad(request.body.nombre, request.body.descripcion,request.body.nombre,request.body.tipo_id,request.body.nombre);
-    Propiedad.save()
+    let v = request.body;
+    const propiedad = new Propiedad(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.precio,v.colonia,v.imagenes,v.video);
+    console.log(propiedad);
+    propiedad.save()
         .then( () => {
             response.redirect('/propiedades');
         }).catch( (error) => {
