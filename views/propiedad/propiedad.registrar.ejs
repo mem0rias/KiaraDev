@@ -1,10 +1,11 @@
 <%- include('../includes/head.ejs') %>
+<form action="/propiedades/registrar" method="POST">
 <section class="main-container">
     <div class="container">
         <div class="content">
             <h1>Resgistrar propiedad</h1>
         </div>
-        <form action="/propiedades/registrar" method="POST">
+        
         <div class="columns is-multiline">
             <div class="column is-8">
                 <div class="section m-0">
@@ -73,7 +74,7 @@
                                         <div class="field">
                                             <label class="label">Estado</label>
                                             <div class="control">
-                                            <input class="input" type="text" maxlength="40" id="estado" placeholder="">
+                                                <input class="input" type="text" maxlength="40" name="estado" id="estado" placeholder="">
                                             </div>
                                         </div>
                                     </div>
@@ -83,7 +84,7 @@
                                         <div class="field">
                                             <label class="label">Municipio</label>
                                             <div class="control">
-                                            <input class="input" type="text" maxlength="40" id="muncipio" placeholder="">
+                                                <input class="input" type="text" maxlength="40" name="muncipio" placeholder="">
                                             </div>
                                         </div>
                                     </div>
@@ -97,7 +98,7 @@
                                     <div class="field">
                                         <label class="label">Colonia</label>
                                         <div class="control">
-                                        <input class="input" type="text" maxlength="40" id="colonia" placeholder="">
+                                            <input class="input" type="text" maxlength="40" name="colonia" placeholder="">
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +108,7 @@
                                     <div class="field">
                                         <label class="label">Codigo Postal</label>
                                         <div class="control">
-                                        <input class="input" type="text" maxlength="40" id="cp" placeholder="">
+                                            <input class="input" type="text" maxlength="40" name="cp" placeholder="">
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +121,7 @@
                                     <div class="field">
                                         <label class="label">Calle</label>
                                         <div class="control">
-                                        <input class="input" type="text" maxlength="40" id="calle" placeholder="">
+                                            <input class="input" type="text" maxlength="40" name="calle" placeholder="">
                                         </div>
                                     </div>
                                 </div>
@@ -144,7 +145,7 @@
                                     <div class="field">
                                         <label class="label">Precio</label>
                                         <div class="control">
-                                        <input class="input" type="text" maxlength="40" id="precio" placeholder="">
+                                            <input class="input" type="number" maxlength="40" name="precio" id="precio" placeholder="">
                                         </div>
                                     </div>
                                 </div>
@@ -162,7 +163,7 @@
                                     <div class="field">
                                         <label class="label">Imagenes</label>
                                         <div class="control">
-                                        <input class="input" type="text" maxlength="40" id="imagenes" placeholder="">
+                                            <input class="input" type="text" maxlength="40" name="imagenes" placeholder="">
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +171,7 @@
                                     <div class="field">
                                         <label class="label">Video</label>
                                         <div class="control">
-                                        <input class="input" type="text" maxlength="40" id="video" placeholder="">
+                                            <input class="input" type="text" maxlength="40" name="video" placeholder="">
                                         </div>
                                     </div>
                                 </div>
@@ -178,16 +179,18 @@
                         </div>   
                     </div>
                 </div>
-                <input type="submit" id="enviar" name="enviar" value="Registrar">
-            </form>
+                
+            
 
             
 
             </div>  
         </div>
-
+    
 
 
     </div>
 </section>
+<input type="submit" id="enviar" name="enviar" value="Registrar">
+</form>
 <%- include('../includes/foot.ejs') %>

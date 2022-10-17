@@ -76,9 +76,10 @@ exports.get_new = (request, response, next) => {
 exports.post_new = (request, response, next) => {
     
     console.log(request.body.descripcion);
-    console.log(request.body.estado);
+    console.log(request.body);
     let v = request.body;
     const propiedad = new Propiedad(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.precio,v.colonia,v.imagenes,v.video);
+    console.log(propiedad);
     propiedad.save()
         .then( () => {
             response.redirect('/propiedades');
