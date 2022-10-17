@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -17,13 +18,27 @@ app.use(bodyParser.urlencoded({extended: false}));
 const rutasPropiedades = require('./routes/propiedad.routes');
 const rutasIndex = require('./routes/index.routes');
 const rutasDashboard = require('./routes/dashboard.routes');
+const rutasLogin = require('./routes/Login.routes');
 const { response } = require('express');
 
+app.use(session({
+    secret: 'aerfgtvythvyugt54cyh4yhyhy6h46yr5ky87br53tgc3g46gg', 
+    resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
+    saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
+}));
+
+app.use((request, response, next) => {
+    //response.locals.csrfToken = request.csrfToken();
+    response.locals.sesion = request.session.user ? request.session.user : '';
+    response.locals.IdUser = request.session.IdUser ? request.session.IdUser : '';
+    response.locals.IdRol = request.session.IdRol ? request.session.IdRol : '';
+    next();
+});
 //Declarar app.use de las rutas
 app.use('/propiedades', rutasPropiedades);
 app.use('/index', rutasIndex);
 app.use('/dashboard', rutasDashboard);
-
+app.use('/login', rutasLogin);
 //Middleware
 app.use((request, response, next) => {
     console.log('Middleware!');
