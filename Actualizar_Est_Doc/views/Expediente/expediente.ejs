@@ -15,20 +15,23 @@
                     <div class="column is-2"> <h2 class="Title label">Estatus </h2> </div> 
                 </div>
             </div>
-            
-        <% for(let element of info) { %>
-            <%- include('../Expediente/bloqueArchivo.ejs', {info: element}) %>
-        <% } %>
-        <div class="box is-shadowless">
-            <form action="/saveexpediente" method="POST">
+        <form action="/expediente/actualizar" method="POST">  
+            <% for(let element of info) { %>
+                
+                <%- include('../Expediente/bloqueArchivo.ejs', {info: element}) %>
+                
+            <% } %>
+            <div class="box is-shadowless">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="IdUsuario" value="<%= Id %>">
                 <div class="columns">  
                     <div class="column is-10"></div>
                     <div class="column"><button class="button is-primary is-fullwidth" type="submit" id="boton" name="boton" value="salvar"> Guardar </button></div>
                 </div>
                 
-            </form>
-        </div>
+            
+            </div>
+        </form>
         
     </section> 
    

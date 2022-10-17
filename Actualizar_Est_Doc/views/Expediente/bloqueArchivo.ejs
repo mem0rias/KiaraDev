@@ -1,7 +1,7 @@
 
             <div class="has-background-light box">
                 <div class="columns">
-                
+                    <input type="hidden" name="Tipo_Doc" value="<%= info.Tipo_Doc %>">
                     <div class="column is-3">
                         <label class="label"> <%= info.descripcion %> </label> 
                     </div>
@@ -9,13 +9,13 @@
                         <button class="button is-primary is-fullwidth" type="submit" id="boton" name="boton" value="/editar"> Descargar Archivo</button>
                     </div>
                     <div class="column is-5"> 
-                        <input class="input" type="text" placeholder="Comentarios" value="<%= info.Comentarios %>">
+                        <input class="input" type="text" name="Comments" placeholder="Comentarios" value="<%= info.Comentarios %>">
                     </div>
                     <div class="column"> 
                         <div class="field">
                             <div class="control">
                               <div class="select">
-                                <select>
+                                <select name="estatus">
                                     <option value="1" <% if(info.Estatus == 1) {%> selected <%}%>> Pendiente </option> 
                                     <option value="2" <% if(info.Estatus == 2) {%> selected <%}%>> Aceptado  </option>
                                     <option value="3" <% if(info.Estatus == 3) {%> selected <%}%>> Rechazado </option>
