@@ -11,37 +11,33 @@
         </figure>
         <div class="media-content">
           <div class="content is-small">
-            <h1>Blanca Vergel</h1>
-            <p class="pt-0 pb-0 m-0"><i class="mdi mdi-phone pr-2 "></i>552939920</p>
-            <p class="pt-0 pb-0"><i class="mdi mdi-email pr-2"></i>blanca@kiara.mx</p>
+            <h1><%=usuario.nombre %> <%=usuario.PA %></h1>
+            <p class="pt-0 pb-0 m-0"><i class="mdi mdi-phone pr-2 "></i><%=usuario.Telefono %></p>
+            <p class="pt-0 pb-0"><i class="mdi mdi-email pr-2"></i><%=usuario.email %></p>
           </div>
     </article>
+
+    <% if (sesionId != 0) { %>
       <div class="content">
           <a href="/propiedades/registrar"><button class="button is-danger is-fullwidth ">+ Añadir propiedad</button></a>
       </div>
+    <% } %>  
+
     </div>
 
 
 <!-- Botones del menu del dashboard, cada uno esta en un footer para separarlos -->
 
-    <footer class="card-footer">
-      <div class="content is-danger has-icons-left">
-        <a href="#" class="card-footer-item is-danger"><i class="mdi mdi-account pr-2 pl-4"></i>Información Personal</a>
-      </div>
-    </footer>
-    <footer class="card-footer">
-      <div class="content is-danger has-icons-left">
-        <a href="#" class="card-footer-item"><i class="mdi mdi-home pr-2 pl-4"></i>Mis propiedades</a>
-      </div>
-    </footer>
-    <footer class="card-footer">
-      <div class="content is-danger has-icons-left">
-          <a href="#" class="card-footer-item"><i class="mdi mdi-home pr-2 pl-4"></i>Mis expedientes</a>
-      </div>
-    </footer>
-    <footer class="card-footer">
-      <div class="content is-danger has-icons-left">
-        <a href="#" class="card-footer-item"><i class="mdi mdi-logout-variant pr-2 pl-4"></i>Cerrar sesión</a>
-      </div>
-    </footer>
+
+<% if (sesionId == 2) { %>
+  <%- include ('menu.agente.ejs') %>
+<% } else { %>
+  <%- include ('menu.usuario.ejs') %>
+<% } %>
+
+<footer class="card-footer">
+  <div class="content is-danger has-icons-left">
+    <a href="/login/logout" class="card-footer-item"><i class="mdi mdi-logout-variant pr-2 pl-4"></i>Cerrar sesión</a>
+  </div>
+</footer>
   </div>

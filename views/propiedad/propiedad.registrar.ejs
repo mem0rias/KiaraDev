@@ -1,14 +1,14 @@
 <%- include('../includes/head.ejs') %>
 <form action="/propiedades/registrar" method="POST">
 <section class="main-container">
-    <div class="container">
-        <div class="content">
+    <div class="container mt-5">
+        <div class="content mt-5"">
             <h1>Resgistrar propiedad</h1>
         </div>
         
         <div class="columns is-multiline">
             <div class="column is-8">
-                <div class="section m-0">
+                <div class="section px-0 py-5">
                     <div class="card">
                         <div class="card-content">
                         <div class="container">
@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            <div class="section m-0">
+            <div class="section px-0 py-5">
                 <div class="card">
                     <div class="card-content">
                         <div class="container">
@@ -137,7 +137,7 @@
             
 
 
-                <div class="section m-0">
+                <div class="section px-0 py-5">
                     <div class="card">
                         <div class="card-content">
                             <div class="container">
@@ -155,7 +155,7 @@
                 </div>
                 
 
-                <div class="section m-0">
+                <div class="section px-0 py-5">
                     <div class="card">
                         <div class="card-content">
                             <div class="container">
@@ -183,14 +183,18 @@
             
 
             
-
-            </div>  
+                <div class="content">
+                    <input class="button is-danger"type="submit" id="enviar" name="enviar" value="Registrar">
+                </div>
+            </div> 
+            
+            
         </div>
     
 
-
+        
     </div>
 </section>
-<input type="submit" id="enviar" name="enviar" value="Registrar">
+
 </form>
 <%- include('../includes/foot.ejs') %>
