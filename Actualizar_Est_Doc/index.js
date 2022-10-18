@@ -27,6 +27,8 @@ app.use(csrfProtection);
 app.use((request, response, next) => {
     response.locals.csrfToken = request.csrfToken();
     response.locals.sesion = request.session.user ? request.session.user : '';
+    response.locals.msg = request.session.msg ? request.session.msg : '';
+    response.locals.exito = request.session.exito ? request.session.exito : 1;
     next();
 });
 

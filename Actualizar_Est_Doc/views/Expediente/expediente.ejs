@@ -26,7 +26,7 @@
                 <input type="hidden" name="IdUsuario" value="<%= Id %>">
                 <div class="columns">  
                     <div class="column is-10"></div>
-                    <div class="column"><button class="button is-primary is-fullwidth" type="submit" id="boton" name="boton" value="salvar"> Guardar </button></div>
+                    <div class="column"><button class="button is-primary is-fullwidth" type="submit" id="botonguardar" name="boton" value="salvar"> Guardar </button></div>
                 </div>
                 
             
@@ -34,8 +34,16 @@
         </form>
         
     </section> 
-   
+    <script src="./js/dist/bulma-toast.min.js"></script>
     
+    <% if(msg != '') { %>
+
+        <% if(exito == 1) { tipo = 'is-success'; } else { tipo = 'is-danger';} %> 
+        <script>
+            bulmaToast.toast({ message: '<%= msg %>', type: '<%= tipo %>', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+        </script>
+    <% } %>
+    <script src="./js/expediente.js"></script>
 <%- include('../includes/footer.ejs') %>
 
         
