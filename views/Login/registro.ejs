@@ -11,7 +11,7 @@
             <br>
             <div>
                 <form action="/login/registrarse" method="POST">
-                    <input type="hidden" name="_csrf" value="magia">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <h2> Nombre(s)</h2>
                     <h2 class="has-text-danger"> *</h2>
                     <input class="input" type="text" id="nombre" name="nombre">

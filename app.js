@@ -19,7 +19,7 @@ const rutasPropiedades = require('./routes/propiedad.routes');
 const rutasIndex = require('./routes/index.routes');
 const rutasDashboard = require('./routes/dashboard.routes');
 const rutasLogin = require('./routes/Login.routes');
-const { response } = require('express');
+const expediente = require('./routes/expediente.routes');
 
 app.use(session({
     secret: 'aerfgtvythvyugt54cyh4yhyhy6h46yr5ky87br53tgc3g46gg', 
@@ -28,10 +28,12 @@ app.use(session({
 }));
 
 app.use((request, response, next) => {
-    //response.locals.csrfToken = request.csrfToken();
+    response.locals.csrfToken = 'dummytoken';
     response.locals.sesion = request.session.user ? request.session.user : '';
     response.locals.IdUser = request.session.IdUser ? request.session.IdUser : '';
     response.locals.IdRol = request.session.IdRol ? request.session.IdRol : '';
+    response.locals.msg = request.session.msg ? request.session.msg : '';
+    response.locals.exito = request.session.exito ? request.session.exito : 1;
     next();
 });
 //Declarar app.use de las rutas
@@ -39,6 +41,7 @@ app.use('/propiedades', rutasPropiedades);
 app.use('/index', rutasIndex);
 app.use('/dashboard', rutasDashboard);
 app.use('/login', rutasLogin);
+app.use('/expediente', expediente);
 //Middleware
 app.use((request, response, next) => {
     console.log('Middleware!');
@@ -57,3 +60,4 @@ let formatc = new Intl.NumberFormat("en-IN",
 )
 
 app.listen(3000);
+
