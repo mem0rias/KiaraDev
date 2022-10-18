@@ -25,14 +25,15 @@
                             <div class="columns">
                                 <div class="column is-6">
                                     <div class="field">
-                                        <label class="label">Subject</label>
+                                        <label class="label">Tipo de propiedad</label>
                                         <div class="control">
-                                        <div class="select">
-                                            <select>
-                                            <option>Select dropdown</option>
-                                            <option>With options</option>
-                                            </select>
-                                        </div>
+                                            <div class="select is-expanded">
+                                                <select class="select" name="tipoPropiedad" id="tipoPropiedad">
+                                                    <option value="Residencial">Residencial</option>
+                                                    <option value="Comercial">Comercial</option>
+                                                    <option value="Terreno">Terreno</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -180,8 +181,13 @@
                     </div>
                 </div>
                 
-            
 
+                <div class="container">
+
+                    <div id="form-complement"> 
+                    </div>
+            
+                </div>
             
                 <div class="content">
                     <input class="button is-danger"type="submit" id="enviar" name="enviar" value="Registrar">
@@ -191,10 +197,57 @@
             
         </div>
     
-
+        
         
     </div>
+
+    
+
+    
 </section>
 
 </form>
+
+<script>
+    forma_dinamica = () => {
+        
+        let tipo = document.getElementById("tipoPropiedad").value;
+        console.log(tipo);
+
+        let html = '';
+        if(tipo == "Residencial"){
+            html += '<div class="section px-0 py-5">'
+            html += '     <div class="card">'
+            html += '         <div class="card-content">'
+            html += '             <div class="container">'
+            html += '                 <div class="content is-small">'
+            html += '                     <div class="field">'
+            html += '                         <label class="label">recamaras</label>'
+            html += '                         <div class="control">'
+            html += '                             <input class="input" type="text" maxlength="40" id="recamaras "name="recamaras" placeholder="">'
+            html += '                         </div>'
+            html += '                     </div>'
+            html += '                 </div>'
+            html += '                 <div class="content is-small">'
+            html += '                     <div class="field">'
+            html += '                         <label class="label">Video</label>'
+            html += '                         <div class="control">'
+            html += '                             <input class="input" type="text" maxlength="40" name="r" placeholder="">'
+            html += '                         </div>'
+            html += '                     </div>'
+            html += '                 </div>'
+            html += '             </div>'
+            html += '         </div>   '
+            html += '     </div>'
+            html += ' </div>'
+
+        }
+
+        document.getElementById("form-complement").innerHTML = html;
+    };
+
+    document.getElementById("tipoPropiedad").oninput = forma_dinamica;
+
+</script>
+
 <%- include('../includes/foot.ejs') %>

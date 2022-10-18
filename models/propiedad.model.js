@@ -25,6 +25,13 @@ module.exports = class Propiedad {
             
     }
 
+    saveResidencial(descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras) {
+        return db.execute(
+            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [descripcion, precio, estado,municipio,colonia,calle,cp,terreno,terreno,video,imagenes,recamaras]);
+            
+    }
+
 
 
 
@@ -48,5 +55,8 @@ module.exports = class Propiedad {
     static isTerreno(id) {
         return db.execute('SELECT * FROM terreno WHERE IdPropiedad = ?', [id]);
     }
+    
 
 }
+
+

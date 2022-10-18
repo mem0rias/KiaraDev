@@ -1,7 +1,6 @@
 const path = require('path');
 const Propiedad = require('../models/propiedad.model');
 
-
 exports.get_propiedades = (request, response, next) => {
 
     Propiedad.fetchAll()
@@ -78,14 +77,25 @@ exports.post_new = (request, response, next) => {
     console.log(request.body.descripcion);
     console.log(request.body);
     let v = request.body;
-    const propiedad = new Propiedad(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.precio,v.colonia,v.imagenes,v.video);
-    console.log(propiedad);
-    propiedad.save()
-        .then( () => {
-            response.redirect('/propiedades');
-        }).catch( (error) => {
-            console.log(error);
+
+    if(request.body.tipoPropiedad == 'Residencial') {
+        const recamaras = parseInt(request.body.recamaras);
+        console.log(recamaras)
+        const propiedad = new Propiedad(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.precio,v.colonia,v.imagenes,v.video);
+        propiedad.saveResidencial(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.colonia,v.imagenes,v.video,recamaras)
+                .then( () => {
+                        response.redirect('/propiedades');
+                }).catch( (error) => {
+                        console.log(error);
         });
+    }
+    else if(request.body.tipoPropiedad == 'Comercial'){
+
+    } 
+    
+
     
 };
+
+
 
