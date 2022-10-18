@@ -1,0 +1,80 @@
+@startuml KIARA
+
+'Direccion de las acciones/Actores
+'left to right direction
+'Actores del sistema
+:Usuario_No_Registrado:
+:Usuario_Registrado:
+:Cliente:
+:Agente_Inmobiliario:
+:Administrador:
+'Cosas de Usuario no registrado
+(Registrar Usuario) as (reg)
+(Consultar Propiedades) as (consultprop)
+'Cosas de usuario
+(Iniciar Sesion) as (init)
+(Cerrar Sesion) as (Logout)
+(Restablecer contraseña) as (fPassword)
+'Cosas de cliente
+(Consulta estatus de tramite) as (consultProc)
+(Registro de solicitud de informacion) as (solicinfo)
+(Añadir Archivo) as (upload_docs)
+(Consultar Expediente) as (download_docs)
+(Añadir reseña de proceso) as (review)
+'Cosas de Agente Inmobiliario
+(Registrar Propiedades) as (RegisProp)
+(Editar propiedades) as (Editar_propiedades)
+'Consideracion de unir en uno solo no?
+(Consultar Expediente de Cliente) as (DescexpC)
+'Aqui dentro va la notificacion
+(Aprobar Expediente) as (AproveExp) 
+(Cancelar Expediente) as (RevocExp)
+(Terminar Operacion inmobiliaria) as (tOperacion)
+'Cosas de Administrador
+(Asignar Privilegios a roles) as (SetPrivs)
+(Quitar Privilegios a roles)  as (RmPrivs)
+(Añadir Roles) as (addRoles)
+(Modificar Roles) as (ModRoles)
+(Quitar Roles) as (rmRoles)
+(Eliminar Cuentas) as (rmAccount)
+(Generar reportes de BD) as (BDReport)
+(Ingresar al historial de propiedades) as (RegRev)
+(Aprobar Reseña de cliente) as (AproveReview)
+
+'Herencias
+Usuario_No_Registrado <|-- Usuario_Registrado
+Usuario_Registrado <|-- Cliente
+Cliente <|-- Agente_Inmobiliario
+Agente_Inmobiliario <|-- Administrador
+'Acciones de usuario no registrado
+Usuario_No_Registrado -- reg
+Usuario_No_Registrado -- consultprop
+'Acciones de Usuario Registrado
+Usuario_Registrado -- init
+Usuario_Registrado -- Logout
+Usuario_Registrado -- fPassword
+'Acciones de Cliente
+Cliente -- consultProc 
+download_docs .> upload_docs : include
+Cliente -- solicinfo
+'Cliente -- upload_docs
+Cliente -- download_docs
+Cliente -- review
+'Acciones de Agente Inmobiliario
+Agente_Inmobiliario -- RegisProp
+Agente_Inmobiliario -- Editar_propiedades
+Agente_Inmobiliario -- DescexpC
+Agente_Inmobiliario -- AproveExp
+Agente_Inmobiliario -- RevocExp
+Agente_Inmobiliario -- tOperacion
+'Acciones de administrador
+Administrador -- RegRev
+Administrador -- SetPrivs
+Administrador -- RmPrivs
+Administrador -- addRoles
+Administrador -- rmRoles
+Administrador -- rmAccount
+Administrador -- BDReport
+Administrador -- ModRoles
+Administrador -- AproveReview
+@enduml

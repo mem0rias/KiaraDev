@@ -1,0 +1,59 @@
+@startuml
+:Escolar:
+:Alumnos:
+:Administrador:
+:Profesor:
+:Usuario_registrado:
+(Iniciar Sesion) as (init)
+(Revisar Expedientes de alumnos) as (RevA)
+(Revisar Expedientes de Profesores) as (RevP)
+(Crear Expediente de Alumno) as (CreA)
+(Crear Expendient de Profesor) as (CreaP)
+(Crear Plan de estudios) as (CrePES)
+(Crear Materia) as (CMat)
+(Consultar Materia) as (ConsMat)
+(Consultar Plan de Estudios) as (ConsPlan)
+(Consultar Materias Asignadas) as (ConsMatA)
+(Revisar su Expediente) as (Reval)
+(Crear Usuarios) as (CreaU)
+(Inscribirse) as (Insc)
+(Pagar Inscripcion) as (PInsc)
+(Calificar profesores) as (ECOA)
+(Crear Evaluaciones a Profesores) as (CECOA)
+(Consultar Pago) as (CPag)
+
+(Gestionar Backend) as (GBack)
+Usuario_registrado --> Escolar
+Usuario_registrado --> Alumnos
+Usuario_registrado --> Administrador
+Usuario_registrado --> Profesor
+Usuario_registrado --> (init)
+
+Escolar --> RevA
+Escolar --> RevP
+Escolar --> CreA
+Escolar --> CreaP
+Escolar --> CrePES
+Escolar --> ConsPlan
+Escolar --> ConsMat
+Escolar --> CECOA
+Escolar --> CMat
+Escolar --> PList
+
+Alumnos --> Reval
+Alumnos --> ConsPlan
+Alumnos --> ConsMat
+Alumnos --> Insc
+Alumnos --> PInsc
+Alumnos --> ECOA
+Alumnos --> ConsMatA
+
+Profesor --> CPag
+Profesor --> ConsMatA
+
+
+Administrador --> CreaU
+Administrador --> GBack
+
+
+@enduml

@@ -20,7 +20,6 @@ const rutasIndex = require('./routes/index.routes');
 const rutasDashboard = require('./routes/dashboard.routes');
 const rutasLogin = require('./routes/Login.routes');
 const expediente = require('./routes/expediente.routes');
-const { response } = require('express');
 
 app.use(session({
     secret: 'aerfgtvythvyugt54cyh4yhyhy6h46yr5ky87br53tgc3g46gg', 
@@ -29,7 +28,7 @@ app.use(session({
 }));
 
 app.use((request, response, next) => {
-    //response.locals.csrfToken = request.csrfToken();
+    response.locals.csrfToken = 'dummytoken';
     response.locals.sesion = request.session.user ? request.session.user : '';
     response.locals.IdUser = request.session.IdUser ? request.session.IdUser : '';
     response.locals.IdRol = request.session.IdRol ? request.session.IdRol : '';
