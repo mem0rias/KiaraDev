@@ -1,7 +1,0 @@
-@startuml KIARA_Cliente
-
-:Cliente:
-(Romper cosas) as (init)
-Cliente <-- init
-
-@enduml
