@@ -11,5 +11,9 @@ module.exports = class User {
         return db.execute('SELECT IdUsuario, nombre, PA, SA, email, IdRol from usuario WHERE nombre LIKE ? OR email LIKE ? ', ['%'+filtro+'%', '%'+filtro+'%']);
     }
 
+    static updateRol(umap, urol, l){
+        return db.execute('CALL `ActualizarRoles`(?, ?, ?)', [umap,urol,l]);
+
+    }
 
 }

@@ -13,15 +13,17 @@
         <div class="box" id="busqueda">
 
         </div>
-        <button></button>
+        <button  type="button" class="button is-danger is-fullwidth"  id="botonguardar" name="boton"> Guardar Cambios</button>
         <script>
             let map = new Array();
             let rolmap = new Array();
             const lineup = (element) =>{
                 let elementid = element.id.slice(-1);
+                let dropdiv = document.getElementById('dropdiv'+elementid);
                 if(map.indexOf(elementid) == -1){
                     map.push(elementid);
                     rolmap.push(element.value);
+                    dropdiv.classList.add('is-danger');
                 }else{
                     rolmap[map.indexOf(elementid)] = element.value;
                 }
@@ -52,7 +54,7 @@
                         html += '<div class="columns">';
                         html += '<div class="column is-6"> <h2 class="label">E-mail: ' + elements.email + ' </h2></div>';
                         html += '<div class="column"> <h2 class="label"> Rol:  </h2></div>';
-                        html += '<div class="column"> <div class="field"> <div class="control"> <div class="select"> <select name="estatus" id="dropdown'+elements.IdUsuario+'" onchange="lineup(this)">'; 
+                        html += '<div class="column"> <div class="field"> <div class="control"> <div class="select" id="dropdiv'+elements.IdUsuario+'"> <select name="estatus" id="dropdown'+elements.IdUsuario+'" onchange="lineup(this)">'; 
                         for(let i = 0; i < 4; i++){
                             let selected ='';
                             if(Rol[elements.IdRol] == Rol[i])
@@ -88,7 +90,31 @@
                     console.log(err);
                 })
             }
+            const guardarcambios = () => {
+                console.log('me presionaste');
+                fetch('/dashboard/usuarios/guardar/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        mapUser: map,
+                        mapRol : rolmap,
+                        
+                    }),
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+                    console.log('Exito');
+                    console.log(data);
+                    location.reload();
+                //busqueda_asinc();
+                }).catch(err =>{
+                    console.log(err);
+                });
+            }
             document.getElementById('busquedausuarios').onkeyup = busqueda_asinc;
+            document.getElementById('botonguardar').onclick = guardarcambios;
         </script>
     </div>
     <div class="column is-2"></div>
