@@ -15,7 +15,7 @@ exports.getReqs = (request, response, next) => {
         
     }).catch((error) => {
         console.log(error);
-        response.redirect('/fail');
+        response.render('./Expediente/expediente', {name: 'Andrea Castillo', Id: '10', info: ''});
     });
 }
 

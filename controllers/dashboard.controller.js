@@ -24,3 +24,19 @@ exports.get_dashboard = (request, response, next) => {
  
 
 };
+
+exports.get_userlist = (request, response, next) =>{
+    response.render(path.join('dashboard', 'listaUsuarios.ejs'));
+
+}
+
+exports.get_search = (request, response, next) => {
+    User.fetchEmailRol(request.params.busc).then(([rows, FieldData]) =>{
+        console.log(rows);
+        response.status(200).json(rows);
+    }).catch(err =>{
+        console.log(err);
+    })
+    
+
+}

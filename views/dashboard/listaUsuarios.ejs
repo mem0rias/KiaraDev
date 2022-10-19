@@ -1,0 +1,96 @@
+<%- include('../includes/head.ejs') %>
+<div class="columns">
+    <div class="column is-2"></div>
+    <div class="column">
+        <div class="box">
+            <h2 class="label"> Lista de Usuarios</h2>
+            <div class="columns">
+                <div class="column is-4">
+                    <input class="input" type="text" id="busquedausuarios" placeholder="Nombre de usuario">
+                </div>
+            </div>
+        </div>
+        <div class="box" id="busqueda">
+
+        </div>
+        <button></button>
+        <script>
+            let map = new Array();
+            let rolmap = new Array();
+            const lineup = (element) =>{
+                let elementid = element.id.slice(-1);
+                if(map.indexOf(elementid) == -1){
+                    map.push(elementid);
+                    rolmap.push(element.value);
+                }else{
+                    rolmap[map.indexOf(elementid)] = element.value;
+                }
+                
+                
+                console.log(map);
+                console.log(rolmap);
+            }
+            const busqueda_asinc = () => {
+                let conss = document.getElementById('busquedausuarios').value;
+                if(conss == '')
+                    conss = ".";
+                console.log(conss);
+                fetch('/dashboard/usuarios/buscar/' + conss , {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+                    console.log(data);
+                    let html = '';
+                    for(let elements of data){
+                        let Rol = ['Usuario', 'Cliente', 'Agente', 'Administrador'];
+                        html += '<div class="box">';
+                        html += '<h2 class="label">' + elements.nombre + ' ' + elements.PA + ' ' + elements.SA + '</h2>';
+                        html += '<div class="columns">';
+                        html += '<div class="column is-6"> <h2 class="label">E-mail: ' + elements.email + ' </h2></div>';
+                        html += '<div class="column"> <h2 class="label"> Rol:  </h2></div>';
+                        html += '<div class="column"> <div class="field"> <div class="control"> <div class="select"> <select name="estatus" id="dropdown'+elements.IdUsuario+'" onchange="lineup(this)">'; 
+                        for(let i = 0; i < 4; i++){
+                            let selected ='';
+                            if(Rol[elements.IdRol] == Rol[i])
+                                selected = 'selected';
+                            html += '<option value="'+i+'"' + selected +' >' + Rol[i] +' </option>';  
+                        }             
+                        html += '</select></div></div></div></div>';
+                        html += '</div>'
+                        html += '</div>';
+                    }
+                    document.getElementById('busqueda').innerHTML = html;
+                    /*console.log(data.info);
+                    let infouser = Object.values(data.info[0]);
+                    let infoinputs = Object.values(data.inputs);
+                    originals = data.info[0];
+                    inputnames= Object.values(data.inputnames);
+                    console.log(infouser);
+                    console.log(infoinputs);
+                    let html = '<br>';
+                    for(let i = 0; i < infoinputs.length; i++){
+                        html += '<h2>' + infoinputs[i] + '</h2>';
+                        html += '<h2 class="has-text-danger"> *</h2>';
+                        html +='<input class="input" type="text" id="' + inputnames[i] +'" name="' + inputnames[i] +'" value="' + infouser[i] + '">';
+                        html += '<br><br>';
+                    }
+                    html += '<h2> La informacion de los usuarios se toma asincronamente de la Base de Datos! </h2>';
+                    
+
+                    console.log(data);
+                    //bulmaToast.toast({ message: 'Hello There' })
+                    */
+                }).catch(err => {
+                    console.log(err);
+                })
+            }
+            document.getElementById('busquedausuarios').onkeyup = busqueda_asinc;
+        </script>
+    </div>
+    <div class="column is-2"></div>
+</div>  
+<%- include('../includes/foot.ejs') %>
