@@ -25,27 +25,31 @@
                             <div class="columns">
                                 <div class="column is-6">
                                     <div class="field">
-                                        <label class="label">Subject</label>
+                                        <label class="label">Tipo de propiedad</label>
                                         <div class="control">
-                                        <div class="select">
-                                            <select>
-                                            <option>Select dropdown</option>
-                                            <option>With options</option>
-                                            </select>
-                                        </div>
+                                            <div class="select is-expanded">
+                                                <select class="select" name="tipoPropiedad" id="tipoPropiedad">
+                                                    <option value="" disabled selected hidden>Seleccionar tipo</option>
+                                                    <option value="Residencial">Residencial</option>
+                                                    <option value="Comercial">Comercial</option>
+                                                    <option value="Terreno">Terreno</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="column is-6">
-                                    <div class="field is-expanded">
-                                        <label class="label">Subject</label>
-                                        <div class="control is-expanded">
-                                        <div class="select is-expanded">
-                                            <select>
-                                            <option>Select dropdown</option>
-                                            <option>With options</option>
-                                            </select>
-                                        </div>
+                                    <div class="field">
+                                        <label class="label">Tipo de venta</label>
+                                        <div class="control">
+                                            <div class="select is-expanded">
+                                                <select class="select" name="tipoVenta" id="tipoVenta">
+                                                    <option value="" disabled selected hidden>Seleccionar tipo</option>
+                                                    <option value="Residencial">Venta</option>
+                                                    <option value="Comercial">Renta</option>
+                                                    <option value="Terreno">Venta/Renta</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -159,11 +163,11 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="container">
-                                <div class="content is-small">
+                                <div class="content is-small">  
                                     <div class="field">
                                         <label class="label">Imagenes</label>
                                         <div class="control">
-                                            <input class="input" type="text" maxlength="40" name="imagenes" placeholder="">
+                                            <input class="input" type="text" maxlength="500" name="imagenes" placeholder="">
                                         </div>
                                     </div>
                                 </div>
@@ -180,8 +184,15 @@
                     </div>
                 </div>
                 
-            
 
+                <div class="container">
+
+                    <div id="form-complement"> 
+                    </div>
+
+                    
+            
+                </div>
             
                 <div class="content">
                     <input class="button is-danger"type="submit" id="enviar" name="enviar" value="Registrar">
@@ -191,10 +202,16 @@
             
         </div>
     
-
+        
         
     </div>
+
+    
+
+    
 </section>
 
 </form>
+
+<%- include('propiedad.registrar.dinamico.ejs') %>
 <%- include('../includes/foot.ejs') %>

@@ -25,8 +25,25 @@ module.exports = class Propiedad {
             
     }
 
+    saveResidencial(descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina) {
+        return db.execute(
+            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina]);
+            
+    }
+
+    saveComercial(descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos) {
+        return db.execute(
+            'CALL agregarComercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos]);
+            
+    }
 
 
+
+    static find(valor_busqueda) {
+        return db.execute('SELECT * FROM propiedades WHERE Colonia LIKE ? ', ['%'+valor_busqueda+'%']);
+    }
 
     //Este método servirá para devolver los ultimos 4 objetos de la tabla 
     static fetchAll() {
@@ -35,6 +52,10 @@ module.exports = class Propiedad {
 
     static fetchOne(id) {
         return db.execute('SELECT * FROM propiedades WHERE IdPropiedad = ?', [id]);
+    }
+
+    static fetchAsignado(id) {
+        return db.execute('SELECT * FROM asigancion WHERE IdUsuario = ?', [id]);
     }
     
     static isResidencial(id) {
@@ -48,5 +69,8 @@ module.exports = class Propiedad {
     static isTerreno(id) {
         return db.execute('SELECT * FROM terreno WHERE IdPropiedad = ?', [id]);
     }
+    
 
 }
+
+
