@@ -25,10 +25,17 @@ module.exports = class Propiedad {
             
     }
 
-    saveResidencial(descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras) {
+    saveResidencial(descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina) {
         return db.execute(
-            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?)', 
-            [descripcion, precio, estado,municipio,colonia,calle,cp,terreno,terreno,video,imagenes,recamaras]);
+            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina]);
+            
+    }
+
+    saveComercial(descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos) {
+        return db.execute(
+            'CALL agregarComercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos]);
             
     }
 

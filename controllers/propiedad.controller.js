@@ -80,9 +80,14 @@ exports.post_new = (request, response, next) => {
 
     if(request.body.tipoPropiedad == 'Residencial') {
         const recamaras = parseInt(request.body.recamaras);
+        const estacionamiento = parseInt(request.body.estacionamiento);
+        const banos = parseInt(request.body.banos);
+        const pisos = parseInt(request.body.pisos);
+        const gas = parseInt(request.body.gas);
+        const cocina = parseInt(request.body.cocina);
         console.log(recamaras)
         const propiedad = new Propiedad(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.precio,v.colonia,v.imagenes,v.video);
-        propiedad.saveResidencial(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.colonia,v.imagenes,v.video,recamaras)
+        propiedad.saveResidencial(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina)
                 .then( () => {
                         response.redirect('/propiedades');
                 }).catch( (error) => {
@@ -90,7 +95,18 @@ exports.post_new = (request, response, next) => {
         });
     }
     else if(request.body.tipoPropiedad == 'Comercial'){
-
+        const recamaras = parseInt(request.body.recamaras);
+        const estacionamiento = parseInt(request.body.estacionamiento);
+        const banos = parseInt(request.body.banos);
+        const pisos = parseInt(request.body.pisos);
+        const oficinas = parseInt(request.body.oficinas);
+        const propiedad = new Propiedad(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.precio,v.colonia,v.imagenes,v.video);
+        propiedad.saveComercial(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,estacionamiento,banos,oficinas,pisos)
+                .then( () => {
+                        response.redirect('/propiedades');
+                }).catch( (error) => {
+                        console.log(error);
+        });
     } 
     
 
