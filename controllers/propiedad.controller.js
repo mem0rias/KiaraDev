@@ -113,5 +113,17 @@ exports.post_new = (request, response, next) => {
     
 };
 
+exports.get_buscar =  (request, response, next) => {
+    
+    console.log(request.params.valor_busqueda);
+    Propiedad.find(request.params.valor_busqueda)
+        .then( ([rows, fieldData]) => {
 
+            response.status(200).json(rows);
+            console.log(rows)
+        }).catch( (error) => {
+            console.log(error);
+        });
+
+};
 

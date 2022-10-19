@@ -12,6 +12,6 @@ router.get('/:id', propiedadController.get_one);
 
 
 
-
+router.get('/buscar/:valor_busqueda', propiedadController.get_buscar);
 
 module.exports = router;

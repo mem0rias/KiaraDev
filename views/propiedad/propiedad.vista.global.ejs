@@ -1,4 +1,7 @@
 <%- include('../includes/head.ejs') %>
 <%- include('busqueda.avanzada.ejs') %>
-<%- include('propiedades.ejs', {propiedad: propiedad}) %>
+<div id="resultados">
+    <%- include('propiedades.ejs', {propiedad: propiedad}) %>
+</div>
+<%- include('search_ajax.ejs') %>
 <%- include('../includes/foot.ejs') %>

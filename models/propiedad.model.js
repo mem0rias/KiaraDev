@@ -41,6 +41,9 @@ module.exports = class Propiedad {
 
 
 
+    static find(valor_busqueda) {
+        return db.execute('SELECT * FROM propiedades WHERE Colonia LIKE ? ', ['%'+valor_busqueda+'%']);
+    }
 
     //Este método servirá para devolver los ultimos 4 objetos de la tabla 
     static fetchAll() {
@@ -49,6 +52,10 @@ module.exports = class Propiedad {
 
     static fetchOne(id) {
         return db.execute('SELECT * FROM propiedades WHERE IdPropiedad = ?', [id]);
+    }
+
+    static fetchAsignado(id) {
+        return db.execute('SELECT * FROM asigancion WHERE IdUsuario = ?', [id]);
     }
     
     static isResidencial(id) {
