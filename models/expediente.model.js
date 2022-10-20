@@ -10,4 +10,24 @@ module.exports = class expediente{
     static UpdateRequirements(Comments, estatus, IdUsuario, Tipo_Doc, N_docs){
         return db.execute('CALL `ActualizarExp`(?, ?, ?, ?, ?)', [N_docs,IdUsuario,Comments,estatus,Tipo_Doc]);
     }
+
+    static GetRents(IdUsuario){
+        return db.execute('SELECT IdUsuario from cliente_pr_prop where IdUsuario = ?',[IdUsuario]);
+    }
+
+    static GetBuy(IdUsuario){
+        return db.execute('SELECT IdUsuario from cliente_pc_prop where IdUsuario = ?',[IdUsuario]);
+    }
+
+    static GetSelling(IdUsuario){
+        return db.execute('SELECT IdUsuario from asignacion where IdUsuario = ?',[IdUsuario]);
+    }
+
+    static fetchReqs(tipo){
+        return db.execute('SELECT r.Tipo_doc, tp.descripcion from requisitos r, tipo_doc tp WHERE r.Tipo_Doc = tp.Tipo_Doc AND Tipo_Exp = ?' , [tipo]);
+    }
+
+    static fetchFiles(IdUsuario){
+        return db.execute('SELECT etd.Tipo_doc, etd.comentarios, etd.URL, etd.estatus FROM exp_tipo_doc etd WHERE IdCliente = ?', [IdUsuario]);
+    }
 }

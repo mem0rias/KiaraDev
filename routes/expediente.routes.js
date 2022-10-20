@@ -7,4 +7,6 @@ router.use(express.static(path.join(__dirname, '..','public')));
 
 router.get('/revisar', isAuth, ExpControl.getReqs);
 router.post('/actualizar', isAuth, ExpControl.actualizar);
+router.get('/miexpediente', isAuth, ExpControl.miexp);
+router.get('/fetch/:tipo', isAuth,ExpControl.fetchinfo);
 module.exports = router;

@@ -77,3 +77,49 @@ exports.actualizar = (request, response, next) => {
     }*/
     
 }
+
+exports.miexp = (request, response, next) => {
+    
+    let userid = request.session.IdUser;
+    expediente.GetRents(userid).then(([rows, fieldata]) =>{
+        expediente.GetBuy(userid).then(([rows2, fieldata2]) =>{
+            expediente.GetSelling(userid).then(([rows3, fieldata3]) =>{
+                
+               
+                
+                
+                
+                
+                let array = new Array();
+                let arraytipos = ['5','3','1'];
+                let funcs = new Array();
+                array.push(rows.length != 0);
+                array.push(rows2.length != 0);
+                array.push(rows3.length != 0);
+                console.log(array);
+                response.render('./Expediente/expedienteCliente', {arr: array});
+                
+                
+            })
+        })
+    })
+
+    
+}
+
+exports.fetchinfo = (request, response, next) => {
+    let query = request.params.tipo;
+    
+    expediente.fetchReqs(query).then(([rows,fieldData]) => {
+        expediente.fetchFiles(request.session.IdUser).then(([rows2, fielddata2]) => {
+            response.status(200).json({ reqs: rows, files: rows2});
+        }).catch(err =>{
+            console.log(err);
+            response.status(200).json('err');
+        })
+        
+    }).catch(err => {
+        console.log(err);
+        response.status(200).json('err');
+    })
+}
