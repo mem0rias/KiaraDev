@@ -31,8 +31,10 @@
 
 <% if (sesionId == 2) { %>
   <%- include ('menu.agente.ejs') %>
-<% } else { %>
+<% } else if(sesionId == 0) { %>
   <%- include ('menu.usuario.ejs') %>
+<% } else { %>
+  <%- include ('menu.admin.ejs') %>
 <% } %>
 
 <footer class="card-footer">
