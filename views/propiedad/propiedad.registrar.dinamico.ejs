@@ -1,11 +1,16 @@
 <script>
     forma_dinamica = () => {
         
-        let tipo = document.getElementById("tipoPropiedad").value;
-        console.log(tipo);
+        let tipoP = document.getElementById("tipoID").value;
+        let tipo;
+        if(tipoP == ""){
+            tipo = document.getElementById("tipoPropiedad").value;
+        }
+        tipo = "";
 
+        console.log(tipoP);
         let html = '';
-        if(tipo == "Residencial"){
+        if(tipo == "Residencial" || tipoP == "1"){
             html += '<div class="section px-0 py-5">';
             html += '     <div class="card">';
             html += '         <div class="card-content">';
@@ -225,6 +230,16 @@
         document.getElementById("form-complement").innerHTML = html;
     };
 
-    document.getElementById("tipoPropiedad").oninput = forma_dinamica;
+
+
+    let tipoP = document.getElementById("tipoID").value;
+    if(tipoP == ""){
+         document.getElementById("tipoPropiedad").oninput = forma_dinamica;
+    }
+    else{
+        window.onload = forma_dinamica;
+    }
+    
+    
 
 </script>

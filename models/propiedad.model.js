@@ -38,6 +38,14 @@ module.exports = class Propiedad {
             [descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos]);
             
     }
+    
+    static updateResidencial(id,titulo,recamaras) {
+        return db.execute(
+            'CALL updateResidencial(?,?,?)', 
+            [id,titulo,recamaras]);
+            
+    }
+    
 
 
 
