@@ -57,6 +57,15 @@ exports.get_userlist = (request, response, next) =>{
 
 }
 
+exports.get_roluserlist = (request, response, next) =>{
+    response.render(path.join('dashboard', 'listaUsuarios.ejs'),{
+        usuario: '',
+        sesionId: response.locals.IdRol, 
+        sesionUser: response.locals.IdUser,
+
+    });
+
+}
 exports.get_search = (request, response, next) => {
 
     let selector = (request.params.busc == ',1');
