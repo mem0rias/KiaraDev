@@ -31,11 +31,14 @@ exports.get_userlist = (request, response, next) =>{
 }
 
 exports.get_search = (request, response, next) => {
-    User.fetchEmailRol(request.params.busc).then(([rows, FieldData]) =>{
+
+    let selector = (request.params.busc == ',1');
+    User.fetchEmailRol(request.params.busc, selector).then(([rows, FieldData]) =>{
         console.log(rows);
         response.status(200).json(rows);
     }).catch(err =>{
         console.log(err);
+        response.status(200).json('noconn');
     })
     
 

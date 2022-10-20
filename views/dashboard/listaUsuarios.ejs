@@ -3,22 +3,30 @@
     <div class="column is-2"></div>
     <div class="column">
         <div class="box">
-            <h2 class="label"> Lista de Usuarios</h2>
+            <div class="columns">
+                <div class="column is-4">
+                    <h2 class="label"> Lista de Usuarios</h2>
+                </div>
+                
+            </div>
+            
             <div class="columns">
                 <div class="column is-4">
                     <input class="input" type="text" id="busquedausuarios" placeholder="Nombre de usuario">
                 </div>
+                
             </div>
         </div>
         <div class="box" id="busqueda">
 
         </div>
         <button  type="button" class="button is-danger is-fullwidth"  id="botonguardar" name="boton"> Guardar Cambios</button>
+        <script src="../js/dist/bulma-toast.min.js"></script>
         <script>
             let map = new Array();
             let rolmap = new Array();
             const lineup = (element) =>{
-                let elementid = element.id.slice(-1);
+                let elementid = (element.id.split('-'))[1];
                 let dropdiv = document.getElementById('dropdiv'+elementid);
                 if(map.indexOf(elementid) == -1){
                     map.push(elementid);
@@ -35,8 +43,10 @@
             const busqueda_asinc = () => {
                 let conss = document.getElementById('busquedausuarios').value;
                 if(conss == '')
-                    conss = ".";
-                console.log(conss);
+                    conss += ',1';
+                else
+                    console.log(conss.replace(/[^a-zA-Z ]/g, ""));
+                
                 fetch('/dashboard/usuarios/buscar/' + conss , {
                     method: 'GET',
                     headers: {
@@ -47,52 +57,41 @@
                 }).then(data => {
                     console.log(data);
                     let html = '';
-                    for(let elements of data){
-                        let Rol = ['Usuario', 'Cliente', 'Agente', 'Administrador'];
-                        html += '<div class="box">';
-                        html += '<h2 class="label">' + elements.nombre + ' ' + elements.PA + ' ' + elements.SA + '</h2>';
-                        html += '<div class="columns">';
-                        html += '<div class="column is-6"> <h2 class="label">E-mail: ' + elements.email + ' </h2></div>';
-                        html += '<div class="column"> <h2 class="label"> Rol:  </h2></div>';
-                        html += '<div class="column"> <div class="field"> <div class="control"> <div class="select" id="dropdiv'+elements.IdUsuario+'"> <select name="estatus" id="dropdown'+elements.IdUsuario+'" onchange="lineup(this)">'; 
-                        for(let i = 0; i < 4; i++){
-                            let selected ='';
-                            if(Rol[elements.IdRol] == Rol[i])
-                                selected = 'selected';
-                            html += '<option value="'+i+'"' + selected +' >' + Rol[i] +' </option>';  
-                        }             
-                        html += '</select></div></div></div></div>';
-                        html += '</div>'
-                        html += '</div>';
+                    if(data != 'noconn' & data.length != 0){
+                        for(let elements of data){
+                            let Rol = ['Usuario', 'Cliente', 'Agente', 'Administrador'];
+                            html += '<div class="box">';
+                            html += '<h2 class="label">' + elements.nombre + ' ' + elements.PA + ' ' + elements.SA + '</h2>';
+                            html += '<div class="columns">';
+                            html += '<div class="column is-8"> <h2 class="label">E-mail: ' + elements.email + ' </h2></div>';
+                            html += '<div class="column is-1"> <h2 class="label"> Rol:  </h2></div>';
+                            html += '<div class="column"> <div class="field"> <div class="control"> <div class="select" id="dropdiv'+elements.IdUsuario+'"> <select name="estatus" id="dropdown-'+elements.IdUsuario+'" onchange="lineup(this)">'; 
+                            for(let i = 0; i < 4; i++){
+                                let selected ='';
+                                if(Rol[elements.IdRol] == Rol[i])
+                                    selected = 'selected';
+                                html += '<option value="'+i+'"' + selected +' >' + Rol[i] +' </option>';  
+                            }             
+                            html += '</select></div></div></div></div>';
+                            html += '</div>'
+                            html += '</div>';
+                        }
+                    }else if(data.length == 0){
+                        html = '<h2 class="label"> No hay registros </h2>';
+                    } else{
+                        html = '<h2 class="label"> No hay conexion a Base de datos </h2>';
                     }
-                    document.getElementById('busqueda').innerHTML = html;
-                    /*console.log(data.info);
-                    let infouser = Object.values(data.info[0]);
-                    let infoinputs = Object.values(data.inputs);
-                    originals = data.info[0];
-                    inputnames= Object.values(data.inputnames);
-                    console.log(infouser);
-                    console.log(infoinputs);
-                    let html = '<br>';
-                    for(let i = 0; i < infoinputs.length; i++){
-                        html += '<h2>' + infoinputs[i] + '</h2>';
-                        html += '<h2 class="has-text-danger"> *</h2>';
-                        html +='<input class="input" type="text" id="' + inputnames[i] +'" name="' + inputnames[i] +'" value="' + infouser[i] + '">';
-                        html += '<br><br>';
-                    }
-                    html += '<h2> La informacion de los usuarios se toma asincronamente de la Base de Datos! </h2>';
                     
-
-                    console.log(data);
-                    //bulmaToast.toast({ message: 'Hello There' })
-                    */
+                    document.getElementById('busqueda').innerHTML = html;
+                    
                 }).catch(err => {
                     console.log(err);
+                    console.log('no hay conexion');
                 })
             }
             const guardarcambios = () => {
-                console.log('me presionaste');
-                fetch('/dashboard/usuarios/guardar/', {
+                if(map.length > 0){
+                    fetch('/dashboard/usuarios/guardar/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -102,19 +101,31 @@
                         mapRol : rolmap,
                         
                     }),
-                }).then(result => {
-                    return result.json();
-                }).then(data => {
-                    console.log('Exito');
-                    console.log(data);
-                    location.reload();
-                //busqueda_asinc();
-                }).catch(err =>{
-                    console.log(err);
-                });
+                    }).then(result => {
+                        return result.json();
+                    }).then(data => {
+                        
+                        console.log(data);
+                        if(data == 'mori'){
+                            bulmaToast.toast({message: 'Error al guardar', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+                        }else{
+                            bulmaToast.toast({message: 'Roles Actualizados', type: 'is-primary', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+                            map = [];
+                            rolmap = [];
+                        }
+                            busqueda_asinc();
+                    }).catch(err =>{
+                        console.log(err);
+
+                    });
+                } else{
+                    bulmaToast.toast({message: 'No hay nada que guardar', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+                }
+                
             }
             document.getElementById('busquedausuarios').onkeyup = busqueda_asinc;
             document.getElementById('botonguardar').onclick = guardarcambios;
+            window.onload = busqueda_asinc;
         </script>
     </div>
     <div class="column is-2"></div>
