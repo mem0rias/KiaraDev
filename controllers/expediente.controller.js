@@ -9,7 +9,6 @@ exports.rev = (request, response, next) =>{
 
 exports.getReqs = (request, response, next) => {
     expediente.fetchRequirements(request.params.id).then(([rows, fieldData]) => {
-
         Dashboard.fetchUser(request.params.id).then( ([usuarioData, fieldData]) => {
             console.log(usuarioData);
             response.render('./Expediente/expediente', {
@@ -17,6 +16,7 @@ exports.getReqs = (request, response, next) => {
                 sesionId: response.locals.IdRol, 
                 sesionUser: response.locals.IdUser,
                 info:rows,
+                
             }); 
             
         }).catch( (error) => {
@@ -65,7 +65,7 @@ exports.actualizar = (request, response, next) => {
         return request.session.save(err => {
             console.log(request.session.msg);
             //response.redirect('/inicio');
-            response.redirect('/expediente/revisar');
+            response.redirect('/dashboard/usuarios');
         });
     }).catch((error) =>{
         console.log(error);

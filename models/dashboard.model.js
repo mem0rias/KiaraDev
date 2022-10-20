@@ -4,7 +4,7 @@ module.exports = class Dashboard {
 
 
     static fetchUser(n){
-        return db.execute('SELECT nombre, PA, SA, eciv, ocupacion, Telefono, email from usuario where IdUsuario = (?)', [n]);
+        return db.execute('SELECT IdUsuario, nombre, PA, SA, eciv, ocupacion, Telefono, email from usuario where IdUsuario = (?)', [n]);
     }
 
 
