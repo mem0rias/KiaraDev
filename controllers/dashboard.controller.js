@@ -46,3 +46,51 @@ exports.get_propiedadesAsignadas = (request, response, next) => {
 };
 
 
+exports.get_userlist = (request, response, next) =>{
+    response.render(path.join('dashboard', 'listaUsuarios.ejs'));
+
+}
+
+exports.get_search = (request, response, next) => {
+
+    let selector = (request.params.busc == ',1');
+    User.fetchEmailRol(request.params.busc, selector).then(([rows, FieldData]) =>{
+        console.log(rows);
+        response.status(200).json(rows);
+    }).catch(err =>{
+        console.log(err);
+        response.status(200).json('noconn');
+    })
+    
+
+}
+
+exports.saveRol = (request, response, next) => {
+    //console.log(request.body.mapUser);
+    //console.log(request.body.mapRol);
+    let mapRol =request.body.mapRol;
+    let mapUser = request.body.mapUser;
+    let mapString = '';
+    let rolmapString = '';
+    for(let i = 0; i < mapRol.length; i++){
+        mapString += mapUser[i];
+        rolmapString += mapRol[i];
+        if(i != mapRol.length-1){
+            mapString += ',';
+            rolmapString += ',';
+            
+        }
+    }
+    User.updateRol(mapString,rolmapString,mapRol.length).then(() =>{
+        console.log("Se logro");
+        response.status(200).json("hola");
+    }).catch(err => {
+        console.log(err);
+        response.status(200).json("mori");
+
+    });
+    console.log(mapString);
+    console.log(rolmapString);
+    
+}
+

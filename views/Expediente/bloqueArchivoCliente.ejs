@@ -12,18 +12,7 @@
                         <input class="input" type="text" id="comentarios-<%=info.Tipo_Doc%>" name="Comments" placeholder="Comentarios" maxlength="255" value="<%= info.Comentarios %>" onkeyup="cambiarcolor(this)"<% if(info.Estatus == 0) { %> disabled <%} %>>
                     </div>
                     <div class="column"> 
-                        <div class="field">
-                            <div class="control">
-                              <div class="select">
-                                <select name="estatus" id="dropdown-<%=info.Tipo_Doc%>" onchange="cambiarcolor(this)" <% if(info.Estatus == 0) { %> disabled <%} %>>
-                                    <option value="1" <% if(info.Estatus == 1) {%> selected <%}%>> Pendiente </option> 
-                                    <option value="2" <% if(info.Estatus == 2) {%> selected <%}%>> Aceptado  </option>
-                                    <option value="3" <% if(info.Estatus == 3) {%> selected <%}%>> Rechazado </option>
-                                    <option value="0" <% if(info.Estatus == 0) {%> selected <%}%>> Faltante  </option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
+                        
                         
                     </div>
                 </div>
