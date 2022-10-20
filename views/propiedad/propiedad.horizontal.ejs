@@ -1,0 +1,40 @@
+<div class="container m-0 pt-5" >
+<div class="card is-horizontal">
+    <div class="card-image">
+      <figure class="image is-4by3">
+        <img src="<%=propiedad.Imagenes %>" alt="Placeholder image">
+      </figure>
+      
+    </div>
+        <div class="card-stacked">
+        <div class="card-content">
+          <div class="media-content">
+            <p class="title is-4"><%=propiedad.Titulo%></p>
+            <p class="subtitle is-6"><span class="icon-text">
+                <span class="icon">
+                    <i class="mdi mdi-map-marker"></i>
+                </span>
+                <span><%=propiedad.Estado %>, <%=propiedad.Municipio%>, <%=propiedad.Colonia%></span>
+              </span></p>
+          </div>
+
+          <div class="content">
+            <%=propiedad.Precio %>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <div class="card-footer-item has-text-left">
+            <h1>Editar</h1>
+          </div>
+          <div class="card-footer-item has-text-left">
+              <a href="/propiedades/<%=propiedad.IdPropiedad%>"><h1>Ver Auncio</h1></a>
+          </div>                    
+          <div class="card-footer-item has-text-left">
+              <h1>Eliminar</h1>
+          </div>                
+          
+        </footer>
+        
+      </div>
+  </div>
+</div>

@@ -85,9 +85,10 @@ exports.post_new = (request, response, next) => {
         const pisos = parseInt(request.body.pisos);
         const gas = parseInt(request.body.gas);
         const cocina = parseInt(request.body.cocina);
+      
         console.log(recamaras)
         const propiedad = new Propiedad(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.precio,v.colonia,v.imagenes,v.video);
-        propiedad.saveResidencial(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina)
+        propiedad.saveResidencial(v.titulo,v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina)
                 .then( () => {
                         response.redirect('/propiedades');
                 }).catch( (error) => {
