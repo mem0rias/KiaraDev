@@ -1,0 +1,7 @@
+<%- include('../includes/head.ejs') %>
+<% for(let element of info) { %>
+                
+    <%- include('../Estatus/step.ejs', {info: element}) %>
+    
+<% } %>
+<%- include('../includes/foot.ejs') %>
