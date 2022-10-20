@@ -1,11 +1,18 @@
 const db = require('../util/database');
 
-module.exports = class User {
+module.exports = class Dashboard {
 
 
-    static fetchOne(n){
+    static fetchUser(n){
         return db.execute('SELECT nombre, PA, SA, eciv, ocupacion, Telefono, email from usuario where IdUsuario = (?)', [n]);
     }
+
+
+    static fetchAsigando(n){
+        return db.execute('SELECT a.IdPropiedad, Descripcion, Imagenes, Titulo, Colonia, Estado FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
+    }
+    
+
 
     static fetchEmailRol(filtro, sel) {
         if(sel == false)
@@ -18,5 +25,6 @@ module.exports = class User {
         return db.execute('CALL `ActualizarRoles`(?, ?, ?)', [umap,urol,l]);
 
     }
+
 
 }

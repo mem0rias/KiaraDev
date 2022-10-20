@@ -12,4 +12,7 @@ router.get('/usuarios', isAuth, dashboardController.get_userlist);
 
 
 
+
+router.get('/asignado', dashboardController.get_propiedadesAsignadas);
+
 module.exports = router;
