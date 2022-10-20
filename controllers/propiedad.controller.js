@@ -190,7 +190,7 @@ exports.get_buscar =  (request, response, next) => {
 exports.post_edit = (request, response, next) => {
     let v = request.body;
     console.log(v.id);
-    console.log( v.titulo);
+    console.log(v.titulo);
     console.log(v.recamaras);
     Propiedad.updateResidencial(v.id, v.titulo,v.recamaras)
         .then( () => {

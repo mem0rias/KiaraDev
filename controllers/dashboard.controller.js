@@ -1,5 +1,6 @@
 const path = require('path');
 const Dashboard = require('../models/dashboard.model');
+const User = require('../models/dashboard.model');
 
 //El metodo obtiene las 4 propiedades más recientes
 exports.get_dashboard = (request, response, next) => {
@@ -47,7 +48,12 @@ exports.get_propiedadesAsignadas = (request, response, next) => {
 
 
 exports.get_userlist = (request, response, next) =>{
-    response.render(path.join('dashboard', 'listaUsuarios.ejs'));
+    response.render(path.join('dashboard', 'dashboard.listaUsuarios.ejs'),{
+        usuario: '',
+        sesionId: response.locals.IdRol, 
+        sesionUser: response.locals.IdUser,
+
+    });
 
 }
 

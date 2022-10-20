@@ -1,16 +1,24 @@
 <%- include('../includes/head.ejs') %>
 
-<% if (propiedad === '') { %>
-<form action="/propiedades/registrar" method="POST">
-<% } else { %>
-    <form action="/propiedades/editar" method="POST">
-    <input type="hidden" id="id" name="id" value="<%= propiedad.IdPropiedad %>">
-<% } %>
-<section class="main-container">
-    <div class="container mt-5">
-        <div class="content mt-5"">
-            <h1>Resgistrar propiedad</h1>
-        </div>
+
+<section class="main-container pl-5">
+    <div class="container mt-5 pl-5">
+
+        <% if (propiedad === '') { %>
+            <form action="/propiedades/registrar" method="POST">
+            <input type="hidden" id="id" name="id" value="<%= propiedad.IdPropiedad %>">
+            <div class="content mt-5"">
+                <h1>Resgistrar propiedad</h1>
+            </div>
+        <% } else { %>
+            <form action="/propiedades/editar" method="POST">
+            <input type="hidden" id="id" name="id" value="<%= propiedad.IdPropiedad %>">
+            <div class="content mt-5"">
+                <h1>Editar propiedad</h1>
+            </div>
+                
+        <% } %>
+
         
         <div class="columns is-multiline">
             <div class="column is-8">
@@ -69,7 +77,7 @@
                                 <div class="field">
                                     <label class="label">Descripción</label>
                                     <div class="control">
-                                    <input class="input" type="text" maxlength="200" id="descripcion" name="descripcion" placeholder="" value="<%= propiedad.Descripcion ? propiedad.Descripcion : '' %>">
+                                    <input class="input row-10" type="text" maxlength="200" id="descripcion" name="descripcion" placeholder="" value="<%= propiedad.Descripcion ? propiedad.Descripcion : '' %>">
                                     </div>
                                 </div>
                             </div>
@@ -199,12 +207,10 @@
 
                     <div id="form-complement"> 
                     </div>
-
-                    
-            
+         
                 </div>
             
-                <div class="content">
+                <div class="content pb-5">
                     <input class="button is-danger"type="submit" id="enviar" name="enviar" value="Registrar">
                 </div>
             </div> 

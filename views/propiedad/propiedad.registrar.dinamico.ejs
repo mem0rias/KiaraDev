@@ -3,12 +3,16 @@
         
         let tipoP = document.getElementById("tipoID").value;
         let tipo;
-        if(tipoP == ""){
+
+        if(tipoP === ''){
             tipo = document.getElementById("tipoPropiedad").value;
         }
-        tipo = "";
-
+        else{
+            tipo ="";
+        }
+        
         console.log(tipoP);
+        console.log(tipo);
         let html = '';
         if(tipo == "Residencial" || tipoP == "1"){
             html += '<div class="section px-0 py-5">';
@@ -233,11 +237,14 @@
 
 
     let tipoP = document.getElementById("tipoID").value;
-    if(tipoP == ""){
+
+    if(tipoP === ''){
          document.getElementById("tipoPropiedad").oninput = forma_dinamica;
+         console.log("Trigger cambio de propiedad");
     }
     else{
         window.onload = forma_dinamica;
+        console.log("Trigger id de servidor");
     }
     
     

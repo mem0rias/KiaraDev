@@ -2,16 +2,29 @@ const path = require('path');
 const User = require('../models/expediente.model');
 const bcrypt = require('bcryptjs');
 const expediente = require('../models/expediente.model');
+const Dashboard = require('../models/dashboard.model');
 exports.rev = (request, response, next) =>{
     response.render('./Expediente/expediente');
 }
 
 exports.getReqs = (request, response, next) => {
-    expediente.fetchRequirements(10).then(([rows, fieldData]) => {
+    expediente.fetchRequirements(request.params.id).then(([rows, fieldData]) => {
+
+        Dashboard.fetchUser(request.params.id).then( ([usuarioData, fieldData]) => {
+            console.log(usuarioData);
+            response.render('./Expediente/expediente', {
+                usuario: usuarioData[0],
+                sesionId: response.locals.IdRol, 
+                sesionUser: response.locals.IdUser,
+                info:rows,
+            }); 
+            
+        }).catch( (error) => {
+            console.log(error);
+        });  
         //console.log(rows);
         //response.render('exito');
-        request.session.msg = ''; 
-        response.render('./Expediente/expediente', {name: 'Andrea Castillo', Id: '10', info: rows}); // Se tiene que hacer dinamico esto
+       
         
     }).catch((error) => {
         console.log(error);
@@ -84,12 +97,6 @@ exports.miexp = (request, response, next) => {
     expediente.GetRents(userid).then(([rows, fieldata]) =>{
         expediente.GetBuy(userid).then(([rows2, fieldata2]) =>{
             expediente.GetSelling(userid).then(([rows3, fieldata3]) =>{
-                
-               
-                
-                
-                
-                
                 let array = new Array();
                 let arraytipos = ['5','3','1'];
                 let funcs = new Array();
