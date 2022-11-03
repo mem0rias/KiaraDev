@@ -130,7 +130,7 @@ exports.fetchinfo = (request, response, next) => {
         console.log(err);
         response.status(200).json('err');
     })
-
+}
 exports.descargarArchivo = (request, response, next) => {
     console.log(request.params);
     const file = `./public/Expedientes/10/`+request.params.id+'.txt';
@@ -148,6 +148,5 @@ exports.descargarArchivo = (request, response, next) => {
         });
         
     });
-    
-
 }
+
