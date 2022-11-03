@@ -10,8 +10,10 @@ router.post('/registrar', propiedadController.post_new);
 router.get('/', propiedadController.get_propiedades);
 router.get('/:id', propiedadController.get_one);
 
+router.get('/editar/:id',  propiedadController.get_edit);
+router.post('/editar',  propiedadController.post_edit);
 
 
-
+router.get('/buscar/:valor_busqueda', propiedadController.get_buscar);
 
 module.exports = router;
