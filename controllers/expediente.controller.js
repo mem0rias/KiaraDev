@@ -96,5 +96,4 @@ exports.descargarArchivo = (request, response, next) => {
         
     });
     
-    //response.status(200).json("Aqui va tu archivo bro" + request.params.id);
 }
