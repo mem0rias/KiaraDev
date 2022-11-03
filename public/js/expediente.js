@@ -39,3 +39,20 @@ const cambiarcolor = (identificador) => { //Esta funcion se llama desde expedien
 
 }
 
+const descargarArchivo = (id) => {
+    let element = id.value; 
+    console.log(element);
+    fetch('/expediente/descargar/' + element,{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(result => {
+        return result.json();
+    }).then(data => {
+        console.log(data);
+    }).catch( err => {
+        console.log(err);
+    });
+}
+

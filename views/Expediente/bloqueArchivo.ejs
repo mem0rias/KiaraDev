@@ -6,7 +6,9 @@
                         <label class="label"> <%= info.descripcion %> </label> 
                     </div>
                     <div class="column is-2">
-                        <button class="button is-primary is-fullwidth" type="submit" id="boton" name="boton" value="/editar" <% if(info.Estatus == 0) { %> disabled <%} %>> Descargar Archivo</button>
+                        <a href="/expediente/download/<%= info.Tipo_Doc %>" class="button is-primary is-fullwidth" onclick="descargarArchivo(this)" type="button" id="boton" name="boton" value="<%= info.Tipo_Doc %>" <% if(info.Estatus == 0) { %> disabled <%} %>>
+                             Descargar Archivo
+                        </a>
                     </div>
                     <div class="column is-5"> 
                         <input class="input" type="text" id="comentarios<%=info.Tipo_Doc%>" name="Comments" placeholder="Comentarios" maxlength="255" value="<%= info.Comentarios %>" onkeyup="cambiarcolor(this)"<% if(info.Estatus == 0) { %> disabled <%} %>>

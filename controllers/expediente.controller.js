@@ -77,3 +77,10 @@ exports.actualizar = (request, response, next) => {
     }*/
     
 }
+
+exports.descargarArchivo = (request, response, next) => {
+    console.log(request.params);
+    const file = `./public/Expedientes/10/`+request.params.id+'.txt';
+    response.download(file);
+    //response.status(200).json("Aqui va tu archivo bro" + request.params.id);
+}
