@@ -91,6 +91,7 @@ exports.actualizar = (request, response, next) => {
     
 }
 
+
 exports.miexp = (request, response, next) => {
     
     let userid = request.session.IdUser;
@@ -129,4 +130,25 @@ exports.fetchinfo = (request, response, next) => {
         console.log(err);
         response.status(200).json('err');
     })
+
+exports.descargarArchivo = (request, response, next) => {
+    console.log(request.params);
+    const file = `./public/Expedientes/10/`+request.params.id+'.txt';
+        expediente.DownloadFile(request.params.id, 3, 10).then(([rows, fieldData]) =>{
+        console.log(rows);
+        response.download(rows[0].URL);
+    }).catch( err =>{
+        console.log(err);
+        request.session.msg = "No se puede descargar el archivo";
+        request.session.exito = 0;
+        return request.session.save(err => {
+            console.log(request.session.msg);
+            //response.redirect('/inicio');
+            response.redirect('/expediente/revisar');
+        });
+        
+    });
+    
+    //response.status(200).json("Aqui va tu archivo bro" + request.params.id);
+
 }

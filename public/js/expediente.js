@@ -40,3 +40,7 @@ const cambiarcolor = (identificador) => { //Esta funcion se llama desde expedien
 
 }
 
+const descargarArchivo = (id) => {
+    bulmaToast.toast({ message: 'Descargando Archivo!', type: 'is-success', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+}
+

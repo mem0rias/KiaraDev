@@ -11,6 +11,7 @@ module.exports = class expediente{
         return db.execute('CALL `ActualizarExp`(?, ?, ?, ?, ?)', [N_docs,IdUsuario,Comments,estatus,Tipo_Doc]);
     }
 
+
     static GetRents(IdUsuario){
         return db.execute('SELECT IdUsuario from cliente_pr_prop where IdUsuario = ?',[IdUsuario]);
     }
@@ -29,5 +30,9 @@ module.exports = class expediente{
 
     static fetchFiles(IdUsuario){
         return db.execute('SELECT etd.Tipo_doc, etd.comentarios, etd.URL, etd.estatus FROM exp_tipo_doc etd WHERE IdCliente = ?', [IdUsuario]);
+
+    static DownloadFile(fileType, ExpType, IdUsuario){
+        return db.execute("select URL from exp_tipo_doc where IdCliente = ? and Tipo_Exp = ? and Tipo_Doc = ?", [IdUsuario, ExpType, fileType]);
+
     }
 }
