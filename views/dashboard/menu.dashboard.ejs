@@ -10,10 +10,10 @@
           </figure>
         </figure>
         <div class="media-content">
-          <div class="content is-small">
-            <h1><%=usuario.nombre %> <%=usuario.PA %></h1>
-            <p class="pt-0 pb-0 m-0"><i class="mdi mdi-phone pr-2 "></i><%=usuario.Telefono %></p>
-            <p class="pt-0 pb-0"><i class="mdi mdi-email pr-2"></i><%=usuario.email %></p>
+          <div class="content is-small"> 
+            <h1><%=usuario.nombre ? usuario.nombre : ''%> <%=usuario.PA  ? usuario.PA : ''%></h1>
+            <p class="pt-0 pb-0 m-0"><i class="mdi mdi-phone pr-2 "></i><%=usuario.Telefono  ? usuario.Telefono  : ''%></p>
+            <p class="pt-0 pb-0"><i class="mdi mdi-email pr-2"></i><%=usuario.email  ?  usuario.email  : ''%></p>
           </div>
     </article>
 
@@ -31,8 +31,10 @@
 
 <% if (sesionId == 2) { %>
   <%- include ('menu.agente.ejs') %>
-<% } else { %>
+<% } else if(sesionId == 0) { %>
   <%- include ('menu.usuario.ejs') %>
+<% } else { %>
+  <%- include ('menu.admin.ejs') %>
 <% } %>
 
 <footer class="card-footer">

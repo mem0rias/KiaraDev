@@ -12,9 +12,10 @@ const checkbutton = (map) =>{
 }
 const cambiarcolor = (identificador) => { //Esta funcion se llama desde expediente.ejs para verificar que no se rechace un documento sin explicacion
     //Obtenemos el Tipo_doc como id para cada bloque
-    let elementid = identificador.id.slice(-1);
-    let elemento = document.getElementById('comentarios'+elementid);
-    let drop = document.getElementById('dropdown'+elementid).value;
+    let elementid = (identificador.id.split('-'))[1];
+    console.log(elementid);
+    let elemento = document.getElementById('comentarios-'+elementid);
+    let drop = document.getElementById('dropdown-'+elementid).value;
     
     console.log(elementid);
     //Se verifica que no este vacio y en rechazado.

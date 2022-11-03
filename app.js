@@ -14,7 +14,7 @@ app.set('views', 'views');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: false}));
-
+app.use(bodyParser.json());
 //fileStorage: Es nuestra constante de configuración para manejar el almacenamiento
 const fileStorage = multer.diskStorage({
     destination: (request, file, callback) => {
@@ -49,7 +49,7 @@ app.use((request, response, next) => {
     response.locals.IdUser = request.session.IdUser ? request.session.IdUser : '';
     response.locals.IdRol = request.session.IdRol ? request.session.IdRol : '';
     response.locals.msg = request.session.msg ? request.session.msg : '';
-    response.locals.exito = request.session.exito ? request.session.exito : 1;
+    response.locals.exito = request.session.exito ? request.session.exito : 0;
     next();
 });
 //Declarar app.use de las rutas
