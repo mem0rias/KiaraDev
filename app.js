@@ -28,7 +28,18 @@ const fileStorage = multer.diskStorage({
     },
 });
 
-app.use(multer({ storage: fileStorage }).any('archivo2')); 
+const fileFilter = (request, file, callback) => {
+    if (file.mimetype == 'application/pdf') {
+        callback(null, true);
+    } else {
+        console.log('te equivocaste pana');
+        callback(null, false);
+
+    }
+}
+
+
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).any('archivo2'));
 //app.use(multer({ storage: fileStorage }).single('archivo')); 
 
 
