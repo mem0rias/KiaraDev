@@ -10,4 +10,8 @@ module.exports = class expediente{
     static UpdateRequirements(Comments, estatus, IdUsuario, Tipo_Doc, N_docs){
         return db.execute('CALL `ActualizarExp`(?, ?, ?, ?, ?)', [N_docs,IdUsuario,Comments,estatus,Tipo_Doc]);
     }
+
+    static DownloadFile(fileType, ExpType, IdUsuario){
+        return db.execute("select URL from exp_tipo_doc where IdCliente = ? and Tipo_Exp = ? and Tipo_Doc = ?", [IdUsuario, ExpType, fileType]);
+    }
 }
