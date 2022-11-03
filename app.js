@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 const fileStorage = multer.diskStorage({
     destination: (request, file, callback) => {
         //'uploads': Es el directorio del servidor donde se subirán los archivos 
-        callback(null, '../Expedientes');
+        callback(null, './Expedientes');
     },
     filename: (request, file, callback) => {
         //aquí configuramos el nombre que queremos que tenga el archivo en el servidor, 
@@ -28,7 +28,9 @@ const fileStorage = multer.diskStorage({
     },
 });
 
-app.use(multer({ storage: fileStorage }).single('archivo')); 
+app.use(multer({ storage: fileStorage }).any('archivo2')); 
+//app.use(multer({ storage: fileStorage }).single('archivo')); 
+
 
 //Declarar rutas
 const rutasPropiedades = require('./routes/propiedad.routes');

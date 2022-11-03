@@ -3,6 +3,8 @@ const User = require('../models/expediente.model');
 const bcrypt = require('bcryptjs');
 const expediente = require('../models/expediente.model');
 const Dashboard = require('../models/dashboard.model');
+const { request } = require('http');
+const { response } = require('express');
 exports.rev = (request, response, next) =>{
     response.render('./Expediente/expediente');
 }
@@ -150,3 +152,7 @@ exports.descargarArchivo = (request, response, next) => {
     });
 }
 
+exports.subirarch = (request, response, next) => {
+    console.log(request.files);
+    response.redirect('/expediente/miexpediente');
+}

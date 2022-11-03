@@ -35,4 +35,8 @@ module.exports = class expediente{
         return db.execute("select URL from exp_tipo_doc where IdCliente = ? and Tipo_Exp = ? and Tipo_Doc = ?", [IdUsuario, ExpType, fileType]);
 
     }
+
+    static UploadFile(fileType, ExpType, IdUsuario, URL){
+        return db.execute("Update from exp_tipo_doc set URL = ? where IdCliente = ?, Tipo_Doc = ?", [URL, IdUsuario,fileType]);
+    }
 }
