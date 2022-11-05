@@ -13,7 +13,7 @@ app.set('views', 'views');
 
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 //fileStorage: Es nuestra constante de configuración para manejar el almacenamiento
 const fileStorage = multer.diskStorage({
@@ -27,8 +27,16 @@ const fileStorage = multer.diskStorage({
         callback(null, new Date().getSeconds() + '' + new Date().getDay() + '' + new Date().getMonth() + '' + new Date().getYear() + file.originalname);
     },
 });
+const fileFilter = (request, file, callback) => {
+    if (file.mimetype == 'application/pdf') {
+        callback(null, true);
+    } else {
+        callback(null, false);
+    }
+}
 
-app.use(multer({ storage: fileStorage }).any('archivo2')); 
+
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).any('archivo2'));
 //app.use(multer({ storage: fileStorage }).single('archivo')); 
 
 
@@ -38,9 +46,10 @@ const rutasIndex = require('./routes/index.routes');
 const rutasDashboard = require('./routes/dashboard.routes');
 const rutasLogin = require('./routes/Login.routes');
 const expediente = require('./routes/expediente.routes');
+const resenas = require('./routes/resenas.routes');
 
 app.use(session({
-    secret: 'aerfgtvythvyugt54cyh4yhyhy6h46yr5ky87br53tgc3g46gg', 
+    secret: 'aerfgtvythvyugt54cyh4yhyhy6h46yr5ky87br53tgc3g46gg',
     resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
     saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
 }));
@@ -60,6 +69,7 @@ app.use('/index', rutasIndex);
 app.use('/dashboard', rutasDashboard);
 app.use('/login', rutasLogin);
 app.use('/expediente', expediente);
+app.use('/resenas', resenas);
 //Middleware
 app.use((request, response, next) => {
     console.log('Middleware!');
@@ -73,9 +83,6 @@ app.use((request, response, next) => {
 
 
 //
-let formatc = new Intl.NumberFormat("en-IN",
-{style: "currency", currency: "USD"}
-)
+let formatc = new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" })
 
 app.listen(3000);
-
