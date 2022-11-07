@@ -116,6 +116,13 @@ exports.verificarcorr = (request, response, next,) => {
     console.log(errors);
     response.status(200).json(errors.array());
 }
+
+exports.verificarcontra = (request, response, next,) => {
+    console.log(request.body);
+    let errors = validationResult(request);
+    console.log(errors);
+    response.status(200).json(errors.array());
+}
 exports.logout = (request, response, next) => {
     request.session.destroy(() => {
         response.redirect('/login'); //Este código se ejecuta cuando la sesión se elimina.

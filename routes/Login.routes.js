@@ -13,5 +13,6 @@ router.post('/registrarse', LoginControl.registrarse); // Post Registro de usuar
 router.get('/registrarse', LoginControl.registro); //Get de pagina de registro
 router.get('/logout', LoginControl.logout); // Cerrar sesion.
 
-router.post('/verificar', body('email').isEmail(), LoginControl.verificarcorr);
+router.post('/verificarcorreo', body('email').isEmail(), LoginControl.verificarcorr);
+router.post('/verificarcontra', body('pass').isLength({ min : 8}), LoginControl.verificarcontra);
 module.exports = router;
