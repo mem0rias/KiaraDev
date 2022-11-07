@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
+const multer = require('multer');
 
 const app = express();
 
@@ -14,6 +15,34 @@ app.set('views', 'views');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+//fileStorage: Es nuestra constante de configuración para manejar el almacenamiento
+const fileStorage = multer.diskStorage({
+    destination: (request, file, callback) => {
+        //'uploads': Es el directorio del servidor donde se subirán los archivos 
+        callback(null, './Expedientes');
+    },
+    filename: (request, file, callback) => {
+        //aquí configuramos el nombre que queremos que tenga el archivo en el servidor, 
+        //para que no haya problema si se suben 2 archivos con el mismo nombre concatenamos el timestamp
+        callback(null, new Date().getSeconds() + '' + new Date().getDay() + '' + new Date().getMonth() + '' + new Date().getYear() + file.originalname);
+    },
+});
+
+const fileFilter = (request, file, callback) => {
+    if (file.mimetype == 'application/pdf') {
+        callback(null, true);
+    } else {
+        console.log('te equivocaste pana');
+        callback(null, false);
+
+    }
+}
+
+
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).any('archivo2'));
+//app.use(multer({ storage: fileStorage }).single('archivo')); 
+
+
 //Declarar rutas
 const rutasPropiedades = require('./routes/propiedad.routes');
 const rutasIndex = require('./routes/index.routes');

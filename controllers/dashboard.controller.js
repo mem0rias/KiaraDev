@@ -1,11 +1,11 @@
 const path = require('path');
+const Dashboard = require('../models/dashboard.model');
 const User = require('../models/dashboard.model');
-const Propiedad = require('../models/propiedad.model');
 
 //El metodo obtiene las 4 propiedades más recientes
 exports.get_dashboard = (request, response, next) => {
     let sesionID = response.locals.IdUser;
-        User.fetchOne(sesionID).then( ([usuarioData, fieldData]) => {
+    Dashboard.fetchUser(sesionID).then( ([usuarioData, fieldData]) => {
             console.log(usuarioData);
             response.render(path.join('dashboard', 'dashboard.ejs'), {
                 usuario: usuarioData[0],
@@ -21,24 +21,51 @@ exports.get_dashboard = (request, response, next) => {
 
 exports.get_propiedadesAsignadas = (request, response, next) => {
     let id = response.locals.IdUser;
-    Propiedad.fetchAsigando(id)
-        .then( ([rows, fieldData]) => {
-            console.log(rows);
-            response.render(path.join('dashboard', 'dashboard.propiedadAsignada.ejs'), {
-                propiedad: rows,
-            }); 
-
+    Dashboard.fetchAsigando(id)
+        .then( ([propiedadesAsignadas, fieldData]) => {
+            Dashboard.fetchUser(id).then( ([usuarioData, fieldData]) => {
+                    console.log(usuarioData);
+                    console.log(propiedadesAsignadas);
+                    console.log(id);
+                    let cantidad = propiedadesAsignadas.length;
+                    response.render(path.join('dashboard', 'dashboard.propiedadAsignada.ejs'), {
+                        usuario: usuarioData[0],
+                        sesionId: response.locals.IdRol, 
+                        sesionUser: response.locals.IdUser,
+                        propiedad: propiedadesAsignadas,
+                        cantidad: cantidad,
+                    }); 
+                    
+        
+                }).catch( (error) => {
+                    console.log(error);
+                });  
         }).catch( (error) => {
             console.log(error);
         });
 
 };
 
+
 exports.get_userlist = (request, response, next) =>{
-    response.render(path.join('dashboard', 'listaUsuarios.ejs'));
+    response.render(path.join('dashboard', 'dashboard.listaUsuarios.ejs'),{
+        usuario: '',
+        sesionId: response.locals.IdRol, 
+        sesionUser: response.locals.IdUser,
+
+    });
 
 }
 
+exports.get_roluserlist = (request, response, next) =>{
+    response.render(path.join('dashboard', 'listaUsuarios.ejs'),{
+        usuario: '',
+        sesionId: response.locals.IdRol, 
+        sesionUser: response.locals.IdUser,
+
+    });
+
+}
 exports.get_search = (request, response, next) => {
 
     let selector = (request.params.busc == ',1');
@@ -81,3 +108,4 @@ exports.saveRol = (request, response, next) => {
     console.log(rolmapString);
     
 }
+
