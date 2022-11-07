@@ -1,7 +1,7 @@
 <%- include('../includes/head.ejs') %>
-<% for(let element of info) { %>
-                
-    <%- include('../Estatus/step.ejs', {info: element}) %>
+<% for(let l of listEstatus) { %>
+    <h1 class="title is-large"></h1>
+    <%- include('step.ejs', {listEstatus: l}) %>
     
 <% } %>
 <%- include('../includes/foot.ejs') %>

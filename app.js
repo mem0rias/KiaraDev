@@ -20,6 +20,7 @@ const rutasIndex = require('./routes/index.routes');
 const rutasDashboard = require('./routes/dashboard.routes');
 const rutasLogin = require('./routes/Login.routes');
 const expediente = require('./routes/expediente.routes');
+const estatus = require('./routes/estatus.routes');
 
 app.use(session({
     secret: 'aerfgtvythvyugt54cyh4yhyhy6h46yr5ky87br53tgc3g46gg', 
@@ -42,6 +43,7 @@ app.use('/index', rutasIndex);
 app.use('/dashboard', rutasDashboard);
 app.use('/login', rutasLogin);
 app.use('/expediente', expediente);
+app.use('/estatus', estatus);
 //Middleware
 app.use((request, response, next) => {
     console.log('Middleware!');
