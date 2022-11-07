@@ -30,7 +30,11 @@
       
         <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-start">
-
+            
+              <figure class="image is-64x64 pl-1 pr-1">
+                <img src="./images/kiaralogo.png">
+              </figure>
+            
       
             <a class="navbar-item">
               <h2 class="label is-size-5"> ¿Quienes somos? </h2>
@@ -45,31 +49,25 @@
             </a>
             
           </div>
-      
+
           <div class="navbar-end">
             <div class="navbar-item">
-              <div class="columns">
+              <div class="buttons">
                 
-                <div class="column">
-                  <% if(sesion != '') { %>
-                    <form action="/dashboard" method="GET">
-                      <button class="button is-primary is-fullwidth is-danger" type="submit" id="boton" name="boton" value="/dashboard"> Mi Perfil </button>
-                    </form>
-                  <% } %>
-                </div>
-                <div class="column">
-                  <form action="/login/logout" method="GET">
-                    <% if(sesion != '') { logbot = 'Cerrar Sesion'; logpath = '/logout'} else {logbot = 'Iniciar Sesion'; logpath = '/login'} %>
-                    <button class="button is-primary is-fullwidth is-danger" type="submit" id="boton" name="boton" value="<%= logpath %>"> <%= logbot %></button>
-                  </form>
-                  
-                </div>
+                <% if(sesion != '') { %>
+
+                  <a class="button is-danger" href="/dashboard"> <strong> Mi Perfil</strong></a>
+                
+                <% } %>
+                <% if(sesion != '') { logbot = 'Cerrar Sesion'; logpath = '/login/logout'} else {logbot = 'Iniciar Sesion'; logpath = '/login'} %>
+                <a class="button is-danger" href="<%= logpath %>"> <%= logbot %> </a>
                 
               </div>
-                
-              
             </div>
           </div>
+  
+      
+          
         </div>
       </nav>
     </header>
