@@ -8,12 +8,18 @@ exports.login = (request, response, next) => {
     
     // Funcion de login, carga el mensaje en caso de que haya uno que se necesite desplegar
     // Se limpia la variable de sesion de info para evitar tener mensajes repetidos
+    let msgpos = request.session.infopositiva ? request.session.infopositiva : '';
+    request.session.infopositiva = '';  
+    
     let msg = request.session.info ? request.session.info : '';
     request.session.info = '';
+
+    if(msgpos != '')
+        msg = '';
     // Se forza a que se guarde el valor de la sesion para que no se repita el mensaje con un refresh
     return request.session.save(err => {
         // Render de la pagina con el mensaje mas actual
-        response.render('./Login/login', {info: msg});
+        response.render('./Login/login', {info: msg, infopositiva: msgpos});
     });
 }
 
@@ -107,7 +113,7 @@ exports.registrarse = (request, response, next) => {
                 // Se ejecuta el proceso para guardar toda la informacion del usuario dentro de la BD
                 reg.save().then(() =>{
                     // Se envia mensaje de registro y se redirige al login.
-                    request.session.info = 'Registro exitoso!';
+                    request.session.infopositiva = 'Registro exitoso!';
                     return request.session.save(err => {
                         response.redirect('/login');
                     });

@@ -44,4 +44,9 @@
         bulmaToast.toast({ message: '<%= info %>', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
     </script>
 <% } %>
+<% if(infopositiva != '') { %>
+    <script>
+        bulmaToast.toast({ message: '<%= infopositiva %>', type: 'is-success', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+    </script>
+<% } %>
 <%- include('../includes/foot.ejs') %>
