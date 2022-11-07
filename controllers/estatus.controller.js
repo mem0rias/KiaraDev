@@ -7,7 +7,7 @@ exports.get_root = (request, response, next) => {
 
     listEstatus.fetchAll()
         .then( ([rows, fieldData]) => {
-            console.log(rows);
+            //console.log(rows);
             response.render(path.join('Estatus', 'estatus.ejs'), {
                 listEstatus: rows
             }); 
