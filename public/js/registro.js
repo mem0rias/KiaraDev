@@ -39,10 +39,6 @@ const cambiarcolor = (identificador) => { //Esta funcion se llama desde expedien
     }
     //Se verifica que el mapa este vacio para habilitar el boton de guardado.
     checkbutton(map);
-   
-    
-
-
 }
 
 const firstload = () =>{
@@ -68,8 +64,14 @@ const correovalido = (id) => {
             return result.json();
         }).then(data => {
             console.log(data);
-            if(data.length > 0){
+            if(data == 'invalidEmail'){
                 document.getElementById('correo').innerHTML = 'Tu correo es invalido';
+                valid_mail = false;
+            }else if(data == 'usedEmail'){
+                document.getElementById('correo').innerHTML = 'El correo ya esta en uso';
+                valid_mail = false;
+            }else if(data == 'noConn'){
+                document.getElementById('correo').innerHTML = 'Tenemos problemas para validar tu correo';
                 valid_mail = false;
             }
             else{
@@ -81,7 +83,9 @@ const correovalido = (id) => {
                 
         }).catch(err =>{
             console.log(err);
-
+            document.getElementById('correo').innerHTML = 'Tenemos problemas para validar tu correo';
+            valid_mail = false;
+            checkbutton(map);
         });
 }
 

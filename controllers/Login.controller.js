@@ -87,15 +87,48 @@ exports.registrarse = (request, response, next) => {
             });
         }
     }
-    const reg = new User(val.el1[0], val.el1[1], val.el1[2], val.el1[4], val.el1[3], val.el1[5], val.el1[6], val.el1[7]);
-    console.log(reg);
-    /*reg.save().then(() =>{
-        response.redirect('/success');
-        return
-    }).catch((error) => {
-        console.log(error);
-        response.redirect('/fail');
-    })*/;
+
+    //Validaciones de informacion desde el backend, que se hacen igual en front end
+    let errors = validationResult(request);
+    console.log(errors);
+    if(errors.array().length == 0){
+    
+        User.fetchmail(request.body.el1[3]).then(([rows, fieldData]) => {
+            console.log(rows);
+            if(rows.length > 0){
+                request.session.info = 'El correo ya esta en uso';
+                return request.session.save(err => {
+                response.redirect('/login/registrarse');
+                });
+            }else{
+                const reg = new User(val.el1[0], val.el1[1], val.el1[2], val.el1[4], val.el1[3], val.el1[5], val.el1[6], val.el1[7]);
+                console.log(reg);
+                reg.save().then(() =>{
+                    request.session.info = 'Registro exitoso!';
+                    return request.session.save(err => {
+                    response.redirect('/login');
+                    });
+                }).catch((error) => {
+                    request.session.info = 'Hay un problema con la pagina, intentalo mas tarde';
+                    return request.session.save(err => {
+                    response.redirect('/login/registrarse');
+                    });
+                });
+            }
+        }).catch(err => {
+            request.session.info = 'Hay un problema con la pagina, intentalo mas tarde';
+            return request.session.save(err => {
+            response.redirect('/login/registrarse');
+            });
+        });
+    }else{
+        request.session.info = 'Revisa tus campos';
+            return request.session.save(err => {
+                response.redirect('/login/registrarse');
+            });
+    }
+    
+    
 }
 
 exports.registro = (request, response, next) => {
@@ -114,7 +147,22 @@ exports.verificarcorr = (request, response, next,) => {
     console.log(request.body);
     let errors = validationResult(request);
     console.log(errors);
-    response.status(200).json(errors.array());
+    if(errors.array().length == 0){
+        User.fetchmail(request.body.email).then(([rows, fieldData]) => {
+            console.log(rows);
+            if(rows.length > 0){
+                response.status(200).json('usedEmail');
+            }else
+                response.status(200).json('');
+        }).catch(err => {
+            console.log(err);
+            response.status(200).json('noConn');
+        });
+    }else{
+        response.status(200).json('invalidEmail');
+    }
+    
+
 }
 
 exports.verificarcontra = (request, response, next,) => {
