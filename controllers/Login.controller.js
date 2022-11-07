@@ -5,31 +5,31 @@ const { body, validationResult } = require('express-validator');
 
 
 exports.login = (request, response, next) => {
-    
+
     // Funcion de login, carga el mensaje en caso de que haya uno que se necesite desplegar
     // Se limpia la variable de sesion de info para evitar tener mensajes repetidos
     let msgpos = request.session.infopositiva ? request.session.infopositiva : '';
-    request.session.infopositiva = '';  
-    
+    request.session.infopositiva = '';
+
     let msg = request.session.info ? request.session.info : '';
     request.session.info = '';
 
-    if(msgpos != '')
+    if (msgpos != '')
         msg = '';
     // Se forza a que se guarde el valor de la sesion para que no se repita el mensaje con un refresh
     return request.session.save(err => {
         // Render de la pagina con el mensaje mas actual
-        response.render('./Login/login', {info: msg, infopositiva: msgpos});
+        response.render('./Login/login', { info: msg, infopositiva: msgpos });
     });
 }
 
 exports.loginverf = (request, response, next) => {
-    
+
     let info = request.body;
-    
-    User.fetchmail(info.User).then(([rows, fieldData]) =>{
+
+    User.fetchmail(info.User).then(([rows, fieldData]) => {
         //Checamos primero que la consulta nos regrese algo
-        if(rows.length > 0){
+        if (rows.length > 0) {
             // Comparacion de la contraseña que se ingreso y la que corresponde en la BD
             bcrypt.compare(info.Pass, rows[0].password).then(doMatch => {
                 // Si la contraseña coincide, se almacena informacion clave del usuario en la sesion
@@ -40,49 +40,49 @@ exports.loginverf = (request, response, next) => {
                     request.session.IdRol = rows[0].IdRol;
                     return request.session.save(err => {
                         //Redireccion al dashboard del usuario.
-                        response.redirect('/dashboard');
+                        response.redirect('/');
                     });
-                    
-                    
-                    
-                }else{ // Si la contra no coincide
+
+
+
+                } else { // Si la contra no coincide
                     request.session.info = 'Usuario y/o contraseña incorrecta';
                     response.redirect('/login');
                 }
-               
+
             }).catch(err => {
                 console.log(err);
                 response.redirect('/login');
             });
-            
-        }else{
+
+        } else {
             //Si no hay un correo que coincida en la BD
             request.session.info = 'Usuario y/o contraseña incorrecta';
             response.redirect('/login');
         }
-       
-        
-    }).catch((error)=>{ // Si la BD no esta disponible se envia este mensaje.
+
+
+    }).catch((error) => { // Si la BD no esta disponible se envia este mensaje.
         request.session.info = 'Hay un problema con la pagina, intentalo mas tarde';
         console.log(error);
         response.redirect('/login');
-        
+
     })
 }
 
 exports.registrarse = (request, response, next) => {
-     
+
     let val = request.body;
-    if(val.boton == '/inicio'){
+    if (val.boton == '/inicio') {
         response.redirect(val.boton);
-        
+
     }
     //Ciclo que checa que todos los campos hayan sido llenados antes de cargar la BD
     // Se pretende que nunca se llegue a esta condicion mediante JS local pero si se burla
     // Se detiene aqui.
     console.log(val.el1.length);
-    for(let i = 0; i < val.el1.length; i++){
-        if(val.el1[i] == ''){
+    for (let i = 0; i < val.el1.length; i++) {
+        if (val.el1[i] == '') {
             //console.log(i + 'Esta vacio');
             request.session.info = 'Hay campos incompletos';
             return request.session.save(err => {
@@ -95,23 +95,23 @@ exports.registrarse = (request, response, next) => {
     let errors = validationResult(request);
     //console.log(errors);
     // Si no hay errores en ninguna de las comparaciones del middle-ware
-    if(errors.array().length == 0){
+    if (errors.array().length == 0) {
         // Se obtiene el mail y se revisa la BD
         User.fetchmail(request.body.el1[3]).then(([rows, fieldData]) => {
             console.log(rows);
             //Si se recibe un elemento significa que ya existe ese correo en la BD
-            if(rows.length > 0){
+            if (rows.length > 0) {
                 request.session.info = 'El correo ya esta en uso';
                 return request.session.save(err => {
                     response.redirect('/login/registrarse');
                 });
-            }else{
+            } else {
                 //Si el elemento esta vacio significa que no existe ese correo en la BD
                 const reg = new User(val.el1[0], val.el1[1], val.el1[2], val.el1[4], val.el1[3], val.el1[5], val.el1[6], val.el1[7]);
                 //console.log(reg);
 
                 // Se ejecuta el proceso para guardar toda la informacion del usuario dentro de la BD
-                reg.save().then(() =>{
+                reg.save().then(() => {
                     // Se envia mensaje de registro y se redirige al login.
                     request.session.infopositiva = 'Registro exitoso!';
                     return request.session.save(err => {
@@ -132,15 +132,15 @@ exports.registrarse = (request, response, next) => {
                 response.redirect('/login/registrarse');
             });
         });
-    }else{
+    } else {
         // Error si el correo o contra no pasan el middleware  de verificacion y se intenta salva
         request.session.info = 'Revisa tus campos';
-            return request.session.save(err => {
-                response.redirect('/login/registrarse');
-            });
+        return request.session.save(err => {
+            response.redirect('/login/registrarse');
+        });
     }
-    
-    
+
+
 }
 
 exports.registro = (request, response, next) => {
@@ -149,35 +149,35 @@ exports.registro = (request, response, next) => {
     // Se forza a que se guarde el valor de la sesion para que no se repita el mensaje con un refresh
     return request.session.save(err => {
         // Render de la pagina con el mensaje mas actual
-        response.render('./Login/registro', {info : msg });
+        response.render('./Login/registro', { info: msg });
     });
-    
-    
+
+
 }
 
-exports.verificarcorr = (request, response, next,) => {
+exports.verificarcorr = (request, response, next, ) => {
     //console.log(request.body);
     let errors = validationResult(request);
     //console.log(errors);
-    if(errors.array().length == 0){
+    if (errors.array().length == 0) {
         User.fetchmail(request.body.email).then(([rows, fieldData]) => {
             console.log(rows);
-            if(rows.length > 0){
+            if (rows.length > 0) {
                 response.status(200).json('usedEmail');
-            }else
+            } else
                 response.status(200).json('');
         }).catch(err => {
             console.log(err);
             response.status(200).json('noConn');
         });
-    }else{
+    } else {
         response.status(200).json('invalidEmail');
     }
-    
+
 
 }
 
-exports.verificarcontra = (request, response, next,) => {
+exports.verificarcontra = (request, response, next, ) => {
     //console.log(request.body);
     let errors = validationResult(request);
     //console.log(errors);
