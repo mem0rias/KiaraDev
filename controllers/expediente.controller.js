@@ -3,6 +3,8 @@ const User = require('../models/expediente.model');
 const bcrypt = require('bcryptjs');
 const expediente = require('../models/expediente.model');
 const Dashboard = require('../models/dashboard.model');
+const { request } = require('http');
+const { response } = require('express');
 exports.rev = (request, response, next) =>{
     response.render('./Expediente/expediente');
 }
@@ -130,7 +132,7 @@ exports.fetchinfo = (request, response, next) => {
         console.log(err);
         response.status(200).json('err');
     })
-
+}
 exports.descargarArchivo = (request, response, next) => {
     console.log(request.params);
     const file = `./public/Expedientes/10/`+request.params.id+'.txt';
@@ -148,7 +150,11 @@ exports.descargarArchivo = (request, response, next) => {
         });
         
     });
-    
-    //response.status(200).json("Aqui va tu archivo bro" + request.params.id);
+}
 
+exports.subirarch = (request, response, next) => {
+    console.log(request.files);
+    expediente.UploadFile()
+    response.status(200).json("selogro");
+    //response.redirect('/expediente/miexpediente');
 }

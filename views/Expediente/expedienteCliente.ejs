@@ -35,16 +35,18 @@
                     <div class="column is-2"> <h2 class="Title label">Estatus </h2> </div> 
                 </div>
             </div>
-            <div id="exp">
+            <form action="/expediente/miexpediente" method="POST"  enctype="multipart/form-data"> 
+                <div id="exp">
 
-            </div>
-            <br>
-            <div class="columns">
-                <div class="column is-3">
-                    <button  type="button" class="button is-danger is-fullwidth"  id="botonguardar" name="boton"> Guardar Cambios</button>
                 </div>
-                
-            </div>
+                <br>
+                <div class="columns">
+                    <div class="column is-3">
+                        <button  type="submit" class="button is-danger is-fullwidth"  onclick="" id="botonguardar" name="boton"> Guardar Cambios</button>
+                    </div>
+                    
+                </div>
+            </form>
             
         <script>
             const cargarexp = (elemento) =>{
@@ -82,7 +84,19 @@
                         html += '<div class="column is-3">';
                         html += '<label class="label"> '+ elems.descripcion +' </label> </div>';
                         html += '<div class="column is-2">'
-                        html += '<button class="button is-danger is-fullwidth" type="submit" id="boton" name="boton" value="/editar"> Cargar Archivo</button>';
+                        html +=    '<div class="file is-danger">'
+                        html +=        '<label class="file-label">'
+                        html +=            '<input class="file-input"  accept=".pdf" type="file" name="archivo2">'
+                        html +=            '<span class="file-cta">'
+                        html +=          '<span class="file-icon">'
+                        html +=          '  <i class="fas fa-upload"></i>'
+                        html +=          '</span>'
+                        html +=            '<span class="file-label has-text-centered">'
+                        html +=                'Subir Archivo'
+                        html +=            '</span>'
+                        html +=            '</span>'
+                        html +=         '</label>'
+                        html +=    '</div>'
                         html += '</div>';
                         html += '<div class="column is-5">'; 
                         html += '<h2 class="label"> '+comment+' </h2>';

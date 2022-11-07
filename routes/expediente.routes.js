@@ -8,6 +8,7 @@ router.use(express.static(path.join(__dirname, '..','public')));
 
 router.get('/revisar/:id', isAuth, ExpControl.getReqs);
 router.post('/actualizar', isAuth, ExpControl.actualizar);
+router.post('/miexpediente', isAuth, ExpControl.subirarch);
 router.get('/miexpediente', isAuth, ExpControl.miexp);
 router.get('/fetch/:tipo', isAuth,ExpControl.fetchinfo);
 
