@@ -33,9 +33,6 @@ exports.loginverf = (request, response, next) => {
                     request.session.IdUser = rows[0].IdUsuario;
                     request.session.IdRol = rows[0].IdRol;
                     return request.session.save(err => {
-                        // Cosas para hacer debug
-                        //console.log(request.session);
-                        //response.redirect('/inicio');
                         //Redireccion al dashboard del usuario.
                         response.redirect('/dashboard');
                     });
@@ -80,7 +77,7 @@ exports.registrarse = (request, response, next) => {
     console.log(val.el1.length);
     for(let i = 0; i < val.el1.length; i++){
         if(val.el1[i] == ''){
-            console.log(i + 'Esta vacio');
+            //console.log(i + 'Esta vacio');
             request.session.info = 'Hay campos incompletos';
             return request.session.save(err => {
                 response.redirect('/login/registrarse');
@@ -90,38 +87,47 @@ exports.registrarse = (request, response, next) => {
 
     //Validaciones de informacion desde el backend, que se hacen igual en front end
     let errors = validationResult(request);
-    console.log(errors);
+    //console.log(errors);
+    // Si no hay errores en ninguna de las comparaciones del middle-ware
     if(errors.array().length == 0){
-    
+        // Se obtiene el mail y se revisa la BD
         User.fetchmail(request.body.el1[3]).then(([rows, fieldData]) => {
             console.log(rows);
+            //Si se recibe un elemento significa que ya existe ese correo en la BD
             if(rows.length > 0){
                 request.session.info = 'El correo ya esta en uso';
                 return request.session.save(err => {
-                response.redirect('/login/registrarse');
+                    response.redirect('/login/registrarse');
                 });
             }else{
+                //Si el elemento esta vacio significa que no existe ese correo en la BD
                 const reg = new User(val.el1[0], val.el1[1], val.el1[2], val.el1[4], val.el1[3], val.el1[5], val.el1[6], val.el1[7]);
-                console.log(reg);
+                //console.log(reg);
+
+                // Se ejecuta el proceso para guardar toda la informacion del usuario dentro de la BD
                 reg.save().then(() =>{
+                    // Se envia mensaje de registro y se redirige al login.
                     request.session.info = 'Registro exitoso!';
                     return request.session.save(err => {
-                    response.redirect('/login');
+                        response.redirect('/login');
                     });
                 }).catch((error) => {
+                    // Si la BD no esta disponible se envia este mensaje
                     request.session.info = 'Hay un problema con la pagina, intentalo mas tarde';
                     return request.session.save(err => {
-                    response.redirect('/login/registrarse');
+                        response.redirect('/login/registrarse');
                     });
                 });
             }
         }).catch(err => {
+            //Error por si la BD falla cuando se checa el correo.
             request.session.info = 'Hay un problema con la pagina, intentalo mas tarde';
             return request.session.save(err => {
-            response.redirect('/login/registrarse');
+                response.redirect('/login/registrarse');
             });
         });
     }else{
+        // Error si el correo o contra no pasan el middleware  de verificacion y se intenta salva
         request.session.info = 'Revisa tus campos';
             return request.session.save(err => {
                 response.redirect('/login/registrarse');
@@ -144,9 +150,9 @@ exports.registro = (request, response, next) => {
 }
 
 exports.verificarcorr = (request, response, next,) => {
-    console.log(request.body);
+    //console.log(request.body);
     let errors = validationResult(request);
-    console.log(errors);
+    //console.log(errors);
     if(errors.array().length == 0){
         User.fetchmail(request.body.email).then(([rows, fieldData]) => {
             console.log(rows);
@@ -166,9 +172,9 @@ exports.verificarcorr = (request, response, next,) => {
 }
 
 exports.verificarcontra = (request, response, next,) => {
-    console.log(request.body);
+    //console.log(request.body);
     let errors = validationResult(request);
-    console.log(errors);
+    //console.log(errors);
     response.status(200).json(errors.array());
 }
 exports.logout = (request, response, next) => {

@@ -51,6 +51,7 @@ const firstload = () =>{
 const correovalido = (id) => {
     // Llamada de ajax con el correo, se checa que el correo sea valido en estructura, aun falta validar con la BD.
     let savebutton = document.getElementById('enviar');
+    // Llamada de AJAX para verificar que se tiene un correo valido
     fetch('/login/verificarcorreo', {
         method: 'POST',
         headers: {
@@ -63,7 +64,8 @@ const correovalido = (id) => {
         }).then(result => {
             return result.json();
         }).then(data => {
-            console.log(data);
+            //console.log(data);
+            // Dependiendo el caso que se recibe se cambiar el mensaje dentro de la pagina.
             if(data == 'invalidEmail'){
                 document.getElementById('correo').innerHTML = 'Tu correo es invalido';
                 valid_mail = false;
@@ -78,11 +80,12 @@ const correovalido = (id) => {
                 document.getElementById('correo').innerHTML = '';
                 valid_mail = true;   
             }
-            // Se checa el estado de los inputs para ver si se libera o no el boton de registro
+            // Se checa el estado de los inputs para ver si se libera o no el boton de registro dependiendo la flag 'valid_email'
             checkbutton(map);
                 
         }).catch(err =>{
-            console.log(err);
+            // Caso donde no se reciba respuesta con el servidor.
+            //console.log(err);
             document.getElementById('correo').innerHTML = 'Tenemos problemas para validar tu correo';
             valid_mail = false;
             checkbutton(map);
@@ -105,6 +108,7 @@ const contravalido = (id) => {
             return result.json();
         }).then(data => {
             console.log(data);
+            // Arreglo de errores se recibe, si es 0 significa que no hay errores y por lo tanto es valido.
             if(data.length > 0){
                 document.getElementById('pass').innerHTML = 'Tu contraseña debe tener al menos 8 caracteres';
                 valid_pass = false;
@@ -116,9 +120,12 @@ const contravalido = (id) => {
             // Se checa el estado de los inputs para ver si se libera o no el boton de registro
             checkbutton(map);    
         }).catch(err =>{
-            console.log(err);
-
-        });
+            // Si no se recibe respuesta del servidor.
+           // console.log(err);
+            document.getElementById('correo').innerHTML = 'Tenemos problemas para validar tu contraseña';
+            valid_pass = false;
+            checkbutton(map);  
+        }); 
 }
 
 
@@ -133,7 +140,7 @@ const phonecheck = () => {
         telbox.innerHTML = '';
     }else{
         valid_phone = false;
-        console.log(phoneInput.getValidationError());
+        //console.log(phoneInput.getValidationError());
         telbox.innerHTML = 'Ingresa un telefono valido';
     }
     checkbutton(map);
