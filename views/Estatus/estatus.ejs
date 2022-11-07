@@ -1,9 +1,10 @@
 <%- include('../includes/head.ejs') %>
 
-    <h1 class="title is-large"> </h1>
+    
     <div class="container">
+        <h1 class="title is-large"> Avance del proceso</h1>
         <div class="level">
-            <div class="level-item ">
+            <div class="level-item has ">
                 <ul class="steps is-vertical is-hollow ">
                     <% for(let l of listEstatus) { %>
                         <%- include('step.ejs', {listEstatus: l}) %>
