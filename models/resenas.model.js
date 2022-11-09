@@ -15,9 +15,13 @@ module.exports = class Reseñas {
         this.aprobado = mi_aprobado;
 
     }
-    guardar() {
+    save() {
         return db.execute(
-            'INSERT INTO comentarios (idComentario, idUsuario, Contenido, Fecha, Aprobado) VALUES (?, ?, ?, ?, ?)', [this.comentario, this.usuario, this.contenido, this.fecha, this.aprobado]);
-
+            'INSERT INTO comentarios ( idUsuario, Contenido, Aprobado) VALUES (?, ?, ?, ?, ?)', [this.usuario, this.contenido, this.aprobado]);
+    }
+    static instanceof() {
+        return db.execute(
+            'SELECT * FROM comentarios'
+        );
     }
 }
