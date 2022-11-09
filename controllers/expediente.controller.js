@@ -154,5 +154,7 @@ exports.descargarArchivo = (request, response, next) => {
 
 exports.subirarch = (request, response, next) => {
     console.log(request.files);
-    response.redirect('/expediente/miexpediente');
+    expediente.UploadFile()
+    response.status(200).json("selogro");
+    //response.redirect('/expediente/miexpediente');
 }

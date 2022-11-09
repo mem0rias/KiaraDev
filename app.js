@@ -70,12 +70,15 @@ app.use('/dashboard', rutasDashboard);
 app.use('/login', rutasLogin);
 app.use('/expediente', expediente);
 app.use('/resenas', resenas);
+
+app.get('/', (request, response, next) => {
+    response.redirect('/index');
+});
 //Middleware
 app.use((request, response, next) => {
     console.log('Middleware!');
     next(); //Le permite a la petición avanzar hacia el siguiente middleware
 });
-
 app.use((request, response, next) => {
     response.status(404);
     response.sendFile(path.join(__dirname, 'views', 'error.html'));
