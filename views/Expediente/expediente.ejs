@@ -34,7 +34,7 @@
         </form>
         
     </section> 
-    <script src="./js/dist/bulma-toast.min.js"></script>
+    <script src="../js/dist/bulma-toast.min.js"></script>
     
     <% if(msg != '') { %>
 
@@ -43,7 +43,7 @@
             bulmaToast.toast({ message: '<%= msg %>', type: '<%= tipo %>', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
         </script>
     <% } %>
-    <script src="./js/expediente.js"></script>
+    <script src="../js/expediente.js"></script>
 <%- include('../includes/foot.ejs') %>
 
         
