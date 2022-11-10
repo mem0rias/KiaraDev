@@ -5,16 +5,28 @@
         <h1 class="title is-large"> Avance del proceso</h1>
         <div class="level">
             <div class="level-item has ">
-                <ul class="steps is-vertical is-hollow ">
+                <ul class="steps is-vertical is-hollow">
+                    
                     <% if(listEstatus != '') { %>
-                        <% for(let l of listEstatus) { %>
-                            <%- include('step.ejs', {listEstatus: l}) %>
+                        <% for(let l of pasosC) { %>
+                            <% if(listEstatus.SumaFechas != listEstatus.fechaInicio){%>
+                                <li class="steps-segment is-active">
+                                    <%- include('step.ejs', {paso: l}) %>
+                                </li>
+                            <% } else { %>
+                                <li class="steps-segment ">
+                                    <%- include('step.ejs', {paso: l}) %>
+                                </li>
+                            <% } %>
                         <% } %>
                     <% } else { %>
-                        <% for(let l of listEstatus2) { %>
-                            <%- include('step.ejs', {listEstatus: l}) %>
+                        <% for(let l of pasosR) { %>
+                            <li class="steps-segment">
+                                <%- include('step.ejs', {paso: l}) %>
+                            </li>
                         <% } %>
                     <% } %>
+                    
                 </ul>
             </div>
         </div>
