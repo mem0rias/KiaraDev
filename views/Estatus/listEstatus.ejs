@@ -1,24 +1,21 @@
-<div class="columns">
-    <% if(arr[0]) {%>
-        <div class="column is-2 ">
+<%- include('../includes/head.ejs') %>
+        <% for(let l of PropertiesC) { %>
             <div class="box">
-                <h2 class="Title label"> </h2>
+                <div class="columns">
+                    <div class="column "><h2 class="Title label"> Propiedad <%= l.Titulo %> </h2></div>
+                    <div class="column is-6"></div>
+                    <div class="column "><a href="/estatus/<%= l.idpropiedad %>"><button class="button is-primary is-danger"> Consultar Avance</button></a></div>
+                </div>
             </div>
-            <!-- <button class="button is-danger is-fullwidth" onclick="cargarexp(this)" value="5"> Arrendador </button> -->
-        </div>
-    <% } %>
-    <% if(arr[1]) {%>
-        <div class="column is-2">
-            <div class="box"></div>
-            <!-- <button class="button is-danger is-fullwidth" onclick="cargarexp(this)" value="1"> Vendedor </button> -->
-        </div>
-    <% } %>
-    <% if(arr[2]) {%>
-        <div class="box"></div>
-        <div class="column is-2">
-            <!-- <button class="button is-danger is-fullwidth" onclick="cargarexp(this)" value="3"> Comprador </button> -->
-        </div>
-    <% } %>
-</div>
-    
-    <%- include('estatus.ejs'}) %>
+        <% } %>
+        <% for(let l of PropertiesR) { %>
+            <div class="box">
+                <div class="columns">
+                    <div class="column "><h2 class="Title label"> Propiedad <%= l.Titulo %> </h2> </div>
+                    <div class="column is-6"></div>
+                    <div class="column "><a href="/estatus/<%= l.idpropiedad %>"><button class="button is-primary is-danger"> Consultar Avance</button></a></div>
+                </div>
+            </div>
+        <% } %>
+
+<%- include('../includes/foot.ejs') %>

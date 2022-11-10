@@ -6,8 +6,14 @@
         <div class="level">
             <div class="level-item has ">
                 <ul class="steps is-vertical is-hollow ">
-                    <% for(let l of listEstatus) { %>
-                        <%- include('step.ejs', {listEstatus: l}) %>
+                    <% if(listEstatus != '') { %>
+                        <% for(let l of listEstatus) { %>
+                            <%- include('step.ejs', {listEstatus: l}) %>
+                        <% } %>
+                    <% } else { %>
+                        <% for(let l of listEstatus2) { %>
+                            <%- include('step.ejs', {listEstatus: l}) %>
+                        <% } %>
                     <% } %>
                 </ul>
             </div>
