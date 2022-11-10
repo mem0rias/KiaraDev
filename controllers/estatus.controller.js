@@ -2,10 +2,10 @@ const { request } = require('http');
 const path = require('path');
 const listEstatus = require('../models/estatus.model');
 
-exports.get_root = (request, response, next) => {
+exports.get_EstatusP = (request, response, next) => {
 
 
-    listEstatus.fetchAll()
+    listEstatus.fetchEstatus()
         .then( ([rows, fieldData]) => {
             //console.log(rows);
             response.render(path.join('Estatus', 'estatus.ejs'), {
@@ -18,7 +18,7 @@ exports.get_root = (request, response, next) => {
 
 }
 
-exports.miEstatus = (request, response, next) => {
+exports.misEstatus = (request, response, next) => {
     
     let userid = request.session.IdUser;
     expediente.GetRents(userid).then(([rows, fieldata]) =>{
@@ -31,7 +31,7 @@ exports.miEstatus = (request, response, next) => {
                 array.push(rows2.length != 0);
                 array.push(rows3.length != 0);
                 console.log(array);
-                response.render('./Estatus/estatus', {arr: array});
+                response.render('./Estatus/listEstatus', {arr: array});
                 
                 
             })
