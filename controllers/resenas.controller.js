@@ -1,13 +1,15 @@
 const { info } = require('console');
+const { get } = require('http');
 const { userInfo } = require('os');
 const path = require('path');
+const { get_idComentario } = require('../models/resenas.model');
 const Resenas = require('../models/resenas.model');
 
 
 exports.get_resena = (request, response, next) => {
     let info = request.body;
     Resenas.fetchAll().then(([rows, fieldData]) => {
-        console.log(rows);
+        // console.log(rows);
         response.render('./resenas/resenas', {
             info: rows,
         });
@@ -15,10 +17,9 @@ exports.get_resena = (request, response, next) => {
         console.log(err);
         return [];
     });
-}
+};
 exports.postAdd = (request, response, next) => {
-    console.log(request.body.contenido)
-    const resenia = new Resenas('3', request.body.contenido, '1');
+    const resenia = new Resenas(request.session.IdUser, request.body.contenido, '1');
     resenia.save().then(() => {
         response.redirect('/resenas');
     }).catch(err => {
@@ -26,5 +27,27 @@ exports.postAdd = (request, response, next) => {
     });
 
     console.log("Se guardó tu reseña");
+};
 
-}
+exports.post_delete = (request, response, next) => {
+
+    /*console.log('El valor del id del comentario es: ', request.body.idComentario);*/
+    Resenas.delete(request.body.idComentario).then(() => {
+        console.log('Se ha borrado el comentario: ', request.body.idComentario);
+        response.redirect('/resenas');
+    }).catch(error => {
+        console.log(error);
+
+    });
+};
+// Hay que intentar hacerlo con AJAX
+/*Resenas.delete(request.body.idComentario).then(() => {
+        Resenas.fetchAll().then(([rows, fieldData]) => {
+            response.status(200).json({
+                mensaje: "La reseña " + request.body.idComentario + " fue eliminada",
+                info: rows,
+            });
+        }).catch(error => { console.log(error) });
+    }).catch(error => { console.log(error) });
+
+};*/

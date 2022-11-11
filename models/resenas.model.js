@@ -1,6 +1,6 @@
 const db = require('../util/database');
 
-module.exports = class Reseñas {
+module.exports = class Resenas {
     constructor(usuario, mi_contenido, mi_aprobado) {
             this.idUsuario = usuario;
             this.contenido = mi_contenido;
@@ -16,6 +16,16 @@ module.exports = class Reseñas {
     static fetchAll() {
         return db.execute(
             'SELECT *  FROM comentarios'
+        );
+    }
+    static get_idComentario() {
+        return db.execute(
+            'SELECT idComentario FROM comentarios'
+        );
+    }
+    static delete(idComentario) {
+        return db.execute(
+            'DELETE FROM comentarios WHERE idComentario = ?', [idComentario]
         );
     }
 }

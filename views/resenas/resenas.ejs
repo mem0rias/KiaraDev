@@ -2,20 +2,26 @@
 
     <div class="has-background-light box">
         <div class="box">
-
             <% if (info.length > 0) { %>
                 <% for (let elements of info) { %>
                     <article class="media">
+
                         <div class="media-content">
-                            <div class="content">
-                                <strong><%= elements.idUsuario%></strong>
-                                <br>
-                                <%= elements.contenido%>
-                                    <br>
+                            <strong><%= elements.idUsuario%></strong>
+
+                            <br>
+                            <%= elements.contenido%>
+                                </br>
+                                <form action="/resenas/delete" method="post">
+                                    <input type="hidden" name="idComentario" value="<%= elements.idComentario %>">
+
+                                    <input class="button has-text-centered is-danger" type="submit" id="eliminar" name="eliminar" value="Eliminar">
+
+                                </form>
+
+                                <%= elements.idComentario%>
                                     <small><a><%= elements.fecha%></a></small>
-                                    </p>
-                                    <p>
-                            </div>
+
                         </div>
                     </article>
                     <% } %>
@@ -23,7 +29,6 @@
                         <% } else { %>
                             <h1>El arreglo está vacío</h1>
                             <% } %>
-
 
                                 <form action="/resenas" method="post">
                                     <article class="media">
@@ -44,6 +49,17 @@
 
         </div>
     </div>
+    <% if(info != '') { %>
+        <script>
+            bulmaToast.toast({
+                message: '<%= info %>',
+                type: 'is-danger',
+                position: 'bottom-right',
+                animate: { in: 'fadeIn',
+                    out: 'fadeOut'
+                }
+            })
+        </script>
+        <% } %>
 
-
-    <%- include('../includes/foot.ejs') %>
+            <%- include('../includes/foot.ejs') %>

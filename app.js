@@ -70,6 +70,7 @@ app.use('/dashboard', rutasDashboard);
 app.use('/login', rutasLogin);
 app.use('/expediente', expediente);
 app.use('/resenas', resenas);
+//app.use('/intro', '/Intro/intro');
 
 app.get('/', (request, response, next) => {
     response.redirect('/index');
@@ -83,7 +84,6 @@ app.use((request, response, next) => {
     response.status(404);
     response.sendFile(path.join(__dirname, 'views', 'error.html'));
 });
-
 
 //
 let formatc = new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" })
