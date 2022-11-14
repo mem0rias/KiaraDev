@@ -1,12 +1,16 @@
 
     
+
 <span  class="steps-marker">
+    <% if(paso.Estatus != 0){ %>
     <span class="icon">
-        <i class="fa fa-check"></i>
+        <i class="mdi mdi-check"></i>
     </span>
+    <% } %>
 </span>
+
 <div class="steps-content">
-    <p class="is-size-4"><%= paso.Paso %></p>
+    <p class="is-size-4"><%= paso.paso %></p>
     <p><%= paso.Descripcion %></p>
 </div>
 
