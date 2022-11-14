@@ -13,6 +13,8 @@ exports.get_resena = (request, response, next) => {
         // console.log(rows);
         response.render('./resenas/resenas', {
             info: rows,
+            logged: request.session.isLoggedIn,
+
         });
     }).catch(err => {
         console.log(err);
