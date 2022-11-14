@@ -7,20 +7,18 @@
                     <article class="media">
 
                         <div class="media-content">
-                            <strong><%= elements.idUsuario%></strong>
+                            <strong><%= elements.Nombre%> <%= elements.PA%> <%= elements.SA%></strong>
 
                             <br>
                             <%= elements.contenido%>
                                 </br>
                                 <form action="/resenas/delete" method="post">
                                     <input type="hidden" name="idComentario" value="<%= elements.idComentario %>">
+                                    <input type="hidden" name="idUsuario" value="<%= elements.idUsuario %>">
 
                                     <input class="button has-text-centered is-danger" type="submit" id="eliminar" name="eliminar" value="Eliminar">
-
                                 </form>
-
-                                <%= elements.idComentario%>
-                                    <small><a><%= elements.fecha%></a></small>
+                                <small><a><%= elements.fecha%></a></small>
 
                         </div>
                     </article>

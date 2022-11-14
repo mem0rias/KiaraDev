@@ -15,12 +15,17 @@ module.exports = class Resenas {
         // Devuelve los objetos del almacenamiento persistente (Se ejecuta directamente sobre la clase)
     static fetchAll() {
         return db.execute(
-            'SELECT *  FROM comentarios'
+            'SELECT * FROM comentarios, usuario WHERE comentarios.idUsuario = usuario.IdUsuario'
         );
     }
     static get_idComentario() {
         return db.execute(
             'SELECT idComentario FROM comentarios'
+        );
+    }
+    static getNombre() {
+        return db.execute(
+            'JOIN'
         );
     }
     static delete(idComentario) {

@@ -4,6 +4,7 @@ const { userInfo } = require('os');
 const path = require('path');
 const { get_idComentario } = require('../models/resenas.model');
 const Resenas = require('../models/resenas.model');
+const Dashboard = require('../models/dashboard.model');
 
 
 exports.get_resena = (request, response, next) => {
@@ -19,19 +20,22 @@ exports.get_resena = (request, response, next) => {
     });
 };
 exports.postAdd = (request, response, next) => {
+    console.log(request.session.user);
     const resenia = new Resenas(request.session.IdUser, request.body.contenido, '1');
     resenia.save().then(() => {
         response.redirect('/resenas');
+        console.log("Se guardó tu reseña");
     }).catch(err => {
         response.status(302).redirect('/resenas');
     });
 
-    console.log("Se guardó tu reseña");
+
 };
 
 exports.post_delete = (request, response, next) => {
 
     /*console.log('El valor del id del comentario es: ', request.body.idComentario);*/
+
     Resenas.delete(request.body.idComentario).then(() => {
         console.log('Se ha borrado el comentario: ', request.body.idComentario);
         response.redirect('/resenas');
