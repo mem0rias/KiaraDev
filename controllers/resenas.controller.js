@@ -42,23 +42,29 @@ exports.postAdd = (request, response, next) => {
 exports.post_delete = (request, response, next) => {
 
     /*console.log('El valor del id del comentario es: ', request.body.idComentario);*/
+    /*
+        Resenas.delete(request.body.idComentario).then(() => {
+            console.log('Se ha borrado el comentario: ', request.body.idComentario);
+            response.redirect('/resenas');
+        }).catch(error => {
+            console.log(error);
+
+        });
+    };*/
+    // Hay que intentar hacerlo con AJAX
+    /* Resenas.delete(request.body.idComentario).then(() => {
+         Resenas.fetchAll().then(([rows, fieldData]) => {
+             response.status(200).json({
+                 mensaje: "La reseña " + request.body.idComentario + " fue eliminada",
+                 info: rows,
+             });
+         }).catch(error => { console.log(error) });
+     }).catch(error => { console.log(error) });*/
 
     Resenas.delete(request.body.idComentario).then(() => {
-        console.log('Se ha borrado el comentario: ', request.body.idComentario);
-        response.redirect('/resenas');
-    }).catch(error => {
-        console.log(error);
-
-    });
-};
-// Hay que intentar hacerlo con AJAX
-/*Resenas.delete(request.body.idComentario).then(() => {
         Resenas.fetchAll().then(([rows, fieldData]) => {
-            response.status(200).json({
-                mensaje: "La reseña " + request.body.idComentario + " fue eliminada",
-                info: rows,
-            });
+            response.status(200).json('El comentario fue eliminado');
         }).catch(error => { console.log(error) });
     }).catch(error => { console.log(error) });
 
-};*/
+};
