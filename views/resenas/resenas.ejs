@@ -50,17 +50,5 @@
 
         </div>
     </div>
-    <% if(info != '') { %>
-        <script>
-            bulmaToast.toast({
-                message: '<%= info %>',
-                type: 'is-danger',
-                position: 'bottom-right',
-                animate: { in: 'fadeIn',
-                    out: 'fadeOut'
-                }
-            })
-        </script>
-        <% } %>
 
-            <%- include('../includes/foot.ejs') %>
+    <%- include('../includes/foot.ejs') %>
