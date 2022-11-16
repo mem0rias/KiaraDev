@@ -2,7 +2,7 @@ const db = require('../util/database');
 const bcrypt = require('bcryptjs');
 const { response } = require('express');
 module.exports = class Login {
-    constructor(nombre, A1, A2, EC, Email, Ocup, Tel, password){
+    constructor(nombre, A1, A2, EC, Email, Ocup, Tel, password, N_Docs, U_DocsList){
         this.nombre = nombre;
         this.A1 = A1;
         this.A2 = A2;
@@ -10,15 +10,17 @@ module.exports = class Login {
         this.Email = Email;
         this.Ocup = Ocup;
         this.Tel = Tel;
-        this.pass = password;
+        this.pass = password
+        this.N_Docs = N_Docs;
+        this.U_DocsList = U_DocsList;
     }
     
 
     save(){
         return bcrypt.hash(this.pass,12).then((password_cifrado) =>{
             return db.execute(
-                'INSERT INTO usuario(nombre, PA, SA, email, eciv, ocupacion, Telefono, password, IdRol) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-                [this.nombre, this.A1, this.A2, this.Email, this.EC, this.Ocup, this.Tel, password_cifrado, 0]);
+                'CALL CreateUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+                [this.nombre, this.A1, this.A2, this.Email, this.EC, this.Ocup, this.Tel, password_cifrado, 0, this.N_Docs, this.U_DocsList]);
         }).catch( (error) => {
             console.log(error);
         });
@@ -40,6 +42,10 @@ module.exports = class Login {
 
     static fetchmail(u) {
         return db.execute('SELECT email, password, IdUsuario, IdRol from usuario where email = (?)', [u]);
+    }
+
+    static fetchDocTypes(){
+        return db.execute('SELECT Tipo_Doc from tipo_doc');
     }
 
     

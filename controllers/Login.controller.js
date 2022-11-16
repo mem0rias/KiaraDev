@@ -107,23 +107,45 @@ exports.registrarse = (request, response, next) => {
                 });
             }else{
                 //Si el elemento esta vacio significa que no existe ese correo en la BD
-                const reg = new User(val.el1[0], val.el1[1], val.el1[2], val.el1[4], val.el1[3], val.el1[5], val.el1[6], val.el1[7]);
+                
                 //console.log(reg);
 
                 // Se ejecuta el proceso para guardar toda la informacion del usuario dentro de la BD
-                reg.save().then(() =>{
-                    // Se envia mensaje de registro y se redirige al login.
-                    request.session.infopositiva = 'Registro exitoso!';
-                    return request.session.save(err => {
-                        response.redirect('/login');
+                User.fetchDocTypes().then(([rows2, fieldData]) =>{
+                    let docstring = '';
+                    let len = rows2.length;
+                    console.log(rows2);
+                    console.log(len);
+                    for(let i = 0; i < len; i++){
+                        docstring += rows2[i].Tipo_Doc;
+                        if(i != len - 1){
+                            docstring += ',';
+                        }
+                    }
+                    console.log(docstring);
+                    const reg = new User(val.el1[0], val.el1[1], val.el1[2], val.el1[4], val.el1[3], val.el1[5], val.el1[6], val.el1[7], len, docstring);
+                    reg.save().then(() =>{
+                        // Se envia mensaje de registro y se redirige al login.
+                        request.session.infopositiva = 'Registro exitoso!';
+                        return request.session.save(err => {
+                            response.redirect('/login');
+                        });
+                    }).catch((error) => {
+                        // Si la BD no esta disponible se envia este mensaje
+                        request.session.info = 'Hay un problema con la pagina, intentalo mas tarde';
+                        return request.session.save(err => {
+                            response.redirect('/login/registrarse');
+                        });
                     });
-                }).catch((error) => {
-                    // Si la BD no esta disponible se envia este mensaje
+                }).catch((error) =>{
                     request.session.info = 'Hay un problema con la pagina, intentalo mas tarde';
                     return request.session.save(err => {
                         response.redirect('/login/registrarse');
                     });
-                });
+                })
+                
+                
+                
             }
         }).catch(err => {
             //Error por si la BD falla cuando se checa el correo.
