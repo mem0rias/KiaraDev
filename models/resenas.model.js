@@ -23,11 +23,7 @@ module.exports = class Resenas {
             'SELECT idComentario FROM comentarios'
         );
     }
-    static getNombre() {
-        return db.execute(
-            'JOIN'
-        );
-    }
+
     static delete(idComentario) {
         return db.execute(
             'DELETE FROM comentarios WHERE idComentario = ?', [idComentario]

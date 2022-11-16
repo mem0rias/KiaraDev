@@ -5,12 +5,17 @@ const path = require('path');
 const { get_idComentario } = require('../models/resenas.model');
 const Resenas = require('../models/resenas.model');
 const Dashboard = require('../models/dashboard.model');
+const moment = require('moment');
+moment.locale('es-mx');
 
 
 exports.get_resena = (request, response, next) => {
     let info = request.body;
     Resenas.fetchAll().then(([rows, fieldData]) => {
         // console.log(rows);
+        for (let elements of rows) {
+            elements.fecha = moment(elements.fecha).format('lll');
+        }
         response.render('./resenas/resenas', {
             info: rows,
             logged: request.session.isLoggedIn,

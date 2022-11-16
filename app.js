@@ -47,6 +47,8 @@ const rutasDashboard = require('./routes/dashboard.routes');
 const rutasLogin = require('./routes/Login.routes');
 const expediente = require('./routes/expediente.routes');
 const resenas = require('./routes/resenas.routes');
+const intro = require('./routes/intro.routes');
+const contacto = require('./routes/contacto.routes');
 
 app.use(session({
     secret: 'aerfgtvythvyugt54cyh4yhyhy6h46yr5ky87br53tgc3g46gg',
@@ -70,7 +72,8 @@ app.use('/dashboard', rutasDashboard);
 app.use('/login', rutasLogin);
 app.use('/expediente', expediente);
 app.use('/resenas', resenas);
-//app.use('/intro', '/Intro/intro');
+app.use('/intro', intro);
+app.use('/contacto', contacto);
 
 app.get('/', (request, response, next) => {
     response.redirect('/index');
@@ -85,7 +88,7 @@ app.use((request, response, next) => {
     response.sendFile(path.join(__dirname, 'views', 'error.html'));
 });
 
-//
+
 let formatc = new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" })
 
 app.listen(3000);
