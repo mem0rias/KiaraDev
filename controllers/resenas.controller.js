@@ -29,7 +29,6 @@ exports.resena_ajax = (request, response, next) => {
         response.status(200).json(rows);
     }).catch(err => {
         console.log(err);
-        return [];
     });
 }
 
@@ -41,5 +40,11 @@ exports.post_delete = (request, response, next) => {
             response.redirect('/resenas');
         }).catch(error => { console.log(error) });
     }).catch(error => { console.log(error) });
+};
 
+exports.post_delete_ajax = (request, response, next) => {
+
+    Resenas.delete(request.body.idComentario).then(() => {
+        response.status(200).json({ mensaje: `El comentario ${request.body.idComentario} fue eliminado` });
+    }).catch(error => { console.log(error) });
 };
