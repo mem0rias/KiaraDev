@@ -1,56 +1,67 @@
 <%- include('../includes/head.ejs') %>
 
     <div class="has-background-light box">
+
+        <div class="box" id="coments"></div>
         <div class="box">
-            <% if (info.length > 0) { %>
-                <% for (let elements of info) { %>
+            <% if (logged == true) { %>
+                <form action="/resenas" method="post">
                     <article class="media">
                         <div class="media-content">
-                            <strong><%= elements.Nombre%> <%= elements.PA%> <%= elements.SA%></strong>
-
-                            <br>
-                            <%= elements.contenido%>
-                                </br>
-                                <% if (logged == true) { %>
-                                    <form action="/resenas/delete" method="post">
-                                        <input type="hidden" name="idComentario" value="<%= elements.idComentario %>">
-                                        <input type="hidden" name="idUsuario" value="<%= elements.idUsuario %>">
-                                        <div class="column is-left">
-                                            <input class="button has-text-centered is-danger" type="submit" id="eliminar" name="eliminar" value="Eliminar">
-                                        </div>
-                                    </form>
-                                    <% } %>
-                                        <small><a><%= elements.fecha%></a></small>
+                            <div class="field">
+                                <p class="control">
+                                    <input class="input" type="text" id="resena_cont" name="contenido" onkeyup="" maxlength="255" placeholder="Añade un comentario...">
+                                </p>
+                            </div>
+                            <div class="field">
+                                <input class="button has-text-centered is-danger" type="submit" id="enviar" name="enviar" value="Publicar">
+                                </p>
+                            </div>
 
                         </div>
                     </article>
-                    <% } %>
-
-                        <% } else { %>
-                            <h1>El arreglo está vacío</h1>
-                            <% } %>
-                                <% if (logged == true) { %>
-                                    <form action="/resenas" method="post">
-                                        <article class="media">
-                                            <div class="media-content">
-                                                <div class="field">
-                                                    <p class="control">
-                                                        <input class="input" type="text" id="resena_cont" name="contenido" onkeyup="cambiarcolor(this) " maxlength="255" placeholder="Añade un comentario...">
-                                                    </p>
-                                                </div>
-                                                <div class="field">
-
-                                                    <input class="button has-text-centered is-danger" type="submit" id="enviar" name="enviar" value="Publicar">
-                                                    </p>
-                                                </div>
-                                                <p class="control">
-
-                                            </div>
-                                        </article>
-                                    </form>
-                                    <% } %>
-
+                </form>
+                <% } %>
         </div>
+
     </div>
+
+    <script>
+        const desplegar_comentarios = () => {
+            let html = '';
+            fetch('/resenas/fetch/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(result => {
+                return result.json();
+            }).then(data  =>  {
+                for (elements of data) {
+                    html += '<article class="media">'
+                    html += '<div class="media-content">'
+                    html += '<strong>' + elements.Nombre + elements.PA + elements.SA + '</strong>'
+                    html += '<br>'
+                    html += elements.contenido
+                    html += '   </br> '
+                    html += ' <form action="/resenas/delete" method="post">'
+                    html += '  <input type="hidden" name= "idComentario" value="' + elements.idComentario + '"> '
+                    html += '<input type="hidden" name="idUsuario" value="' + elements.idUsuario + '"> '
+                    html += ' <div class="column is-left">'
+                    html += '  <input class="button has-text-centered is-danger" type="submit" id="eliminar" name="eliminar" value="Eliminar"> '
+                    html += '  </div>'
+                    html += ' </form>'
+                    html += ' <small><a>' + elements.fecha + '</a></small> '
+                    html += '</div> '
+                    html += '</article> '
+                }
+                document.getElementById('coments').innerHTML = html;
+            }).catch(err => {
+                console.log(err);
+            });
+
+        }
+        window.onload = desplegar_comentarios;
+    </script>
 
     <%- include('../includes/foot.ejs') %>

@@ -6,4 +6,5 @@ const router = express.Router();
 router.get('/', resenasController.get_resena);
 router.post('/', resenasController.postAdd);
 router.post('/delete', resenasController.post_delete);
+router.get('/fetch', resenasController.resena_ajax);
 module.exports = router;
