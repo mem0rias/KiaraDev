@@ -50,6 +50,7 @@
             
         <script>
             const cargarexp = (elemento) =>{
+                let estados = ['Faltante', 'Pendiente', 'Aceptado', 'Rechazado'];
                 let query = elemento.value;
                 fetch('/expediente/fetch/' + query, {
                     method: 'GET',
@@ -60,7 +61,45 @@
                     return result.json();
                 }).then(data => {
                     console.log(data);
-                    let html = ''
+                    let html = '';
+                    for(elements of data){
+                        if(elements.estatus == undefined)
+                            elements.estatus = 0;
+                        if(elements.Comentarios == undefined)
+                            elements.Comentarios = ' ';
+                        html +=
+                        `
+                        <div class="has-background-light box">
+                            <div class="columns">
+                                <input type="hidden" name="Tipo_Doc" value="">
+                                <div class="column is-3">
+                                    <label class="label"> ${elements.descripcion}</label> </div>
+                                    <div class="column is-2">
+                                        <div class="file is-danger">
+                                            <label class="file-label">
+                                                <input class="file-input"  accept=".pdf" type="file" name="archivo2">
+                                                    <span class="file-cta">
+                                                        <span class="file-icon">
+                                                            <i class="fas fa-upload"></i>
+                                                        </span>
+                                                        <span class="file-label has-text-centered">
+                                                            Subir Archivo
+                                                        </span>
+                                                    </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                            <div class="column is-5">
+                            <h2 class="label"> ${elements.Comentarios} </h2>
+                        </div>
+                        <div class="column"> <h2 class="label"> ${estados[elements.estatus]} </h2></div></div> </div>
+
+                            
+                        `
+                        document.getElementById('exp').innerHTML = html;
+                    }
+                    
+                    /*let html = ''
                     let docs = data.files;
                     let tipo_docs = new Array();
                     let estados = ['Faltante', 'Pendiente', 'Aceptado', 'Recahzado'];
@@ -103,7 +142,8 @@
                         html += '</div>';
                         html+='<div class="column"> <h2 class="label">' + estados[estatus]+' </h2></div></div> </div>';
                     }
-                    document.getElementById('exp').innerHTML = html;
+                    
+                    */
                 }).catch(err => {
                     console.log(err);
                 });

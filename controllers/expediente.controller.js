@@ -100,14 +100,15 @@ exports.miexp = (request, response, next) => {
     expediente.GetRents(userid).then(([rows, fieldata]) =>{
         expediente.GetBuy(userid).then(([rows2, fieldata2]) =>{
             expediente.GetSelling(userid).then(([rows3, fieldata3]) =>{
-                let array = new Array();
-                let arraytipos = ['5','3','1'];
-                let funcs = new Array();
-                array.push(rows.length != 0);
-                array.push(rows2.length != 0);
-                array.push(rows3.length != 0);
-                console.log(array);
-                response.render('./Expediente/expedienteCliente', {arr: array});
+                    let array = new Array();
+                    let arraytipos = ['5','3','1'];
+                    let funcs = new Array();
+                    array.push(rows.length != 0);
+                    array.push(rows2.length != 0);
+                    array.push(rows3.length != 0);
+                    console.log(array);
+                    response.render('./Expediente/expedienteCliente', {arr: array});
+                
                 
                 
             })
@@ -119,6 +120,16 @@ exports.miexp = (request, response, next) => {
 
 exports.fetchinfo = (request, response, next) => {
     let query = request.params.tipo;
+    let user = request.session.IdUser;
+    console.log(query + " "+  user);
+    expediente.fetchRequirements(query,user).then(([rows, fieldData]) =>{
+        response.status(200).json(rows);
+    }).catch(err =>{
+        console.log(err);
+    });
+    
+    /*
+
     
     expediente.fetchReqs(query).then(([rows,fieldData]) => {
         expediente.fetchFiles(request.session.IdUser).then(([rows2, fielddata2]) => {
@@ -132,6 +143,7 @@ exports.fetchinfo = (request, response, next) => {
         console.log(err);
         response.status(200).json('err');
     })
+    */
 }
 exports.descargarArchivo = (request, response, next) => {
     console.log(request.params);
