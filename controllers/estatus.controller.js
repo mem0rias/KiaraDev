@@ -1,3 +1,4 @@
+const { response } = require('express');
 const { body } = require('express-validator');
 const { request } = require('http');
 const path = require('path');
@@ -9,10 +10,10 @@ exports.get_EstatusP = (request, response, next) => {
     Dashboard.fetchUser(userid).then( ([usuarioData, fieldData]) => {
         listEstatus.fetchPropertiesC(userid)
         .then( ([rows, fieldData]) => {
-            console.log(rows);
+            //console.log(rows);
             listEstatus.fetchPropertiesR(userid)
                 .then( ([rows2, fieldData2]) => {
-                    console.log(rows2);
+                    //console.log(rows2);
                     response.render(path.join('dashboard', 'dashboard.Seguimiento.ejs'), {
                         PropertiesC: rows,
                         PropertiesR: rows2,
@@ -44,7 +45,7 @@ exports.get_AvanceP = (request, response, next) => {
             
             listEstatus.fetchAvanceR(properid)
                 .then( ([rows2, fieldData2]) => {
-                    console.log(rows2);
+                    //console.log(rows2);
                     response.render(path.join('Estatus', 'estatus.ejs'), {
                         listEstatus: rows,
                         listEstatus2: rows2,
@@ -57,6 +58,21 @@ exports.get_AvanceP = (request, response, next) => {
         }).catch( (error) => {
             console.log(error);
         });
+}
 
-    }
+exports.post_update =(request, response, next) => {
+    console.log(request.body.estado)
+    console.log(request.body.id)
+
+    listEstatus.updateEstatusC(request.body.estado, request.body.id)
+        .then(([rows, fieldData])=> {
+           console.log(rows);
+            response.status(200).json({
+                mensaje: "El estado fue actualizado"
+                
+            });
+           
+        }).catch(error => {console.log(error)});
+    
+}
 

@@ -1,24 +1,33 @@
 
 <div class="field is-grouped is-grouped-center">
 
-<span  class="steps-marker">
-    <% if(paso.Estatus != 0){ %>
-    <span class="icon">
-        <i class="mdi mdi-check"></i>
+    <span  class="steps-marker">
+        <% if(paso.Estatus != 0){ %>
+        <span class="icon">
+            <i class="mdi mdi-check"></i>
+        </span>
+        <% } %>
     </span>
-    <% } %>
-</span>
 
-<div class="steps-content">
-    <p class="is-size-4"><%= paso.paso %></p>
-    <p><%= paso.Descripcion %></p>
+
+    <div class="steps-content">
+        <p class="is-size-4"><%= paso.paso %></p>
+        <p  ><%= paso.Descripcion %></p>
+        
+    </div>
+
+    <div class="container">
+        <div class="select">
+            <select id="select-<%=paso.paso%>" onchange="enableGuardar(this)">
+                
+                <option value=0 <% if(paso.Estatus == 0){ %>selected<% } %>>Incompleto</option>
+                <option value=1 <% if(paso.Estatus != 0){ %>selected<% } %>>Completo</option>   
+
+            </select>
+        </div>
+        
+        <button class="button is-right is-hidden" id="boton-<%=paso.paso%>"> Guardar </button>
+    </div>
+   
 </div>
-<!-- 
-<label class="is-checkbox  is-info is-rounded">
-    <input id="mycheckbox" checked="checked" type="checkbox">
-    <span  class="icon checkmark">
-      <i class="fa fa-check"></i>
-    </span>
-    <span>My checkbox</span>
-</label> -->
-</div>
+

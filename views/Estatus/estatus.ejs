@@ -5,10 +5,11 @@
             <div class="level-item has ">
                 
                 <ul class="steps is-vertical is-hollow">
-                    
                     <% if(listEstatus != '') { %>
+                        <div class="content pb-3">
                         <h2 class="title is-large"> Propiedad en venta</h2>
                        <p></p>
+                        </div>
                         <% for(let l of listEstatus) { %>
                             <% if(l.SumaFechas == l.fechaInicio){%>
                                 <li class="steps-segment is-active">
@@ -33,10 +34,50 @@
                                 </li>
                             <% } %>
                         <% } %>
-                    <% } %>
-                    
+                    <% } %>  
                 </ul>
+                
             </div>
         </div>
     </div>
+
+    <input type="hidden" id="_csrf" value="<%= csrfToken %>">
+    <script>
+        const enableGuardar = (elemento)=>{
+            let id = elemento.id.split('-')[1];
+            let boton = document.getElementById('boton-'+id);
+            console.log(elemento.value);
+            boton.onclick = () => guardarEstado(elemento.value, id);
+            boton.classList.remove('is-hidden');
+        }
+        
+
+    const guardarEstado = (estado, id) => {
+        const csrf = document.getElementById('_csrf').value;
+        console.log(estado);
+        //función que manda la petición asíncrona
+        fetch('/estatus/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                estado: estado,
+                id: id,
+                _csrf: csrf,
+            }),
+        }).then(result => {
+            return result.json(); //Regresa otra promesa
+        }).then(data => {
+            console.log(data.mensaje);
+            alert(data.mensaje); //hacer toast
+            
+
+        }).catch(err => {
+            console.log(err);
+        });
+
+    }
+
+    </script>
 <%- include('../includes/foot.ejs') %>

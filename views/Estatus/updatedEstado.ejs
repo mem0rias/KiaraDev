@@ -1,0 +1,33 @@
+let html = '';
+
+html += '<div class="field is-grouped is-grouped-center">';
+
+    html += '<span  class="steps-marker">';
+        if(paso.Estatus != 0){ 
+            html += '<span class="icon">';
+            hhtml += '<i class="mdi mdi-check"></i>';
+            html += '</span>';
+        }
+    html += '</span>';
+
+
+    html += '<div class="steps-content">';
+        html += '<p class="is-size-4"><%= paso.paso %></p>';
+        html += '<p  ><%= paso.Descripcion %></p>';
+        
+    html += '</div>';
+
+    html += '<div class="container">';
+        html += '<div class="select">';
+            html += '<select id="select-<%=paso.paso%>" onchange="enableGuardar(this)">';
+                
+                html += '<option <% if(paso.Estatus == 0){ %>selected<% } %>>Incompleto</option>';
+                html += '<option <% if(paso.Estatus != 0){ %>selected<% } %>>Completo</option>';
+
+            html += '</select>';
+        html += '</div>';
+        
+        html += '<button class="button is-right is-hidden" id="boton-<%=paso.paso%>" onclick="guardarEstado(<%= paso.Estatus %>, <%= paso.id %>)"> Guardar </button>';
+    html += '</div>';
+   
+html += '</div>';
