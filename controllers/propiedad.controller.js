@@ -83,32 +83,32 @@ exports.post_new = (request, response, next) => {
     console.log(request.body.descripcion);
     console.log(request.body);
     let v = request.body;
+    const userId = parseInt(response.locals.IdUser);
 
     if(request.body.tipoPropiedad == 'Residencial') {
+
+        //Convertir en tipo int datos requeridos
         const recamaras = parseInt(request.body.recamaras);
         const estacionamiento = parseInt(request.body.estacionamiento);
         const banos = parseInt(request.body.banos);
         const pisos = parseInt(request.body.pisos);
         const gas = parseInt(request.body.gas);
         const cocina = parseInt(request.body.cocina);
-      
-        console.log(recamaras)
-        const propiedad = new Propiedad(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.precio,v.colonia,v.imagenes,v.video);
-        propiedad.saveResidencial(v.titulo,v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina)
+        Propiedad.saveResidencial(v.titulo,v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina,userId)
                 .then( () => {
-                        response.redirect('/propiedades');
+                        response.redirect('/dashboard/asignado');
                 }).catch( (error) => {
                         console.log(error);
         });
     }
+
     else if(request.body.tipoPropiedad == 'Comercial'){
         const recamaras = parseInt(request.body.recamaras);
         const estacionamiento = parseInt(request.body.estacionamiento);
         const banos = parseInt(request.body.banos);
         const pisos = parseInt(request.body.pisos);
         const oficinas = parseInt(request.body.oficinas);
-        const propiedad = new Propiedad(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.precio,v.colonia,v.imagenes,v.video);
-        propiedad.saveComercial(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,estacionamiento,banos,oficinas,pisos)
+        Propiedad.saveComercial(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,estacionamiento,banos,oficinas,pisos)
                 .then( () => {
                         response.redirect('/propiedades');
                 }).catch( (error) => {
@@ -126,7 +126,7 @@ exports.get_edit = (request, response, next) => {
             var monto = rows[0].Precio;
             let tipoP;
             precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
-             Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
+            Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
                 if (res.length > 0){
                     console.log(res);
                     
@@ -192,10 +192,10 @@ exports.post_edit = (request, response, next) => {
     console.log(v.id);
     console.log(v.titulo);
     console.log(v.recamaras);
-    Propiedad.updateResidencial(v.id, v.titulo,v.recamaras)
+    console.log(v.descripcion);
+    Propiedad.updateResidencial(v.id,v.titulo,v.descripcion,v.recamaras)
         .then( () => {
-            request.session.info = "La información del robot " + request.body.nombre + " fue actualizada exitosamente";
-            response.redirect('/propiedades');
+            response.redirect('/dashboard/asignado');
         }).catch( (error) => {
             console.log(error);
         });

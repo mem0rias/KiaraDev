@@ -21,33 +21,33 @@ module.exports = class Propiedad {
     save() {
         return db.execute(
             'INSERT INTO propiedades (Descripcion, Precio, Estado, Municipio, Colonia, Calle, CP, Terreno, Video, Imagenes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-            [this.descripcion, this.precio, this.estado,this.municipio,this.colonia,this.calle,this.cp,this.terreno,this.video,this.imagenes]);
-            
+            [this.descripcion, this.precio, this.estado,this.municipio,this.colonia,this.calle,this.cp,this.terreno,this.video,this.imagenes]);     
     }
 
-    saveResidencial(titulo,descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina) {
+    static saveResidencial(titulo,descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina,userId) {
         return db.execute(
-            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
-            [titulo,descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina]);
-            
+            'CALL saveResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [titulo,descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina,userId]);       
     }
 
-    saveComercial(descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos) {
+    static saveComercial(descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos) {
         return db.execute(
-            'CALL agregarComercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
-            [descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos]);
-            
+            'CALL saveComercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos]);     
+    }
+
+    static saveTerreno(descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes) {
+        return db.execute(
+            'CALL saveTerreno(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos]);     
+    } 
+    
+    static updateResidencial(id,titulo,descripcion,recamaras) {
+        return db.execute(
+            'CALL updateResidencial(?,?,?,?)', 
+            [id,titulo,descripcion,recamaras]);
     }
     
-    static updateResidencial(id,titulo,recamaras) {
-        return db.execute(
-            'CALL updateResidencial(?,?,?)', 
-            [id,titulo,recamaras]);
-            
-    }
-    
-
-
 
     static find(valor_busqueda) {
         return db.execute('SELECT * FROM propiedades WHERE Colonia LIKE ? ', ['%'+valor_busqueda+'%']);
