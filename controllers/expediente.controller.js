@@ -167,7 +167,13 @@ exports.descargarArchivo = (request, response, next) => {
 exports.subirarch = (request, response, next) => {
     console.log(request.files);
     console.log(request.body);
-
+    let filepaths = '';
+    let tiposArchivos = request.body.SelFiles;
+    for(elements of request.files){
+        filepaths += elements.path + ',';
+    }
+    console.log(filepaths);
+    console.log(tiposArchivos);
     //expediente.UploadFile()
     //response.status(200).json("selogro");
     response.redirect('/expediente/miexpediente');

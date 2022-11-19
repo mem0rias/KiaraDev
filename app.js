@@ -22,10 +22,11 @@ const fileStorage = multer.diskStorage({
     destination: (request, file, callback) => {
         //'uploads': Es el directorio del servidor donde se subirán los archivos 
         // Se obtiene el id del usuario y se revisa si hay una carpeta con el ID ya hecha, si no, la crea. 
+        //console.log(request.body);
+        //console.log(request.files);
         let user = request.body.user;
         let newpath = `./Expedientes/${user}`;
         fs.mkdirSync(newpath, { recursive: true})
-
         callback(null, newpath);
     },
     filename: (request, file, callback) => {

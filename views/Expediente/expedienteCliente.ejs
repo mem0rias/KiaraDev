@@ -37,6 +37,7 @@
             </div>
             <form action="/expediente/miexpediente" method="POST"  enctype="multipart/form-data"> 
                 <input type="hidden" value="<%= user %>" id="user" name="user">
+                <input type="hidden" value="" id="selectedFiles" name="SelFiles">
                 <div id="exp">
 
                 </div>
@@ -49,7 +50,7 @@
                     
                 </div>
             </form>
-            
+            <script src="../js/expedienteCliente.js"></script>
         <script>
             const cargarexp = (elemento) =>{
                 let estados = ['Faltante', 'Pendiente', 'Aceptado', 'Rechazado'];
@@ -79,7 +80,7 @@
                                     <div class="column is-2">
                                         <div class="file is-danger">
                                             <label class="file-label">
-                                                <input class="file-input"  accept=".pdf" type="file" name="archivo2">
+                                                <input class="file-input"  accept=".pdf" type="file" name="archivo2" id="boton-${elements.tipo_doc}" onchange="clickArchivo(this)">
                                                     <span class="file-cta">
                                                         <span class="file-icon">
                                                             <i class="fas fa-upload"></i>
@@ -89,6 +90,9 @@
                                                         </span>
                                                     </span>
                                             </label>
+                                        </div>
+                                        <div>
+                                            <input type="button" id="erase-${elements.tipo_doc}" class="is-hidden" value="borr" onclick="removerArchivo(this)">
                                         </div>
                                     </div>
                             <div class="column is-5">
