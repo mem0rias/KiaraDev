@@ -169,12 +169,14 @@ exports.subirarch = (request, response, next) => {
     console.log(request.body);
     let filepaths = '';
     let tiposArchivos = request.body.SelFiles;
+    let user = request.session.IdUser;
     for(elements of request.files){
         filepaths += elements.path + ',';
     }
+    
     console.log(filepaths);
     console.log(tiposArchivos);
-    //expediente.UploadFile()
+    expediente.UploadFile(tiposArchivos,request.files.length,user,filepaths);
     //response.status(200).json("selogro");
     response.redirect('/expediente/miexpediente');
 }

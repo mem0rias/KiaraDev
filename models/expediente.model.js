@@ -43,7 +43,7 @@ module.exports = class expediente{
 
     }
 
-    static UploadFile(fileType, ExpType, IdUsuario, URL){
-        return db.execute("Update from exp_tipo_doc set URL = ? where IdCliente = ?, Tipo_Doc = ?", [URL, IdUsuario,fileType]);
+    static UploadFile(docList, N_docs, IdUsuario, URLs){
+        return db.execute('CALL `UploadFiles`(?,?,?,?)', [URLs, docList, IdUsuario, N_docs]);
     }
 }
