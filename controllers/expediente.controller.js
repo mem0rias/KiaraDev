@@ -107,7 +107,7 @@ exports.miexp = (request, response, next) => {
                     array.push(rows2.length != 0);
                     array.push(rows3.length != 0);
                     console.log(array);
-                    response.render('./Expediente/expedienteCliente', {arr: array});
+                    response.render('./Expediente/expedienteCliente', {arr: array, user: userid});
                 
                 
                 
@@ -166,7 +166,9 @@ exports.descargarArchivo = (request, response, next) => {
 
 exports.subirarch = (request, response, next) => {
     console.log(request.files);
-    expediente.UploadFile()
-    response.status(200).json("selogro");
-    //response.redirect('/expediente/miexpediente');
+    console.log(request.body);
+
+    //expediente.UploadFile()
+    //response.status(200).json("selogro");
+    response.redirect('/expediente/miexpediente');
 }

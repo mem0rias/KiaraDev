@@ -3,6 +3,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
+const fs = require('fs');
 
 const app = express();
 
@@ -20,7 +21,12 @@ app.use(bodyParser.json());
 const fileStorage = multer.diskStorage({
     destination: (request, file, callback) => {
         //'uploads': Es el directorio del servidor donde se subirán los archivos 
-        callback(null, './Expedientes');
+        // Se obtiene el id del usuario y se revisa si hay una carpeta con el ID ya hecha, si no, la crea. 
+        let user = request.body.user;
+        let newpath = `./Expedientes/${user}`;
+        fs.mkdirSync(newpath, { recursive: true})
+
+        callback(null, newpath);
     },
     filename: (request, file, callback) => {
         //aquí configuramos el nombre que queremos que tenga el archivo en el servidor, 
