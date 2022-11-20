@@ -196,6 +196,15 @@ exports.subirarch = (request, response, next) => {
     console.log(tiposArchivos);
     console.log(totalfiles);
     expediente.UploadFile(tiposArchivos,totalfiles,user,filepaths, estatuslist).then(() =>{
+        if(request.body.removepaths != ''){
+            let removepaths = request.body.removepaths.split(',');
+            
+            
+                for(elements of removepaths){
+                    fs.unlinkSync('.\\' + elements);
+             
+                }
+        }   
         request.session.infopositiva = 'Archivos guardados Exitosamente';
         return request.session.save(err => {
             response.redirect('/expediente/miexpediente');

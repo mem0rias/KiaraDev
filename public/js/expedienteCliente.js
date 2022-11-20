@@ -1,5 +1,6 @@
 const filemap = new Array();
 const removefile = new Array();
+const removepaths = new Array();
 const clickArchivo = (element) => {
     //Esta funcion obtiene el tipo de documento y lo añade a un  arreglo para saber que se cargo en la BD.
     let tipo_doc = (element.id.split('-'))[1];
@@ -8,6 +9,11 @@ const clickArchivo = (element) => {
         document.getElementById('archivo-'+tipo_doc).innerHTML = element.files[0].name;
         document.getElementById('archivo-'+tipo_doc).classList.remove('is-hidden');
         document.getElementById('erase-'+tipo_doc).classList.remove('is-hidden');
+        if(document.getElementById('preloaded-'+tipo_doc).value == 1){
+            removepaths.push(document.getElementById('archivofull-'+tipo_doc).value);
+            document.getElementById('preloaded-'+tipo_doc).value = 0;
+        }
+
         filemap.sort();
         if(removefile.indexOf(tipo_doc) >= 0){
             removefile.splice(removefile.indexOf(tipo_doc),1);
@@ -17,7 +23,9 @@ const clickArchivo = (element) => {
     document.getElementById('selectedFiles').value = filemap;
     document.getElementById('removedFiles').value = removefile;
     document.getElementById('NremovedFiles').value = removefile.length;
+    document.getElementById('removepaths').value = removepaths;
     console.log(filemap);
+    console.log(removepaths);
 }
 
 const removerArchivo = (element) => {
@@ -38,11 +46,17 @@ const removerArchivo = (element) => {
         element.classList.add('is-hidden');
         document.getElementById('archivo-'+tipo_doc).innerHTML = '';
         document.getElementById('archivo-'+tipo_doc).classList.add('is-hidden');
+        if(document.getElementById('preloaded-'+tipo_doc).value == 1){
+            removepaths.push(document.getElementById('archivofull-'+tipo_doc).value);
+            document.getElementById('preloaded-'+tipo_doc).value = 0;
+        }
     }
     
     document.getElementById('selectedFiles').value = filemap;
     document.getElementById('removedFiles').value = removefile;
     document.getElementById('NremovedFiles').value = removefile.length;
+    document.getElementById('removepaths').value = removepaths;
     console.log(filemap);
+    console.log(removepaths);
     
 }

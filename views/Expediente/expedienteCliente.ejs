@@ -40,6 +40,7 @@
                 <input type="hidden" value="" id="selectedFiles" name="SelFiles">
                 <input type="hidden" value="" id="removedFiles" name="RMFiles">
                 <input type="hidden" value="" id="NremovedFiles" name="NRMFiles">
+                <input type="hidden" value="" id="removepaths" name="removepaths">
                 <div id="exp">
 
                 </div>
@@ -75,13 +76,16 @@
                         
                         let hidden = (elements.URL != undefined && elements.URL != '') ? '' : 'is-hidden';
                         let path = (elements.URL == undefined | elements.URL == '') ? '' : (elements.URL.split('\\')).pop();
+                        let preloaded = hidden != 'is-hidden' ? 1 : 0;
                         html +=
                         `
                         <div class="has-background-light box">
                             <div class="columns is-flex is-vcentered">
                                 <input type="hidden" name="Tipo_Doc" value="${elements.tipo_doc}">
                                 <div class="column is-3">
-                                    <label class="label"> ${elements.descripcion}</label> 
+                                    <label class="label"> ${elements.descripcion}</label>
+                                    <input type="hidden" value="${preloaded}" id="preloaded-${elements.tipo_doc}" name="preloaded">
+                                    <input type="hidden" value="${elements.URL}" id="archivofull-${elements.tipo_doc}" name="archivofull">
                                 </div>
                                     <div class="column is-narrow" style="width: 200px;">
                                         <div class="file is-small is-boxed has-name is-danger ">
