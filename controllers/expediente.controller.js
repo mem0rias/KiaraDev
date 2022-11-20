@@ -180,21 +180,29 @@ exports.subirarch = (request, response, next) => {
     console.log(request.files);
     console.log(request.body);
     let filepaths = '';
-    let tiposArchivos = request.body.SelFiles;
+    let tiposArchivos = request.files.length > 0 ? request.body.SelFiles + ',' + request.body.RMFiles : request.body.RMFiles ;
     let user = request.session.IdUser;
+    let totalfiles = request.files.length + parseInt(request.body.NRMFiles);
+    let estatuslist = '';
     for(elements of request.files){
         filepaths += elements.path + ',';
+        estatuslist += '1,';
     }
-
+    for(let i = 0; i < request.body.NRMFiles; i++){
+        filepaths += ',';
+        estatuslist += '0,';
+    }
     console.log(filepaths);
     console.log(tiposArchivos);
-    expediente.UploadFile(tiposArchivos,request.files.length,user,filepaths).then(() =>{
+    console.log(totalfiles);
+    expediente.UploadFile(tiposArchivos,totalfiles,user,filepaths, estatuslist).then(() =>{
         request.session.infopositiva = 'Archivos guardados Exitosamente';
         return request.session.save(err => {
             response.redirect('/expediente/miexpediente');
         });
         
     }).catch(err =>{
+        console.log(err);
         request.session.info = 'Error al subir los archivos';
         delfiles(request.files);
         return request.session.save(err => {

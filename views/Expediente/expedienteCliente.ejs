@@ -39,6 +39,7 @@
                 <input type="hidden" value="<%= user %>" id="user" name="user">
                 <input type="hidden" value="" id="selectedFiles" name="SelFiles">
                 <input type="hidden" value="" id="removedFiles" name="RMFiles">
+                <input type="hidden" value="" id="NremovedFiles" name="NRMFiles">
                 <div id="exp">
 
                 </div>
@@ -72,8 +73,8 @@
                         if(elements.Comentarios == undefined)
                             elements.Comentarios = ' ';
                         
-                        let hidden = elements.URL != undefined ? '' : 'is-hidden';
-                        let path = elements.URL == undefined ? '' : (elements.URL.split('\\')).pop();
+                        let hidden = (elements.URL != undefined && elements.URL != '') ? '' : 'is-hidden';
+                        let path = (elements.URL == undefined | elements.URL == '') ? '' : (elements.URL.split('\\')).pop();
                         html +=
                         `
                         <div class="has-background-light box">

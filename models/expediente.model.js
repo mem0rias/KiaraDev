@@ -43,7 +43,7 @@ module.exports = class expediente{
 
     }
 
-    static UploadFile(docList, N_docs, IdUsuario, URLs){
-        return db.execute('CALL `UploadFiles`(?,?,?,?)', [URLs, docList, IdUsuario, N_docs]);
+    static UploadFile(docList, N_docs, IdUsuario, URLs, estatuslist){
+        return db.execute('CALL `UploadFiles`(?,?,?,?,?)', [URLs, docList, IdUsuario, N_docs, estatuslist]);
     }
 }

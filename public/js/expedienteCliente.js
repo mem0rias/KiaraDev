@@ -16,7 +16,7 @@ const clickArchivo = (element) => {
     
     document.getElementById('selectedFiles').value = filemap;
     document.getElementById('removedFiles').value = removefile;
-    
+    document.getElementById('NremovedFiles').value = removefile.length;
     console.log(filemap);
 }
 
@@ -42,6 +42,7 @@ const removerArchivo = (element) => {
     
     document.getElementById('selectedFiles').value = filemap;
     document.getElementById('removedFiles').value = removefile;
+    document.getElementById('NremovedFiles').value = removefile.length;
     console.log(filemap);
     
 }
