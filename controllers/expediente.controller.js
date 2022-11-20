@@ -3,8 +3,7 @@ const User = require('../models/expediente.model');
 const bcrypt = require('bcryptjs');
 const expediente = require('../models/expediente.model');
 const Dashboard = require('../models/dashboard.model');
-const { request } = require('http');
-const { response } = require('express');
+const fs = require('fs');
 exports.rev = (request, response, next) =>{
     response.render('./Expediente/expediente');
 }
@@ -95,7 +94,10 @@ exports.actualizar = (request, response, next) => {
 
 
 exports.miexp = (request, response, next) => {
-    
+    let msgpos = request.session.infopositiva ? request.session.infopositiva : '';
+    request.session.infopositiva = ''; 
+    let msg = request.session.info ? request.session.info : '';
+    request.session.info = '';
     let userid = request.session.IdUser;
     expediente.GetRents(userid).then(([rows, fieldata]) =>{
         expediente.GetBuy(userid).then(([rows2, fieldata2]) =>{
@@ -107,13 +109,23 @@ exports.miexp = (request, response, next) => {
                     array.push(rows2.length != 0);
                     array.push(rows3.length != 0);
                     console.log(array);
-                    response.render('./Expediente/expedienteCliente', {arr: array, user: userid});
+                    
+                    return request.session.save(err => {
+                        response.render('./Expediente/expedienteCliente', {arr: array, user: userid, info: msg, infopositiva: msgpos});
+                    });
                 
                 
                 
             })
         })
-    })
+    }).catch(err=>{
+        let array = [0,0,0];
+        msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
+        msgpos = '';
+        return request.session.save(err => {
+            response.render('./Expediente/expedienteCliente', {arr: array, user: userid, info: msg, infopositiva: msgpos});
+        });
+    });
 
     
 }
@@ -173,10 +185,29 @@ exports.subirarch = (request, response, next) => {
     for(elements of request.files){
         filepaths += elements.path + ',';
     }
-    
+
     console.log(filepaths);
     console.log(tiposArchivos);
-    expediente.UploadFile(tiposArchivos,request.files.length,user,filepaths);
-    //response.status(200).json("selogro");
-    response.redirect('/expediente/miexpediente');
+    expediente.UploadFile(tiposArchivos,request.files.length,user,filepaths).then(() =>{
+        request.session.infopositiva = 'Archivos guardados Exitosamente';
+        return request.session.save(err => {
+            response.redirect('/expediente/miexpediente');
+        });
+        
+    }).catch(err =>{
+        request.session.info = 'Error al subir los archivos';
+        delfiles(request.files);
+        return request.session.save(err => {
+            response.redirect('/expediente/miexpediente');
+        });
+
+    });
+    
+}
+
+
+const delfiles = (r) => {
+    for(elements of r){
+        fs.unlinkSync('.\\' + elements.path);
+    }
 }
