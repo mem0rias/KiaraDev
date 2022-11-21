@@ -37,6 +37,8 @@ const fileStorage = multer.diskStorage({
 });
 
 const fileFilter = (request, file, callback) => {
+    
+    
     if (file.mimetype == 'application/pdf') {
         callback(null, true);
     } else {
@@ -47,10 +49,17 @@ const fileFilter = (request, file, callback) => {
 }
 
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).any('archivo2'));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits :{ fileSize : 20000000 }}).any('archivo2'));
 //app.use(multer({ storage: fileStorage }).single('archivo')); 
 
-
+app.use((err, request, response, next) => {
+    if( err instanceof multer.MulterError){
+        console.log(err);
+        console.log('1 este es el middle boi');
+    }
+    
+    next();
+});
 //Declarar rutas
 const rutasPropiedades = require('./routes/propiedad.routes');
 const rutasIndex = require('./routes/index.routes');

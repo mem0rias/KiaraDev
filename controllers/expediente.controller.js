@@ -79,33 +79,28 @@ exports.actualizar = (request, response, next) => {
             response.redirect('/expediente/revisar');
         });
     })
-    /*for(let i = 0; i < request.body.estatus.length; i++){
-        if(body.estatus[i] != '0'){
-            expediente.UpdateRequirements(body.Comments[i], body.estatus[i],body.IdUsuario,body.Tipo_Doc[i]).then(()=>{
-                console.log('Se logro: ' + i);
-                request.session.msg = 'Expediente Actualizado'; 
-            }).catch((error) =>{
-                console.log(error);
-            });
-        }
-    }*/
     
 }
 
 
 exports.miexp = (request, response, next) => {
+    
+    // Mensajes que se desplegaran si se guardan los cambios, o hay errores ,etc...
     let msgpos = request.session.infopositiva ? request.session.infopositiva : '';
     request.session.infopositiva = ''; 
     let msg = request.session.info ? request.session.info : '';
     request.session.info = '';
     let userid = request.session.IdUser;
+    // Este mapa almacena los tipos de expediente que tiene ligado el usuario
     let exp_types = new Map();
     expediente.fetchExpTypes(userid).then(([rows, fieldData]) => {
         
+        // Inicializacion del mapa con los valores de la consulta
         for(elements of rows){
             exp_types.set(elements.Tipo_Exp, elements.descripion);
         }
-        console.log(exp_types);
+
+        // Render de la consulta con los valores del mapa, mensajes, etc.
         return request.session.save(err => {
             response.render('./Expediente/expedienteCliente', {map: exp_types, user: userid, info: msg, infopositiva: msgpos});
         });
@@ -116,63 +111,23 @@ exports.miexp = (request, response, next) => {
             response.render('./Expediente/expedienteCliente', {map: exp_types, user: userid, info: msg, infopositiva: msgpos});
         });
     });
-    /*expediente.GetRents(userid).then(([rows, fieldata]) =>{
-        expediente.GetBuy(userid).then(([rows2, fieldata2]) =>{
-            expediente.GetSelling(userid).then(([rows3, fieldata3]) =>{
-                    let array = new Array();
-                    let arraytipos = ['5','3','1'];
-                    let funcs = new Array();
-                    array.push(rows.length != 0);
-                    array.push(rows2.length != 0);
-                    array.push(rows3.length != 0);
-                    console.log(array);
-                    
-                    return request.session.save(err => {
-                        response.render('./Expediente/expedienteCliente', {arr: array, user: userid, info: msg, infopositiva: msgpos});
-                    });
-                
-                
-                
-            })
-        })
-    }).catch(err=>{
-        let array = [0,0,0];
-        msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
-        msgpos = '';
-        return request.session.save(err => {
-            response.render('./Expediente/expedienteCliente', {arr: array, user: userid, info: msg, infopositiva: msgpos});
-        });
-    });
-*/
+   
     
 }
 
 exports.fetchinfo = (request, response, next) => {
+    // Obtencion de manera asincrona de los archivos que ya tiene el usuario y los pendientes 
+    // para el tipo de expediente dado
     let query = request.params.tipo;
     let user = request.session.IdUser;
     console.log(query + " "+  user);
     expediente.fetchRequirements(query,user).then(([rows, fieldData]) =>{
         response.status(200).json(rows);
     }).catch(err =>{
+        response.status(503).json('fail');
         console.log(err);
     });
     
-    /*
-
-    
-    expediente.fetchReqs(query).then(([rows,fieldData]) => {
-        expediente.fetchFiles(request.session.IdUser).then(([rows2, fielddata2]) => {
-            response.status(200).json({ reqs: rows, files: rows2});
-        }).catch(err =>{
-            console.log(err);
-            response.status(200).json('err');
-        })
-        
-    }).catch(err => {
-        console.log(err);
-        response.status(200).json('err');
-    })
-    */
 }
 exports.descargarArchivo = (request, response, next) => {
     console.log(request.params);
@@ -194,17 +149,34 @@ exports.descargarArchivo = (request, response, next) => {
 }
 
 exports.subirarch = (request, response, next) => {
+    
+    // Esta funcion se encarga de cargar y eliminar archivos si es necesario
     console.log(request.files);
     console.log(request.body);
+    
+    
     let filepaths = '';
+    /* Esta variable contiene la lista de archivos que se modificaran en la BD
+        Se crea en base a 2 listas.
+            1. - Archivos que se añadieron unicamente
+            2. - Archivos que se eliminaran del registro del usuario
+            Si se estan tanto añadiendo como eliminando archivos se insertan primero los archivos a añadir seguido de los que se borraran.
+
+    */
     let tiposArchivos = request.files.length > 0 ? request.body.SelFiles + ',' + request.body.RMFiles : request.body.RMFiles ;
     let user = request.session.IdUser;
     let totalfiles = request.files.length + parseInt(request.body.NRMFiles);
     let estatuslist = '';
+
+    //Se genera un string con los paths de los nuevos archivos
+    // De igual manera se crea la lista de estatus con 1s para simbolizar que ese archivo esta pendiente a ser revisado
+
     for(elements of request.files){
         filepaths += elements.path + ',';
         estatuslist += '1,';
     }
+
+    // Si hay archivos que se eliminaran se pone el path vacio y en la lista del estatus se pone un 0 que equivale a faltante
     for(let i = 0; i < request.body.NRMFiles; i++){
         filepaths += ',';
         estatuslist += '0,';
@@ -212,11 +184,14 @@ exports.subirarch = (request, response, next) => {
     console.log(filepaths);
     console.log(tiposArchivos);
     console.log(totalfiles);
+    // Stored procedure que recibe los strings que generamos y los aplica en la BD
     expediente.UploadFile(tiposArchivos,totalfiles,user,filepaths, estatuslist).then(() =>{
+        // Se revisa si hay archivos que remover de la carpeta del usuario
         if(request.body.removepaths != ''){
             let removepaths = request.body.removepaths.split(',');
             
                 for(elements of removepaths){
+                    // Chequeo de seguridad, el usuario solo puede borrar archivos dentro de su directorio.
                     if(elements.split('\\')[1] == user.toString(10))
                         fs.unlinkSync('.\\' + elements);
                     else
@@ -226,14 +201,17 @@ exports.subirarch = (request, response, next) => {
             
             
         }   
+        // Respuesta positiva.
         request.session.infopositiva = 'Archivos guardados Exitosamente';
         return request.session.save(err => {
             response.redirect('/expediente/miexpediente');
         });
         
     }).catch(err =>{
+        // Si hay un error no se hace ningun cambio y se le informa al usuario.
         console.log(err);
         request.session.info = 'Error al subir los archivos';
+        // Se borran los archivos que se pretendian añadir a la BD.
         delfiles(request.files);
         return request.session.save(err => {
             response.redirect('/expediente/miexpediente');
@@ -243,7 +221,7 @@ exports.subirarch = (request, response, next) => {
     
 }
 
-
+// Funcion para eliminar archivos en caso de error al actualizar la BD
 const delfiles = (r) => {
     for(elements of r){
         fs.unlinkSync('.\\' + elements.path);

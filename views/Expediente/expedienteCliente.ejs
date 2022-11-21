@@ -10,7 +10,7 @@
                     <%if(map.size != 0){ %>
                         <% for(const [key, value] of map) { %>
                             <div class="column">
-                                <button class="button is-danger is-fullwidth" onclick="cargarexp(this)" value="<%= key %>"><%= value %> </button>
+                                <button class="button is-danger is-fullwidth" onclick="llamarcarga(this)" value="<%= key %>"><%= value %> </button>
                             </div>
                         <%}%>
                     <%} else {%>
@@ -24,16 +24,16 @@
             </div>   
             <div class="notification is-warning is-hidden" id="aviso">
                 <button class="delete"></button>
-                    Vas a eliminar/reemplazar un archivo que ya tenias guardado. Si estas seguro de esto, presiona <strong> 'Guardar Cambios' </strong>. Si no, recarga la pagina.
+                    Vas a eliminar/reemplazar un archivo que ya tenias guardado. Si estas seguro de esto, presiona <strong> 'Guardar Cambios' </strong>. Si no, presiona aqui.
+                <br>
+                <button class="button" onclick="revertirCambios(this)"> Revertir </button>
               </div> 
-
-
             <%if(map.size != 0){ %>
-                <div class="box">   
+                <div class="box is-hidden" id="mainbody">   
                     
                 
                     
-                    <div class="columns" >
+                    <div class="columns "  >
                         <!--<div class="column is-1"> </div> -->
                         <div class="column is-3"><h2 class="Title label">Archivo</h2> </div>
                         <div class="column" ></div>
@@ -51,10 +51,10 @@
 
                     </div>
                     <br>
-                    <div class="columns">
+                    <div class="columns ">
                         <div class="column is-3">
                             
-                            <button  type="button" class="button is-danger is-fullwidth"  onclick="subirarchivo()" id="botonguardar" name="boton"> Guardar Cambios</button>
+                            <button  type="button" class="button is-danger is-fullwidth is-hidden"  onclick="subirarchivo()" id="botonguardar" name="boton"> Guardar Cambios</button>
                         </div>
                         
                     </div>
@@ -62,9 +62,30 @@
             <%} %>
             <script src="../js/expedienteCliente.js"></script>
         <script>
+            const revertirCambios = (elemento) => {
+                elemento.value = prevsel;
+                document.getElementById('aviso').classList.add('is-hidden');
+                cargarexp(elemento);
+            }
+            const llamarcarga = (elemento) => {
+                if(changes){
+                    if(confirm('Tus cambios se revertiran si cambias de pestaña')){
+                        cargarexp(elemento);
+                        document.getElementById('aviso').classList.add('is-hidden');
+                    }
+                }
+                else
+                    cargarexp(elemento);
+            }
             const cargarexp = (elemento) =>{
+                window.onbeforeunload = 0;
+                filemap.length = 0;
+                removefile.length = 0;
+                removepaths.length = 0;
+                changes = false;
                 let estados = ['Faltante', 'Pendiente', 'Aceptado', 'Rechazado'];
                 let query = elemento.value;
+                prevsel = query;
                 fetch('/expediente/fetch/' + query, {
                     method: 'GET',
                     headers: {
@@ -74,58 +95,65 @@
                     return result.json();
                 }).then(data => {
                     console.log(data);
-                    let html = '';
-                    for(elements of data){
-                        if(elements.estatus == undefined)
-                            elements.estatus = 0;
-                        if(elements.Comentarios == undefined)
-                            elements.Comentarios = ' ';
-                        
-                        let hidden = (elements.URL != undefined && elements.URL != '') ? '' : 'is-hidden';
-                        let path = (elements.URL == undefined | elements.URL == '') ? '' : (elements.URL.split('\\')).pop();
-                        let preloaded = hidden != 'is-hidden' ? 1 : 0;
-                        html +=
-                        `
-                        <div class="has-background-light box">
-                            <div class="columns is-flex is-vcentered">
-                                <input type="hidden" name="Tipo_Doc" value="${elements.tipo_doc}">
-                                <div class="column is-3">
-                                    <label class="label"> ${elements.descripcion}</label>
-                                    <input type="hidden" value="${preloaded}" id="preloaded-${elements.tipo_doc}" name="preloaded">
-                                    <input type="hidden" value="${elements.URL}" id="archivofull-${elements.tipo_doc}" name="archivofull">
-                                </div>
-                                    <div class="column is-narrow" style="width: 200px;">
-                                        <div class="file is-small is-boxed has-name is-danger ">
-                                            <label class="file-label ">
-                                                <input class="file-input"  accept=".pdf" type="file" name="archivo2" id="boton-${elements.tipo_doc}" onchange="clickArchivo(this)">
-                                                <span class="file-cta">
-                                                
-                                                    <span class="file-label">
-                                                        Selecciona Archivo
-                                                    </span>
-                                                </span>
-                                                <span class="file-name ${hidden}" id="archivo-${elements.tipo_doc}">
-                                                    ${path}
-                                                </span>
-                                            </label>
-                                            <span id="erase-${elements.tipo_doc}" class="level-right button is-boxed is-danger ${hidden} "onclick="removerArchivo(this)" style="margin-left: 10px">
-                                                    <i class="tiny material-icons"> clear </i>    
-                                                </span>
-                                        </div>
-                                    </div>
-                            <div class="column is-5">
-                                <h2 class="label"> ${elements.Comentarios} </h2>
-                            </div>
-                            <div class="column is-2"> <h2 class="label"> ${estados[elements.estatus]} </h2></div>
-                            </div> 
-                        </div>
-
+                    if(data == 'fail'){
+                        bulmaToast.toast({ message: 'Hay un problema con el servidor, intenta mas tarde', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+                    }else{
+                        document.getElementById('mainbody').classList.remove('is-hidden');
+                        document.getElementById('botonguardar').classList.add('is-hidden');
+                        let html = '';
+                        for(elements of data){
+                            if(elements.estatus == undefined)
+                                elements.estatus = 0;
+                            if(elements.Comentarios == undefined)
+                                elements.Comentarios = ' ';
                             
-                        `
+                            let hidden = (elements.URL != undefined && elements.URL != '') ? '' : 'is-hidden';
+                            let path = (elements.URL == undefined | elements.URL == '') ? '' : (elements.URL.split('\\')).pop();
+                            let preloaded = hidden != 'is-hidden' ? 1 : 0;
+                            html +=
+                            `
+                            <div class="has-background-light box">
+                                <div class="columns is-flex is-vcentered">
+                                    <input type="hidden" name="Tipo_Doc" value="${elements.tipo_doc}">
+                                    <div class="column is-3">
+                                        <label class="label"> ${elements.descripcion}</label>
+                                        <input type="hidden" value="${preloaded}" id="preloaded-${elements.tipo_doc}" name="preloaded">
+                                        <input type="hidden" value="${elements.URL}" id="archivofull-${elements.tipo_doc}" name="archivofull">
+                                    </div>
+                                        <div class="column is-narrow" style="width: 200px;">
+                                            <div class="file is-small is-boxed has-name is-danger ">
+                                                <label class="file-label ">
+                                                    <input class="file-input"  accept=".pdf" type="file" name="archivo2" id="boton-${elements.tipo_doc}" onchange="clickArchivo(this)">
+                                                    <span class="file-cta">
+                                                    
+                                                        <span class="file-label">
+                                                            Selecciona Archivo
+                                                        </span>
+                                                    </span>
+                                                    <span class="file-name ${hidden}" id="archivo-${elements.tipo_doc}">
+                                                        ${path}
+                                                    </span>
+                                                </label>
+                                                <span id="erase-${elements.tipo_doc}" class="level-right button is-boxed is-danger ${hidden} "onclick="removerArchivo(this)" style="margin-left: 10px">
+                                                        <i class="tiny material-icons"> clear </i>    
+                                                    </span>
+                                            </div>
+                                        </div>
+                                <div class="column is-5">
+                                    <h2 class="label"> ${elements.Comentarios} </h2>
+                                </div>
+                                <div class="column is-2"> <h2 class="label"> ${estados[elements.estatus]} </h2></div>
+                                </div> 
+                            </div>
+
+                                
+                            `
+                            
+                        }
                         document.getElementById('exp').innerHTML = html;
                     }
                 }).catch(err => {
-                    console.log(err);
+                    bulmaToast.toast({ message: 'Hay un problema con el servidor', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
                 });
             }
             const subirarchivo = () =>{
@@ -140,6 +168,7 @@
                     <input type="hidden" value="${removepaths}" id="removepaths" name="removepaths">
                     
                     `;
+                window.onbeforeunload = 0;
                 element.submit();
             }
 
