@@ -99,7 +99,24 @@ exports.miexp = (request, response, next) => {
     let msg = request.session.info ? request.session.info : '';
     request.session.info = '';
     let userid = request.session.IdUser;
-    expediente.GetRents(userid).then(([rows, fieldata]) =>{
+    let exp_types = new Map();
+    expediente.fetchExpTypes(userid).then(([rows, fieldData]) => {
+        
+        for(elements of rows){
+            exp_types.set(elements.Tipo_Exp, elements.descripion);
+        }
+        console.log(exp_types);
+        return request.session.save(err => {
+            response.render('./Expediente/expedienteCliente', {map: exp_types, user: userid, info: msg, infopositiva: msgpos});
+        });
+    }).catch(err=>{
+        msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
+        msgpos = '';
+        return request.session.save(err => {
+            response.render('./Expediente/expedienteCliente', {map: exp_types, user: userid, info: msg, infopositiva: msgpos});
+        });
+    });
+    /*expediente.GetRents(userid).then(([rows, fieldata]) =>{
         expediente.GetBuy(userid).then(([rows2, fieldata2]) =>{
             expediente.GetSelling(userid).then(([rows3, fieldata3]) =>{
                     let array = new Array();
@@ -126,7 +143,7 @@ exports.miexp = (request, response, next) => {
             response.render('./Expediente/expedienteCliente', {arr: array, user: userid, info: msg, infopositiva: msgpos});
         });
     });
-
+*/
     
 }
 

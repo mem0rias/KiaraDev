@@ -14,7 +14,9 @@ module.exports = class expediente{
         return db.execute('CALL `ActualizarExp`(?, ?, ?, ?, ?)', [N_docs,IdUsuario,Comments,estatus,Tipo_Doc]);
     }
 
-
+    static fetchExpTypes(IdUsuario){
+        return db.execute('SELECT exp.Tipo_Exp, descripion FROM exp_tipo_doc exp, tipo_exp tip where tip.Tipo_Exp = exp.Tipo_Exp and Tipo_Doc = 0 and Idcliente = ?', [IdUsuario]);
+    }
     static GetRents(IdUsuario){
         return db.execute('SELECT IdUsuario from cliente_pr_prop where IdUsuario = ?',[IdUsuario]);
     }
