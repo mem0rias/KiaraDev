@@ -24,8 +24,13 @@
                     <% } %>
                 </div>
             </div>   
+            <div class="notification is-warning is-hidden" id="aviso">
+                <button class="delete"></button>
+                    Vas a eliminar/reemplazar un archivo que ya tenias guardado. Si estas seguro de esto, presiona <strong> 'Guardar Cambios' </strong>. Si no, recarga la pagina.
+              </div> 
+            <div class="box">   
                 
-            <div class="box">    
+                
                 <div class="columns" >
                     <!--<div class="column is-1"> </div> -->
                     <div class="column is-3"><h2 class="Title label">Archivo</h2> </div>
@@ -37,10 +42,9 @@
             </div>
             <form action="/expediente/miexpediente" method="POST"  enctype="multipart/form-data" id="subirarch"> 
                 <input type="hidden" value="<%= user %>" id="user" name="user">
-                <input type="hidden" value="" id="selectedFiles" name="SelFiles">
-                <input type="hidden" value="" id="removedFiles" name="RMFiles">
-                <input type="hidden" value="" id="NremovedFiles" name="NRMFiles">
-                <input type="hidden" value="" id="removepaths" name="removepaths">
+                <div id="dynelements">
+
+                </div>
                 <div id="exp">
 
                 </div>
@@ -53,6 +57,7 @@
                     
                 </div>
             </form>
+            
             <script src="../js/expedienteCliente.js"></script>
         <script>
             const cargarexp = (elemento) =>{
@@ -123,8 +128,20 @@
             }
             const subirarchivo = () =>{
                 let element = document.getElementById('subirarch');
+                let dynelements = document.getElementById('dynelements');
+                
+                dynelements.innerHTML = 
+                    `
+                    <input type="hidden" value="${filemap}" id="selectedFiles" name="SelFiles">
+                    <input type="hidden" value="${removefile}" id="removedFiles" name="RMFiles">
+                    <input type="hidden" value="${removefile.length}" id="NremovedFiles" name="NRMFiles">
+                    <input type="hidden" value="${removepaths}" id="removepaths" name="removepaths">
+                    
+                    `;
                 element.submit();
             }
+
+            
         </script>
 <script src="../js/dist/bulma-toast.min.js"></script>
 <% if(info != '') { %>

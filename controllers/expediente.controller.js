@@ -199,11 +199,15 @@ exports.subirarch = (request, response, next) => {
         if(request.body.removepaths != ''){
             let removepaths = request.body.removepaths.split(',');
             
-            
                 for(elements of removepaths){
-                    fs.unlinkSync('.\\' + elements);
-             
+                    if(elements.split('\\')[1] == user.toString(10))
+                        fs.unlinkSync('.\\' + elements);
+                    else
+                        console.log('Illegal path');
+                
                 }
+            
+            
         }   
         request.session.infopositiva = 'Archivos guardados Exitosamente';
         return request.session.save(err => {
