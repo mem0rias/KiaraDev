@@ -49,13 +49,16 @@ const fileFilter = (request, file, callback) => {
 }
 
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits :{ fileSize : 20000000 }}).any('archivo2'));
+
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20000000}}).any('archivo2'));
 //app.use(multer({ storage: fileStorage }).single('archivo')); 
 
 app.use((err, request, response, next) => {
     if( err instanceof multer.MulterError){
-        console.log(err);
-        console.log('1 este es el middle boi');
+        console.log(request.body);
+        console.log('Aqui mormios')
+        request.body.SelFiles = '';
+        request.files = ''
     }
     
     next();
