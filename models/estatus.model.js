@@ -13,10 +13,14 @@ module.exports = class listEstatus{
         return db.execute('SELECT DISTINCT clp.idpropiedad, paso, Descripcion, fecha_inicio+fecha_fin as SumaFechas, fecha_inicio+0 as fechaInicio, Estatus, id FROM cliente_pc_prop clp, pasos_compra pc WHERE clp.IdPaso = pc.paso and clp.IdPropiedad=?',[IdProperty]);
     }
     static fetchAvanceR(IdProperty){
-        return db.execute('SELECT DISTINCT clp.idpropiedad, paso, Descripcion,  fecha_inicio+fecha_fin as SumaFechas, fecha_inicio+0 as fechaInicio, Estatus FROM cliente_pr_prop clp, pasos_renta pr WHERE clp.IdPaso = pr.paso and clp.IdPropiedad=?',[IdProperty]);
+        return db.execute('SELECT DISTINCT clp.idpropiedad, paso, Descripcion,  fecha_inicio+fecha_fin as SumaFechas, fecha_inicio+0 as fechaInicio, Estatus, id FROM cliente_pr_prop clp, pasos_renta pr WHERE clp.IdPaso = pr.paso and clp.IdPropiedad=?',[IdProperty]);
     }
 
     static updateEstatusC(Estado, id ) {
         return db.execute('UPDATE `cliente_pc_prop` SET `Estatus`= ? where id = ?', [Estado, id]);
+    }
+
+    static updateEstatusR(Estado, id ) {
+        return db.execute('UPDATE `cliente_pr_prop` SET `Estatus`= ? where id = ?', [Estado, id]);
     }
 }

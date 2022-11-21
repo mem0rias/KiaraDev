@@ -66,13 +66,18 @@ exports.post_update =(request, response, next) => {
 
     listEstatus.updateEstatusC(request.body.estado, request.body.id)
         .then(([rows, fieldData])=> {
-           console.log(rows);
-            response.status(200).json({
-                mensaje: "El estado fue actualizado"
-                
-            });
-           
-        }).catch(error => {console.log(error)});
+            console.log(rows);
+            listEstatus.updateEstatusR(request.body.estado, request.body.id)
+            .then(([rows2, fieldData2])=> {
+                response.status(200).json({
+                    mensaje: "El estado fue actualizado",
+                    status: request.body.estado,
+                });   
+            }).catch(error => {console.log(error)})
+        
+        }).catch(error => {
+            console.log(error)
+        });
     
 }
 

@@ -1,22 +1,23 @@
 
-<div class="field is-grouped is-grouped-center">
-
-    <span  class="steps-marker">
-        <% if(paso.Estatus != 0){ %>
-        <span class="icon">
-            <i class="mdi mdi-check"></i>
+<div class="field is-grouped is-grouped-center columns">
+    <div class="column">
+        <span id="<%=paso.paso%>" class="steps-marker">
+            <% if(paso.Estatus != 0){ %>
+            <span class="icon">
+                <i class="mdi mdi-check"></i>
+            </span>
+            <% } %>
         </span>
-        <% } %>
-    </span>
 
 
-    <div class="steps-content">
-        <p class="is-size-4"><%= paso.paso %></p>
-        <p  ><%= paso.Descripcion %></p>
-        
+        <div class="steps-content ">
+            <p class="is-size-4"><%= paso.paso %></p>
+            <p><%= paso.Descripcion %> </p>
+            
+        </div>
     </div>
 
-    <div class="container">
+    <div class="container column">
         <div class="select">
             <select id="select-<%=paso.paso%>" onchange="enableGuardar(this)">
                 

@@ -42,19 +42,21 @@
     </div>
 
     <input type="hidden" id="_csrf" value="<%= csrfToken %>">
+
+    <script src="../js/dist/bulma-toast.min.js"></script>
     <script>
         const enableGuardar = (elemento)=>{
             let id = elemento.id.split('-')[1];
             let boton = document.getElementById('boton-'+id);
             console.log(elemento.value);
-            boton.onclick = () => guardarEstado(elemento.value, id);
+            boton.onclick = () => guardarEstado(elemento.value, id, boton);
             boton.classList.remove('is-hidden');
         }
         
 
-    const guardarEstado = (estado, id) => {
+    const guardarEstado = (estado, id, boton) => {
         const csrf = document.getElementById('_csrf').value;
-        console.log(estado);
+        //console.log(estado);
         //función que manda la petición asíncrona
         fetch('/estatus/update', {
             method: 'POST',
@@ -69,9 +71,18 @@
         }).then(result => {
             return result.json(); //Regresa otra promesa
         }).then(data => {
-            console.log(data.mensaje);
-            alert(data.mensaje); //hacer toast
-            
+            console.log(data);
+            boton.classList.add('is-hidden');
+
+            let steps_marker = document.getElementById(id);
+            if (data.status === "1") {
+                steps_marker.innerHTML = '<span class="icon"><i class="mdi mdi-check"></i></span>';
+            } else {
+                steps_marker.innerHTML = "";
+            }
+            //alert(data.mensaje); //hacer toast
+            bulmaToast.toast({ message: data.mensaje, type: 'is-success', position: 'up-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+        
 
         }).catch(err => {
             console.log(err);
