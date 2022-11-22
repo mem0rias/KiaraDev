@@ -13,7 +13,6 @@
         <% } else { %>
             <form action="/propiedades/editar" method="POST">
             <input type="hidden" id="id" name="id" value="<%= propiedad.IdPropiedad %>">
-            <input type="hidden" id="idusodata" name="usodata" value="<%= propiedad.Uso %>">
             <div class="content mt-5"">
                 <h1>Editar propiedad</h1>
             </div>
@@ -106,7 +105,7 @@
                                 </div>
                             </div>
 
-                            <input value="<%= tipoP ? tipoP : '' %>" id="tipoID" hidden></input>
+                            <input value="<%= tipoP ? tipoP : propiedad.Uso %>" id="tipoID" hidden></input>
 
                             <div class="content is-small">
                                 <div class="field">
