@@ -26,7 +26,7 @@ module.exports = class Propiedad {
 
     static agregarResidencial(d) {
         return db.execute(
-            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
             [d.titulo,d.descripcion,d.precio,d.estado,d.municipio,d.colonia,d.calle,d.cp,d.uso,d.mterreno,d.mconstruccion,d.tipotransaccion,d.tipopropiedad,d.imagenes,d.video,d.recamaras,d.banos,d.cocina,d.pisos,d.estacionamiento,d.gas,d.userid]);       
     }
 

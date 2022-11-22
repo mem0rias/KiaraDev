@@ -80,7 +80,6 @@ exports.get_new = (request, response, next) => {
 
 exports.post_new = (request, response, next) => {
     
-    console.log(request.body.descripcion);
     console.log(request.body);
     let v = request.body;
     const userId = parseInt(response.locals.IdUser);
@@ -94,9 +93,7 @@ exports.post_new = (request, response, next) => {
         const gas               = parseInt(v.gas);
         const cocina            = parseInt(v.cocina);
 
-
-
-        let d = {
+        var d = {
             titulo          : v.titulo,
             descripcion     : v.descripcion,
             precio          : v.precio,
@@ -118,8 +115,10 @@ exports.post_new = (request, response, next) => {
             pisos           : pisos,
             estacionamiento : estacionamiento,
             gas             : gas,
-            userid          : userId,
+            userid          : userId
         };
+
+        console.log(d.banos);
 
         //Convertir en tipo int datos requeridos
         Propiedad.agregarResidencial(d)

@@ -43,7 +43,7 @@
                                         <label class="label">Tipo de propiedad</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
-                                                <select class="select" name="tipoPropiedad" id="tipoPropiedad">
+                                                <select class="select" name="uso" id="tipoPropiedad">
                                                     <option value="" disabled selected hidden>Seleccionar tipo</option>
                                                     <option value="Residencial">Residencial</option>
                                                     <option value="Comercial">Comercial</option>
@@ -61,7 +61,7 @@
                                         <label class="label">Subtipo</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
-                                                <select class="select" name="tipoVenta" id="tipoVenta">
+                                                <select class="select" name="tipopropiedad" id="tipoVenta">
                                                     <option  disabled selected hidden>Seleccionar tipo</option>
                                                     <option value="1">Casa</option>
                                                     <option value="2">Departamento</option>
@@ -78,7 +78,7 @@
                                         <label class="label">Tipo de venta</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
-                                                <select class="select" name="tipoVenta" id="tipoVenta">
+                                                <select class="select" name="tipotransaccion" id="tipoVenta">
                                                     <option  disabled selected hidden>Seleccionar tipo</option>
                                                     <option value="1">Venta</option>
                                                     <option value="2">Renta</option>
@@ -96,8 +96,8 @@
                                 <div class="field">
                                     <label class="label">Descripción</label>
                                     <div class="control">
-                                    <textarea onkeyup="cambiarcolor(this)" class="textarea" id="campo-2" name="descripcion" placeholder="Descripcion" value="<%= propiedad.Descripcion ? propiedad.Descripcion : '' %>">
-                                    </textarea></div>
+                                    <input onkeyup="cambiarcolor(this)" class="textarea" id="campo-2" name="descripcion" placeholder="Descripcion" value="<%= propiedad.Descripcion ? propiedad.Descripcion : 'D' %>">
+                                    </input></div>
                                 </div>
                             </div>
                             <div class="columns">
@@ -105,7 +105,7 @@
                                     <div class="field">
                                         <label class="label">Metros Cuadrados Terreno</label>
                                         <div class="control">
-                                        <input onkeyup="cambiarcolor(this)" class="input" id="campo-3" name="MTerreno" type="number" maxlength="40" placeholder="Terreno m²" value="<%= propiedad.Titulo ? propiedad.Titulo : '' %>">
+                                        <input onkeyup="cambiarcolor(this)" class="input" id="campo-3" name="mterreno" type="number" maxlength="40" placeholder="Terreno m²" value="<%= propiedad.Titulo ? propiedad.Titulo : '' %>">
                                         </div>
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@
                                     <div class="field">
                                         <label class="label">Metros Cuadrados Construcción</label>
                                         <div class="control">
-                                        <input onkeyup="cambiarcolor(this)" class="input" id="campo-4" name="MConstruccion" type="number" maxlength="40" placeholder="Construccion m²" value="<%= propiedad.Titulo ? propiedad.Titulo : '' %>">
+                                        <input onkeyup="cambiarcolor(this)" class="input" id="campo-4" name="mconstruccion" type="number" maxlength="40" placeholder="Construccion m²" value="<%= propiedad.Titulo ? propiedad.Titulo : '' %>">
                                         </div>
                                     </div>
                                 </div>
