@@ -9,7 +9,35 @@ exports.rev = (request, response, next) =>{
 }
 
 exports.getReqs = (request, response, next) => {
-    expediente.fetchRequirements(request.params.id).then(([rows, fieldData]) => {
+    let msgpos = request.session.infopositiva ? request.session.infopositiva : '';
+    request.session.infopositiva = ''; 
+    let msg = request.session.info ? request.session.info : '';
+    request.session.info = '';
+
+    let exp_types = new Map();
+    expediente.fetchExpTypes(request.params.id).then(([rows, fieldData]) => {
+        Dashboard.fetchUser(request.params.id).then(([username, fieldData2]) =>{
+            for(elements of rows){
+                exp_types.set(elements.Tipo_Exp, elements.descripion);
+            }
+    
+            // Render de la consulta con los valores del mapa, mensajes, etc.
+            return request.session.save(err => {
+                response.render('./Expediente/expediente', {map: exp_types, usuario: username[0], info: msg, infopositiva: msgpos});
+            });
+        }).catch(err =>{
+            console.log(err);
+        });
+        // Inicializacion del mapa con los valores de la consulta
+        
+    }).catch(err=>{
+        msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
+        msgpos = '';
+        return request.session.save(err => {
+            response.render('./Expediente/expediente', {map: exp_types, usuario: userid, info: msg, infopositiva: msgpos});
+        });
+    });
+    /*expediente.fetchRequirements(request.params.id).then(([rows, fieldData]) => {
         Dashboard.fetchUser(request.params.id).then( ([usuarioData, fieldData]) => {
             console.log(usuarioData);
             response.render('./Expediente/expediente', {
@@ -30,7 +58,7 @@ exports.getReqs = (request, response, next) => {
     }).catch((error) => {
         console.log(error);
         response.render('./Expediente/expediente', {name: 'Andrea Castillo', Id: '10', info: ''});
-    });
+    });*/
 }
 
 exports.actualizar = (request, response, next) => {
@@ -129,6 +157,24 @@ exports.fetchinfo = (request, response, next) => {
     });
     
 }
+
+
+exports.fetchiuserinfo = (request, response, next) => {
+    // Obtencion de manera asincrona de los archivos que ya tiene el usuario y los pendientes 
+    // para el tipo de expediente dado
+    let query = request.params.tipo;
+    let user = request.params.usuario;
+    console.log(query + " "+  user);
+    expediente.fetchRequirements(query,user).then(([rows, fieldData]) =>{
+        response.status(200).json(rows);
+    }).catch(err =>{
+        response.status(503).json('fail');
+        console.log(err);
+    });
+    
+}
+
+
 exports.descargarArchivo = (request, response, next) => {
     console.log(request.params);
     const file = `./public/Expedientes/10/`+request.params.id+'.txt';

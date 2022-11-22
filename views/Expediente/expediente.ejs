@@ -4,26 +4,50 @@
         <br>
         
         <div class="container is-max-widescreen">
-            <div class="box is-shadowless">
+            <div class="box ">
                 <h1 class="label is-size-2"> Expediente de: <%= usuario.nombre %> </h1>
-                <div class="columns" >
+                <div class="columns is-multiline">
+                    <%if(map.size != 0){ %>
+                        <% for(const [key, value] of map) { %>
+                            <div class="column">
+                                <button class="button is-danger is-fullwidth" onclick="llamarcarga(this)" value="<%= key %>"><%= value %> </button>
+                            </div>
+                        <%}%>
+                    <%} else {%>
+                        <div class="column">
+                            No tienes ningun tipo de expediente asignado
+                        </div>
+                    <%}%>
+                     
+                </div>
+            </div>
+
+            <div class="box is-hidden" id="mainbody">   
+                    
+                
+                    
+                <div class="columns "  >
                     <!--<div class="column is-1"> </div> -->
                     <div class="column is-3"><h2 class="Title label">Archivo</h2> </div>
-                    <div class="column is-2"></div>
+                    <div class="column" ></div>
                     
-                    <div class="column"> <h2 class="Title label">Comentarios</h2></div>
+                    <div class="column is-5"> <h2 class="Title label">Comentarios</h2></div>
                     <div class="column is-2"> <h2 class="Title label">Estatus </h2> </div> 
                 </div>
             </div>
         <form action="/expediente/actualizar" method="POST">  
-            <% for(let element of info) { %>
+            <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+            <div id="exp">
+
+            </div>
+            <!-- /*<% for(let element of info) { %>
                 
                 <%- include('../Expediente/bloqueArchivo.ejs', {info: element}) %>
                 
-            <% } %>
+            <% } %> */ -->
             <div class="box is-shadowless">
 
-                <input type="hidden" name="IdUsuario" value="<%=usuario.IdUsuario%>">
+                <input type="hidden" name="IdUsuario" value="<%=usuario.IdUsuario%>" id="IdUsuario">
                 <div class="columns">  
                     <div class="column is-10"></div>
                     <div class="column"><button class="button is-primary is-fullwidth" type="submit" id="botonguardar" name="boton" value="salvar"> Guardar </button></div>
@@ -36,6 +60,106 @@
     </section> 
     <script src="../js/dist/bulma-toast.min.js"></script>
     
+    <script>
+        let changes = false;
+        // Si hay cambios pendientes pregunta al usuario si los desea desechar
+        const llamarcarga = (elemento) => {
+            if(changes){
+                if(confirm('Tus cambios no se guardaran si cambias de pestaña')){
+                    cargarexp(elemento);
+                    document.getElementById('aviso').classList.add('is-hidden');
+                }
+            }
+            else
+                cargarexp(elemento);
+        }
+        const cargarexp = (elemento) =>{
+            // Se vacian las variables de estado y el evento que pregunta si quieres recargar la pagina
+            window.onbeforeunload = 0;
+            changes = false;
+
+            // Estados posibles de los archivos.
+            let estados = ['Faltante', 'Pendiente', 'Aceptado', 'Rechazado'];
+            let query = elemento.value;
+            let user = document.getElementById('IdUsuario').value,
+            prevsel = query;
+            //Fetch de requisitos del tipo de expediente seleccionado
+            fetch('/expediente/fetch/' + query +'/' +  user, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                
+            }).then(result => {
+                return result.json();
+            }).then(data => {
+                console.log(data);
+                if(data == 'fail'){
+                    bulmaToast.toast({ message: 'Hay un problema con el servidor, intenta mas tarde', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+                }else{
+                    // Generacion de ajax con los valores respectivos de cada tipo de archivo
+                    document.getElementById('mainbody').classList.remove('is-hidden');
+                    document.getElementById('botonguardar').classList.add('is-hidden');
+                    let html = '';
+                    for(elements of data){
+                        if(elements.estatus == undefined)
+                            elements.estatus = 0;
+                        if(elements.Comentarios == undefined)
+                            elements.Comentarios = ' ';
+                        
+                        // Se define si ciertos parametros se deben esconder dependiento del estado del elemento.
+                        let hidden = (elements.URL != undefined && elements.URL != '') ? '' : 'is-hidden';
+                        let fileName = (elements.URL == undefined | elements.URL == '') ? '' : (elements.URL.split('\\')).pop();
+                        // Define si ya habia un tipo de archivo registrado en la BD.
+                        let preloaded = hidden != 'is-hidden' ? 1 : 0;
+
+                        let present = (elements.estatus != 0) ? '' : 'disabled';
+                        html +=
+                        `
+                            <div class="has-background-light box">
+                                <div class="columns">
+                                    <input type="hidden" name="Tipo_Doc" value="${elements.tipo_doc}">
+                                    <div class="column is-3">
+                                        <label class="label"> ${elements.descripcion} </label> 
+                                    </div>
+                                    <div class="column is-2">
+                                        <a href="/expediente/download/<%= info.Tipo_Doc %>" class="button is-danger is-fullwidth" onclick="descargarArchivo(this)" type="button" id="boton" name="boton" value="${elements.tipo_doc}" ${present}>
+                                            Descargar Archivo
+                                        </a>
+                                    </div>
+                                    <div class="column is-5"> 
+                                        <input class="input" type="text" id="comentarios-${elements.tipo_doc}" name="Comments" placeholder="Comentarios" maxlength="255" value="${elements.Comentarios}" onkeyup="cambiarcolor(this)" ${present}>
+                                    </div>
+                                    <div class="column"> 
+                                        <div class="field">
+                                            <div class="control">
+                                            <div class="select">
+                                                <select name="estatus" id="dropdown-${elements.tipo_doc}" onchange="cambiarcolor(this)" ${present}>
+                                                    <option value="1" ${elements.estatus == 1 ? 'selected' : ''}> Pendiente </option> 
+                                                    <option value="2" ${elements.estatus == 2 ? 'selected' : ''}> Aceptado  </option>
+                                                    <option value="3" ${elements.estatus == 3 ? 'selected' : ''}> Rechazado </option>
+                                                    <option value="0" ${elements.estatus == 0 ? 'selected' : ''}> Faltante  </option>
+                                                </select>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                        `
+                        
+                    }
+                    document.getElementById('exp').innerHTML = html;
+                }
+            }).catch(err => {
+                bulmaToast.toast({ message: 'Hay un problema con el servidor', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+            });
+        }
+    </script>
+
     <% if(msg != '') { %>
 
         <% if(exito == 1) { tipo = 'is-success'; } else { tipo = 'is-danger';} %> 
