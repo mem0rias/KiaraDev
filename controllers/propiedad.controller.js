@@ -80,10 +80,10 @@ exports.get_new = (request, response, next) => {
 
 exports.post_new = (request, response, next) => {
             
-    let v = request.body;
-    const userId = parseInt(response.locals.IdUser);
+    let v                   = request.body;
+    const userId            = parseInt(response.locals.IdUser);
 
-    if(request.body.uso == '1') {
+    if(v.uso == '1') {
 
         const recamaras         = parseInt(v.recamaras);
         const estacionamiento   = parseInt(v.estacionamiento);
@@ -117,7 +117,6 @@ exports.post_new = (request, response, next) => {
             userid          : userId
         };
 
-        //Convertir en tipo int datos requeridos
         Propiedad.agregarResidencial(d).then( () => {
                 response.redirect('/dashboard/asignado');
             }).catch( (error) => {
@@ -125,22 +124,50 @@ exports.post_new = (request, response, next) => {
         });
     }
 
-    else if(request.body.tipoPropiedad == 'Comercial'){
-        const recamaras = parseInt(request.body.recamaras);
-        const estacionamiento = parseInt(request.body.estacionamiento);
-        const banos = parseInt(request.body.banos);
-        const pisos = parseInt(request.body.pisos);
-        const oficinas = parseInt(request.body.oficinas);
-        Propiedad.saveComercial(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,estacionamiento,banos,oficinas,pisos)
+    else if(v.uso == '2'){
+
+        const estacionamiento   = parseInt(v.estacionamiento);
+        const banos             = parseInt(v.banos);
+        const pisos             = parseInt(v.pisos);
+        const cuartos           = parseInt(v.cuartos);
+
+        let d = {
+            titulo          : v.titulo,
+            descripcion     : v.descripcion,
+            precio          : v.precio,
+            estado          : v.estado,
+            muncipio        : v.muncipio,
+            colonia         : v.colonia,
+            calle           : v.calle,
+            cp              : v.cp,
+            uso             : v.uso,
+            mterreno        : v.mterreno,
+            mconstruccion   : v.mconstruccion,
+            tipotransaccion : v.tipotransaccion,
+            tipopropiedad   : v.tipopropiedad,
+            imagenes        : v.video,
+            video           : v.video,
+            cuartos         : cuartos,
+            banos           : banos,
+            pisos           : pisos,
+            estacionamiento : estacionamiento,
+            userid          : userId
+        };
+
+        Propiedad.agregarComercial(d)
                 .then( () => {
-                        response.redirect('/propiedades');
+                    response.redirect('/dashboard/asignado');
                 }).catch( (error) => {
-                        console.log(error);
+                    console.log(error);
         });
     } 
-    
 
-    
+    else {
+
+
+
+    }
+
 };
 
 exports.get_edit = (request, response, next) => {
@@ -149,6 +176,7 @@ exports.get_edit = (request, response, next) => {
             var monto = rows[0].Precio;
             let tipoP;
             precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
+            
             Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
                 if (res.length > 0){
                     console.log(res);
@@ -170,6 +198,7 @@ exports.get_edit = (request, response, next) => {
                                 propiedad: rows[0],
                                 comercial: com[0],
                                 precio: precio,
+                                tipoP: tipoP,
                             });
                         }
                         else{
@@ -180,6 +209,7 @@ exports.get_edit = (request, response, next) => {
                                         propiedad: rows[0],
                                         terreno: terr[0],
                                         precio: precio,
+                                        tipoP: tipoP,
                                     });
                                 }
                             }).catch((error) => {
@@ -189,7 +219,6 @@ exports.get_edit = (request, response, next) => {
                     }).catch();
                 }
             }).catch();
-
         }).catch( (error) => {
             console.log(error);
         });
@@ -211,17 +240,76 @@ exports.get_buscar =  (request, response, next) => {
 };
 
 exports.post_edit = (request, response, next) => {
-    let v = request.body;
-    console.log(v.id);
-    console.log(v.titulo);
-    console.log(v.recamaras);
-    console.log(v.descripcion);
-    Propiedad.updateResidencial(v.id,v.titulo,v.descripcion,v.recamaras)
-        .then( () => {
-            response.redirect('/dashboard/asignado');
-        }).catch( (error) => {
-            console.log(error);
-        });
-    
+
+    let v                   = request.body;
+
+    if(v.usodata == '1') {
+
+        let d = {
+            id              : v.id,
+            titulo          : v.titulo,
+            descripcion     : v.descripcion,
+            precio          : v.precio,
+            estado          : v.estado,
+            muncipio        : v.muncipio,
+            colonia         : v.colonia,
+            calle           : v.calle,
+            cp              : v.cp,
+            mterreno        : v.mterreno,
+            mconstruccion   : v.mconstruccion,
+            tipotransaccion : v.tipotransaccion,
+            tipopropiedad   : v.tipopropiedad,
+            imagenes        : v.video,
+            video           : v.video,
+            visibilidad     : v.visibilidad,
+            recamaras       : v.recamaras,
+            banos           : v.banos,
+            cocina          : v.cocina,
+            pisos           : v.pisos,
+            estacionamiento : v.estacionamiento, 
+            gas             : v.gas
+
+        };
+
+        Propiedad.actulizarResidencial(d)
+            .then( () => {
+                response.redirect('/dashboard/asignado');
+            }).catch( (error) => {
+                console.log(error);
+            });
+    }
+
+    else if(v.usodata == '2') {
+
+        let d = {
+            id              : v.id,
+            titulo          : v.titulo,
+            descripcion     : v.descripcion,
+            precio          : v.precio,
+            estado          : v.estado,
+            muncipio        : v.muncipio,
+            colonia         : v.colonia,
+            calle           : v.calle,
+            cp              : v.cp,
+            uso             : v.uso,
+            mterreno        : v.mterreno,
+            mconstruccion   : v.mconstruccion,
+            tipotransaccion : v.tipotransaccion,
+            tipopropiedad   : v.tipopropiedad,
+            imagenes        : v.video,
+            video           : v.video,
+            cuartos         : v.cuartos,
+            banos           : v.banos,
+            pisos           : v.pisos,
+            estacionamiento : v.estacionamiento,
+        };
+
+        Propiedad.actulizarComercial(d)
+            .then( () => {
+                response.redirect('/dashboard/asignado');
+            }).catch( (error) => {
+                console.log(error);
+            });
+    }  
 };
 
