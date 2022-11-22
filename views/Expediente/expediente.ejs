@@ -35,7 +35,7 @@
                     <div class="column is-2"> <h2 class="Title label">Estatus </h2> </div> 
                 </div>
             </div>
-        <form action="/expediente/actualizar" method="POST">  
+        <form action="/expediente/actualizar" method="POST" id="actualizar">  
             <input type="hidden" name="_csrf" value="<%=csrfToken%>">
             <div id="exp">
 
@@ -51,7 +51,7 @@
                 <div class="columns ">
                     <div class="column is-3">
                         
-                        <button  type="submit" class="button is-danger is-fullwidth is-hidden"   id="botonguardar" name="boton"> Guardar Cambios</button>
+                        <button  type="button" class="button is-danger is-fullwidth is-hidden"   id="botonguardar" name="boton" onclick="actualizarExp()"> Guardar Cambios</button>
                     </div>
                     
                 </div>
@@ -160,6 +160,34 @@
             }).catch(err => {
                 bulmaToast.toast({ message: 'Hay un problema con el servidor', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
             });
+        }
+
+        const actualizarExp = () => {
+            let Estatus = document.getElementsByName('estatus').values();
+            let Commentarios = document.getElementsByName('Comments');
+            let Tipos_Doc = document.getElementsByName('Tipo_Doc').values();
+            let user = document.getElementById('IdUsuario').value;
+            let forma = document.getElementById('actualizar');
+            let dati = new FormData(forma);
+            //console.log(dati.getAll('Comments'));
+            fetch('/expediente/actualizar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                       Comments : (dati.getAll('Comments')),
+                       estatus  :  (dati.getAll('estatus')),
+                       Tipo_Doc : (dati.getAll('Tipo_Doc')),
+                       IdUsuario : user,
+                }),
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+
+                }).catch( err => {
+
+                });
         }
     </script>
 

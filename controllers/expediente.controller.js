@@ -64,6 +64,7 @@ exports.actualizar = (request, response, next) => {
     console.log(Tipo_Doc);
     console.log(IdUsuario)
     console.log(nupdates);
+    /*
     //Ya solo se hace un procedimiento para garantizar atomicidad en la operacion.
     expediente.UpdateRequirements(Comments,Estatus,IdUsuario,Tipo_Doc,nupdates).then(()=>{
         
@@ -83,7 +84,7 @@ exports.actualizar = (request, response, next) => {
             //response.redirect('/inicio');
             response.redirect('/expediente/revisar/' + IdUsuario);
         });
-    })
+    })*/
     
 }
 
