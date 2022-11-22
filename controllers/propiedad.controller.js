@@ -87,14 +87,42 @@ exports.post_new = (request, response, next) => {
 
     if(request.body.tipoPropiedad == 'Residencial') {
 
+        const recamaras         = parseInt(v.recamaras);
+        const estacionamiento   = parseInt(v.estacionamiento);
+        const banos             = parseInt(v.banos);
+        const pisos             = parseInt(v.pisos);
+        const gas               = parseInt(v.gas);
+        const cocina            = parseInt(v.cocina);
+
+
+
+        let d = {
+            titulo          : v.titulo,
+            descripcion     : v.descripcion,
+            precio          : v.precio,
+            estado          : v.estado,
+            muncipio        : v.muncipio,
+            colonia         : v.colonia,
+            calle           : v.calle,
+            cp              : v.cp,
+            uso             : v.uso,
+            mterreno        : v.mterreno,
+            mconstruccion   : v.mconstruccion,
+            tipotransaccion : v.tipotransaccion,
+            tipopropiedad   : v.tipopropiedad,
+            imagenes        : v.video,
+            video           : v.video,
+            recamaras       : recamaras,
+            banos           : banos,
+            cocina          : cocina,
+            pisos           : pisos,
+            estacionamiento : estacionamiento,
+            gas             : gas,
+            userid          : userId,
+        };
+
         //Convertir en tipo int datos requeridos
-        const recamaras = parseInt(request.body.recamaras);
-        const estacionamiento = parseInt(request.body.estacionamiento);
-        const banos = parseInt(request.body.banos);
-        const pisos = parseInt(request.body.pisos);
-        const gas = parseInt(request.body.gas);
-        const cocina = parseInt(request.body.cocina);
-        Propiedad.saveResidencial(v.titulo,v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina,userId)
+        Propiedad.agregarResidencial(d)
                 .then( () => {
                         response.redirect('/dashboard/asignado');
                 }).catch( (error) => {

@@ -24,10 +24,10 @@ module.exports = class Propiedad {
             [this.descripcion, this.precio, this.estado,this.municipio,this.colonia,this.calle,this.cp,this.terreno,this.video,this.imagenes]);     
     }
 
-    static saveResidencial(titulo,descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina,userId) {
+    static agregarResidencial(d) {
         return db.execute(
-            'CALL saveResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
-            [titulo,descripcion, precio, estado,municipio,colonia,calle,cp,terreno,video,imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina,userId]);       
+            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [d.titulo,d.descripcion,d.precio,d.estado,d.municipio,d.colonia,d.calle,d.cp,d.uso,d.mterreno,d.mconstruccion,d.tipotransaccion,d.tipopropiedad,d.imagenes,d.video,d.recamaras,d.banos,d.cocina,d.pisos,d.estacionamiento,d.gas,d.userid]);       
     }
 
     static saveComercial(descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos) {
