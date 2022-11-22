@@ -50,14 +50,18 @@ const fileFilter = (request, file, callback) => {
 
 
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20000000}}).any('archivo2'));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20*1024*1024}}).any('archivo2'));
 //app.use(multer({ storage: fileStorage }).single('archivo')); 
 
+
+// Middleware que analiza errores de multer en caso que las protecciones del front end se salten.
+// Si hay exception, se limpian las variables que permiten que se suban archivos, por lo que el controlador no hace nada.
+// Y nada explota en consecuencia.
 app.use((err, request, response, next) => {
     if( err instanceof multer.MulterError){
         console.log(request.body);
-        console.log('Aqui mormios')
         request.body.SelFiles = '';
+        request.body.NRMFiles = '';
         request.files = ''
     }
     

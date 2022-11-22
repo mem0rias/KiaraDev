@@ -7,6 +7,162 @@ const removepaths = new Array();
 let changes = false;
 // Ultima seleccion de tipo de expediente.
 let prevsel;
+
+// Recarga el ultimo estado seleccionado.
+const revertirCambios = (elemento) => {
+    elemento.value = prevsel;
+    document.getElementById('aviso').classList.add('is-hidden');
+    cargarexp(elemento);
+}
+
+// Si hay cambios pendientes pregunta al usuario si los desea desechar
+const llamarcarga = (elemento) => {
+    if(changes){
+        if(confirm('Tus cambios no se guardaran si cambias de pestaña')){
+            cargarexp(elemento);
+            document.getElementById('aviso').classList.add('is-hidden');
+        }
+    }
+    else
+        cargarexp(elemento);
+}
+
+const cargarexp = (elemento) =>{
+    // Se vacian las variables de estado y el evento que pregunta si quieres recargar la pagina
+    window.onbeforeunload = 0;
+    filemap.length = 0;
+    removefile.length = 0;
+    removepaths.length = 0;
+    changes = false;
+
+    // Estados posibles de los archivos.
+    let estados = ['Faltante', 'Pendiente', 'Aceptado', 'Rechazado'];
+    let query = elemento.value;
+    prevsel = query;
+    //Fetch de requisitos del tipo de expediente seleccionado
+    fetch('/expediente/fetch/' + query, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(result => {
+        return result.json();
+    }).then(data => {
+        console.log(data);
+        if(data == 'fail'){
+            bulmaToast.toast({ message: 'Hay un problema con el servidor, intenta mas tarde', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+        }else{
+            // Generacion de ajax con los valores respectivos de cada tipo de archivo
+            document.getElementById('mainbody').classList.remove('is-hidden');
+            document.getElementById('botonguardar').classList.add('is-hidden');
+            let html = '';
+            for(elements of data){
+                if(elements.estatus == undefined)
+                    elements.estatus = 0;
+                if(elements.Comentarios == undefined)
+                    elements.Comentarios = ' ';
+                
+                // Se define si ciertos parametros se deben esconder dependiento del estado del elemento.
+                let hidden = (elements.URL != undefined && elements.URL != '') ? '' : 'is-hidden';
+                let fileName = (elements.URL == undefined | elements.URL == '') ? '' : (elements.URL.split('\\')).pop();
+                // Define si ya habia un tipo de archivo registrado en la BD.
+                let preloaded = hidden != 'is-hidden' ? 1 : 0;
+                html +=
+                `
+                <div class="has-background-light box">
+                    <div class="columns is-flex is-vcentered">
+                        <input type="hidden" name="Tipo_Doc" value="${elements.tipo_doc}">
+                        <div class="column is-3">
+                            <label class="label"> ${elements.descripcion}</label>
+                            <input type="hidden" value="${preloaded}" id="preloaded-${elements.tipo_doc}" name="preloaded">
+                            <input type="hidden" value="${elements.URL}" id="archivofull-${elements.tipo_doc}" name="archivofull">
+                        </div>
+                            <div class="column is-narrow" style="width: 200px;">
+                                <div class="file is-small is-boxed has-name is-danger ">
+                                    <label class="file-label ">
+                                        <input class="file-input"  accept=".pdf" type="file" name="archivo2" id="boton-${elements.tipo_doc}" onchange="clickArchivo(this)">
+                                        <span class="file-cta">
+                                        
+                                            <span class="file-label">
+                                                Selecciona Archivo
+                                            </span>
+                                        </span>
+                                        <span class="file-name ${hidden}" id="archivo-${elements.tipo_doc}">
+                                            ${fileName}
+                                        </span>
+                                    </label>
+                                    <span id="erase-${elements.tipo_doc}" class="level-right button is-boxed is-danger ${hidden} "onclick="removerArchivo(this)" style="margin-left: 10px">
+                                            <i class="tiny material-icons"> clear </i>    
+                                        </span>
+                                </div>
+                            </div>
+                    <div class="column is-5">
+                        <h2 class="label"> ${elements.Comentarios} </h2>
+                    </div>
+                    <div class="column is-2"> <h2 class="label"> ${estados[elements.estatus]} </h2></div>
+                    </div> 
+                </div>
+
+                    
+                `
+                
+            }
+            document.getElementById('exp').innerHTML = html;
+        }
+    }).catch(err => {
+        bulmaToast.toast({ message: 'Hay un problema con el servidor', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+    });
+}
+const subirarchivo = () =>{
+    let element = document.getElementById('subirarch');
+    let dynelements = document.getElementById('dynelements');
+    window.onbeforeunload = 0;
+
+    //Aqui validamos los archivos antes de iniciar la llamada de subida, por que multer se pone muy spicy si lo hacemos del backend
+    // Aunque si se burla esto, el backend evita que se suban archivos.
+    let sizecheck = checkfilesize();
+    let typecheck = checkfileType();
+
+    if(sizecheck && typecheck){
+        dynelements.innerHTML = 
+        `
+        <input type="hidden" value="${filemap}" id="selectedFiles" name="SelFiles">
+        <input type="hidden" value="${removefile}" id="removedFiles" name="RMFiles">
+        <input type="hidden" value="${removefile.length}" id="NremovedFiles" name="NRMFiles">
+        <input type="hidden" value="${removepaths}" id="removepaths" name="removepaths">
+        
+        `; 
+        element.submit();
+    }
+    else if(!sizecheck && typecheck)   
+        bulmaToast.toast({ message: 'Uno de tus archivos supera el limite de carga (20 MB)', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+    else if(sizecheck && !typecheck)
+        bulmaToast.toast({ message: 'Uno de tus archivos no es del tipo <strong> .pdf </strong>', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+    else
+        bulmaToast.toast({ message: 'Revisa el tamaño y tipo de tus archivos', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+
+}
+
+const checkfilesize = () => {
+    for(elements of filemap){
+        let fileup = document.getElementById('boton-'+elements);
+        if(fileup.files[0].size > (20*1024*1024)){ // 20MB file size
+            return false;
+        }
+    }
+    return true;
+}
+
+const checkfileType = () => {
+    for(elements of filemap){
+        let fileup = document.getElementById('boton-'+elements);
+        if(fileup.files[0].type != 'application/pdf'){ // Archivo PDF
+            return false;
+        }
+    }
+    return true;
+}
+
 const clickArchivo = (element) => {
     //Esta funcion obtiene el tipo de documento y lo añade a un  arreglo para saber que se cargo en la BD.
     
