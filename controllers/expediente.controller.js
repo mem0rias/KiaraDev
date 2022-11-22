@@ -37,28 +37,7 @@ exports.getReqs = (request, response, next) => {
             response.render('./Expediente/expediente', {map: exp_types, usuario: userid, info: msg, infopositiva: msgpos});
         });
     });
-    /*expediente.fetchRequirements(request.params.id).then(([rows, fieldData]) => {
-        Dashboard.fetchUser(request.params.id).then( ([usuarioData, fieldData]) => {
-            console.log(usuarioData);
-            response.render('./Expediente/expediente', {
-                usuario: usuarioData[0],
-                sesionId: response.locals.IdRol, 
-                sesionUser: response.locals.IdUser,
-                info:rows,
-                
-            }); 
-            
-        }).catch( (error) => {
-            console.log(error);
-        });  
-        //console.log(rows);
-        //response.render('exito');
-       
-        
-    }).catch((error) => {
-        console.log(error);
-        response.render('./Expediente/expediente', {name: 'Andrea Castillo', Id: '10', info: ''});
-    });*/
+
 }
 
 exports.actualizar = (request, response, next) => {
@@ -87,24 +66,22 @@ exports.actualizar = (request, response, next) => {
     console.log(nupdates);
     //Ya solo se hace un procedimiento para garantizar atomicidad en la operacion.
     expediente.UpdateRequirements(Comments,Estatus,IdUsuario,Tipo_Doc,nupdates).then(()=>{
-        console.log('Se logro!');
+        
         //Token para toast 
-        request.session.msg = 'Expediente Actualizado!';
-        request.session.exito = 1;
+        request.session.infopositiva = 'Expediente Actualizado!';
         return request.session.save(err => {
             console.log(request.session.msg);
             //response.redirect('/inicio');
-            response.redirect('/dashboard/usuarios');
+            response.redirect('/expediente/revisar/' + IdUsuario);
         });
     }).catch((error) =>{
         console.log(error);
         //Token para toast 
-        request.session.msg = 'Error al Actualizar Expediente';
-        request.session.exito = 0;
+        request.session.info = 'Error al Actualizar Expediente';
         return request.session.save(err => {
             console.log(request.session.msg);
             //response.redirect('/inicio');
-            response.redirect('/expediente/revisar');
+            response.redirect('/expediente/revisar/' + IdUsuario);
         });
     })
     
@@ -148,7 +125,7 @@ exports.fetchinfo = (request, response, next) => {
     // para el tipo de expediente dado
     let query = request.params.tipo;
     let user = request.session.IdUser;
-    console.log(query + " "+  user);
+    console.log(query + ' ' +  user);
     expediente.fetchRequirements(query,user).then(([rows, fieldData]) =>{
         response.status(200).json(rows);
     }).catch(err =>{
@@ -164,7 +141,7 @@ exports.fetchiuserinfo = (request, response, next) => {
     // para el tipo de expediente dado
     let query = request.params.tipo;
     let user = request.params.usuario;
-    console.log(query + " "+  user);
+    console.log(query +  ' ' +  user);
     expediente.fetchRequirements(query,user).then(([rows, fieldData]) =>{
         response.status(200).json(rows);
     }).catch(err =>{

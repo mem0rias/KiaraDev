@@ -48,9 +48,12 @@
             <div class="box is-shadowless">
 
                 <input type="hidden" name="IdUsuario" value="<%=usuario.IdUsuario%>" id="IdUsuario">
-                <div class="columns">  
-                    <div class="column is-10"></div>
-                    <div class="column"><button class="button is-primary is-fullwidth" type="submit" id="botonguardar" name="boton" value="salvar"> Guardar </button></div>
+                <div class="columns ">
+                    <div class="column is-3">
+                        
+                        <button  type="submit" class="button is-danger is-fullwidth is-hidden"   id="botonguardar" name="boton"> Guardar Cambios</button>
+                    </div>
+                    
                 </div>
                 
             
@@ -61,7 +64,7 @@
     <script src="../js/dist/bulma-toast.min.js"></script>
     
     <script>
-        let changes = false;
+        
         // Si hay cambios pendientes pregunta al usuario si los desea desechar
         const llamarcarga = (elemento) => {
             if(changes){
@@ -160,11 +163,14 @@
         }
     </script>
 
-    <% if(msg != '') { %>
-
-        <% if(exito == 1) { tipo = 'is-success'; } else { tipo = 'is-danger';} %> 
+    <% if(info != '') { %>
         <script>
-            bulmaToast.toast({ message: '<%= msg %>', type: '<%= tipo %>', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+            bulmaToast.toast({ message: '<%= info %>', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+        </script>
+    <% } %>
+    <% if(infopositiva != '') { %>
+        <script>
+            bulmaToast.toast({ message: '<%= infopositiva %>', type: 'is-success', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
         </script>
     <% } %>
     <script src="../js/expediente.js"></script>
