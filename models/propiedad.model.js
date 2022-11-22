@@ -1,5 +1,6 @@
 const db = require('../util/database');
 
+
 module.exports = class Propiedad {
 
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
@@ -25,9 +26,33 @@ module.exports = class Propiedad {
     }
 
     static agregarResidencial(d) {
+        console.log('salida de model');
+        console.log(d);
         return db.execute(
-            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
-            [d.titulo,d.descripcion,d.precio,d.estado,d.municipio,d.colonia,d.calle,d.cp,d.uso,d.mterreno,d.mconstruccion,d.tipotransaccion,d.tipopropiedad,d.imagenes,d.video,d.recamaras,d.banos,d.cocina,d.pisos,d.estacionamiento,d.gas,d.userid]);       
+            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [   d.titulo          ,
+                d.descripcion     ,
+                d.precio          ,
+                d.estado          ,
+                d.muncipio        ,
+                d.colonia         ,
+                d.calle           ,
+                d.cp              ,
+                d.uso             ,
+                d.mterreno        ,
+                d.mconstruccion   ,
+                d.tipotransaccion ,
+                d.tipopropiedad   ,
+                d.imagenes        ,
+                d.video           ,
+                d.recamaras       ,
+                d.banos           ,
+                d.cocina          ,
+                d.pisos           ,
+                d.estacionamiento ,
+                d.gas             ,
+                d.userid          
+            ]);
     }
 
     static saveComercial(descripcion,precio,estado,municipio,colonia,calle,cp,terreno,video,imagenes,estacionamiento,banos,oficinas,pisos) {

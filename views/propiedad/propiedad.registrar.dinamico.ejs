@@ -14,7 +14,7 @@
         console.log(tipoP);
         console.log(tipo);
         let html = '';
-        if(tipo == "Residencial" || tipoP == "1"){
+        if(tipo == "1" || tipoP == "1"){
             html += '<div class="section px-0 py-5">';
             html += '     <div class="card">';
             html += '         <div class="card-content">';
@@ -22,9 +22,9 @@
             html += '<div class="columns is-multiline">';
             html += '    <div class="column is-auto">';
             html += '        <div class="field">';
-            html += '            <label class="label">Recamaras</label>';
+            html += '            <label class="label">Habitaciones</label>';
             html += '            <div class="control">';
-            html += '                <div class="select is-expanded is-fullwidth">';
+            html += '                <div class="select is-expanded">';
             html += '                    <select class="select" name="recamaras" id="recamaras">';
             html += '                        <option value="" disabled selected hidden>Cantidad</option>';
             html += '                        <option value="1">1</option>';
@@ -43,7 +43,7 @@
             html += '        <div class="field">';
             html += '            <label class="label">Estacionamiento</label>';
             html += '            <div class="control">';
-            html += '                <div class="select is-expanded is-fullwidth">';
+            html += '                <div class="select is-expanded">';
             html += '                    <select class="select" name="estacionamiento" id="estacionamiento">';
             html += '                        <option value="" disabled selected hidden>Cantidad</option>';
             html += '                        <option value="1">1</option>';
@@ -62,7 +62,7 @@
             html += '        <div class="field">';
             html += '            <label class="label">Baños</label>';
             html += '            <div class="control">';
-            html += '                <div class="select is-expanded is-fullwidth">';
+            html += '                <div class="select is-expanded">';
             html += '                    <select class="select" name="banos" id="banos">';
             html += '                        <option value="" disabled selected hidden>Cantidad</option>';
             html += '                        <option value="1">1</option>';
@@ -79,9 +79,9 @@
             html += '    </div>';
             html += '    <div class="column is-auto">';
             html += '        <div class="field">';
-            html += '            <label class="label">Niveles</label>';
+            html += '            <label class="label">Pisos</label>';
             html += '            <div class="control">';
-            html += '                <div class="select is-expanded is-fullwidth">';
+            html += '                <div class="select is-expanded">';
             html += '                    <select class="select" name="pisos" id="pisos">';
             html += '                        <option value="" disabled selected hidden>Cantidad</option>';
             html += '                        <option value="1">1</option>';
@@ -103,7 +103,7 @@
             html += '        <div class="field">';
             html += '            <label class="label">Gas</label>';
             html += '            <div class="control">';
-            html += '                <div class="select is-expanded is-fullwidth">';
+            html += '                <div class="select is-expanded">';
             html += '                    <select class="select" name="gas" id="gas">';
             html += '                        <option value="" disabled selected hidden>Seleccionar</option>';
             html += '                        <option value="1">Sì</option>';
@@ -117,7 +117,7 @@
             html += '        <div class="field">';
             html += '            <label class="label">Cocina</label>';
             html += '            <div class="control">';
-            html += '                <div class="select is-expanded is-fullwidth">';
+            html += '                <div class="select is-expanded">';
             html += '                    <select class="select" name="cocina" id="cocina">';
             html += '                        <option>Seleccionar</option>';
             html += '                        <option value="1">Sì</option>';
@@ -135,7 +135,7 @@
 
         }
 
-        else if(tipo == "Comercial"){
+        else if(tipo == "2"){
 
             html += '<div class="section px-0 py-5">';
             html += '     <div class="card">';
@@ -146,7 +146,7 @@
             html += '                         <div class="field">';
             html += '                             <label class="label">Oficinas</label>';
             html += '                             <div class="control">';
-            html += '                                 <div class="select is-expanded is-fullwidth">';
+            html += '                                 <div class="select is-expanded">';
             html += '                                     <select class="select" name="oficinas" id="oficinas">';
             html += '                                         <option value="" disabled selected hidden>Cantidad</option>';
             html += '                                         <option value="1">1</option>';
@@ -165,7 +165,7 @@
             html += '                         <div class="field">';
             html += '                             <label class="label">Estacionamiento</label>';
             html += '                             <div class="control">';
-            html += '                                 <div class="select is-expanded is-fullwidth">';
+            html += '                                 <div class="select is-expanded">';
             html += '                                     <select class="select" name="estacionamiento" id="estacionamiento">';
             html += '                                         <option value="" disabled selected hidden>Cantidad</option>';
             html += '                                         <option value="1">1</option>';
@@ -184,7 +184,7 @@
             html += '                         <div class="field">';
             html += '                             <label class="label">Baños</label>';
             html += '                             <div class="control">';
-            html += '                                 <div class="select is-expanded is-fullwidth">';
+            html += '                                 <div class="select is-expanded">';
             html += '                                     <select class="select" name="banos" id="banos">';
             html += '                                         <option value="" disabled selected hidden>Cantidad</option>';
             html += '                                         <option value="1">1</option>';
@@ -203,7 +203,7 @@
             html += '                         <div class="field">';
             html += '                             <label class="label">Pisos</label>';
             html += '                             <div class="control">';
-            html += '                                 <div class="select is-expanded is-fullwidth">';
+            html += '                                 <div class="select is-expanded">';
             html += '                                     <select class="select" name="pisos" id="pisos">';
             html += '                                         <option value="" disabled selected hidden>Cantidad</option>';
             html += '                                         <option value="1">1</option>';

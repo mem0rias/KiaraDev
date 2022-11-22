@@ -79,12 +79,11 @@ exports.get_new = (request, response, next) => {
 };
 
 exports.post_new = (request, response, next) => {
-    
-    console.log(request.body);
+            
     let v = request.body;
     const userId = parseInt(response.locals.IdUser);
 
-    if(request.body.tipoPropiedad == 'Residencial') {
+    if(request.body.uso == '1') {
 
         const recamaras         = parseInt(v.recamaras);
         const estacionamiento   = parseInt(v.estacionamiento);
@@ -93,7 +92,7 @@ exports.post_new = (request, response, next) => {
         const gas               = parseInt(v.gas);
         const cocina            = parseInt(v.cocina);
 
-        var d = {
+        let d = {
             titulo          : v.titulo,
             descripcion     : v.descripcion,
             precio          : v.precio,
@@ -118,14 +117,11 @@ exports.post_new = (request, response, next) => {
             userid          : userId
         };
 
-        console.log(d.banos);
-
         //Convertir en tipo int datos requeridos
-        Propiedad.agregarResidencial(d)
-                .then( () => {
-                        response.redirect('/dashboard/asignado');
-                }).catch( (error) => {
-                        console.log(error);
+        Propiedad.agregarResidencial(d).then( () => {
+                response.redirect('/dashboard/asignado');
+            }).catch( (error) => {
+                console.log(error);
         });
     }
 
