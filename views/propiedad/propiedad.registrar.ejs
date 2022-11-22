@@ -13,6 +13,7 @@
         <% } else { %>
             <form action="/propiedades/editar" method="POST">
             <input type="hidden" id="id" name="id" value="<%= propiedad.IdPropiedad %>">
+            <input type="hidden" id="id" name="usodata" value="<%= propiedad.Uso %>">
             <div class="content mt-5"">
                 <h1>Editar propiedad</h1>
             </div>
@@ -38,7 +39,7 @@
 
                             <div class="columns">
                              <% if (propiedad === '') { %>
-                                <div class="column is-4">
+                                <div class="column is-3">
                                     <div class="field">
                                         <label class="label">Tipo de propiedad</label>
                                         <div class="control">
@@ -56,48 +57,99 @@
 
                                 </div>
                             <% } else { %>
-                                <div class="column is-4">
+                                <div class="column is-3">
                                     <div class="field">
                                         <label class="label">Visibilidad</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
                                                 <select class="select" name="visibilidad" id="visibilidad">
                                                     <option value="" disabled selected hidden>Seleccionar visibilidad</option>
-                                                    <option value="0">Visible</option>
+                                                    <% if ( propiedad.Visibilidad === 0){ %>
+                                                    <option value="0" selected>Visible</option>
                                                     <option value="1">No visible</option>
+                                                    <%} else if( propiedad.Visibilidad === 1){ %>  
+                                                    <option value="0">Visible</option>
+                                                    <option value="1" selected>No visible</option>
+                                                    <% } %>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            <% } %>
-                                <div class="column is-4">
+                                <% } %>
+                                <div class="column is-3">
                                     <div class="field">
                                         <label class="label">Subtipo</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
                                                 <select class="select" name="tipopropiedad" id="tipoVenta">
                                                     <option  disabled selected hidden>Seleccionar tipo</option>
-                                                    <option value="1">Casa</option>
-                                                    <option value="2">Departamento</option>
-                                                    <option value="3">Local</option>
-                                                    <option value="4">Oficina</option>
-                                                    <option value="5">Bodega</option>
+                                                    <% if ( propiedad.TipoPropiedad === 1){ %>
+                                                        <option value="1" selected>Casa</option>
+                                                        <option value="2">Departamento</option>
+                                                        <option value="3">Local</option>
+                                                        <option value="4">Oficina</option>
+                                                        <option value="5">Bodega</option>
+                                                    <%} else if( propiedad.TipoPropiedad === 2){ %>
+                                                        <option value="1">Casa</option>
+                                                        <option value="2" selected>Departamento</option>
+                                                        <option value="3">Local</option>
+                                                        <option value="4">Oficina</option>
+                                                        <option value="5">Bodega</option>
+                                                    <%} else if( propiedad.TipoPropiedad === 3){ %>
+                                                        <option value="1">Casa</option>
+                                                        <option value="2">Departamento</option>
+                                                        <option value="3" selected>Local</option>
+                                                        <option value="4">Oficina</option>
+                                                        <option value="5">Bodega</option>
+                                                     <%} else if( propiedad.TipoPropiedad === 4){ %>
+                                                        <option value="1">Casa</option>
+                                                        <option value="2">Departamento</option>
+                                                        <option value="3">Local</option>
+                                                        <option value="4" selected>Oficina</option>
+                                                        <option value="5">Bodega</option>
+                                                    <%} else if( propiedad.TipoPropiedad === 5){ %>
+                                                        <option value="1">Casa</option>
+                                                        <option value="2">Departamento</option>
+                                                        <option value="3">Local</option>
+                                                        <option value="4">Oficina</option>
+                                                        <option value="5" selected>Bodega</option>         
+                                                    <%} else { %>  
+                                                        <option value="1">Casa</option>
+                                                        <option value="2">Departamento</option>
+                                                        <option value="3">Local</option>
+                                                        <option value="4">Oficina</option>
+                                                        <option value="5">Bodega</option>   
+                                                    <% } %>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="column is-4">
+                                <div class="column is-3">
                                     <div class="field">
                                         <label class="label">Tipo de venta</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
                                                 <select class="select" name="tipotransaccion" id="tipoVenta">
                                                     <option  disabled selected hidden>Seleccionar tipo</option>
-                                                    <option value="1">Venta</option>
-                                                    <option value="2">Renta</option>
-                                                    <option value="3">Venta/Renta</option>
+                                                    <% if (propiedad.TipoTransaccion === "1"){ %>
+                                                        <option value="1" selected>Venta</option>
+                                                        <option value="2">Renta</option>
+                                                        <option value="3">Venta/Renta</option>
+                                                    <%} else if(propiedad.TipoTransaccion === "2"){ %>
+                                                        <option value="1">Venta</option>
+                                                        <option value="2" selected>Renta</option>
+                                                        <option value="3">Venta/Renta</option>
+                                                    <%} else if(propiedad.TipoTransaccion === "3"){ %> 
+                                                        <option value="1">Venta</option>
+                                                        <option value="2">Renta</option>
+                                                        <option value="3" selected>Venta/Renta</option>
+                                                    <%} else { %>
+                                                        <option value="1">Venta</option>
+                                                        <option value="2">Renta</option>
+                                                        <option value="3">Venta/Renta</option>
+                                                    <% } %>
                                                 </select>
                                             </div>
                                         </div>
@@ -120,7 +172,7 @@
                                     <div class="field">
                                         <label class="label">Metros Cuadrados Terreno</label>
                                         <div class="control">
-                                        <input onkeyup="cambiarcolor(this)" class="input" id="campo-3" name="mterreno" type="number" maxlength="40" placeholder="Terreno m²" value="<%= propiedad.Titulo ? propiedad.Titulo : '' %>">
+                                        <input onkeyup="cambiarcolor(this)" class="input" id="campo-3" name="mterreno" type="number" maxlength="40" placeholder="Terreno m²" value="<%= propiedad.MTerreno ? propiedad.MTerreno : '' %>">
                                         </div>
                                     </div>
                                 </div>
@@ -128,7 +180,7 @@
                                     <div class="field">
                                         <label class="label">Metros Cuadrados Construcción</label>
                                         <div class="control">
-                                        <input onkeyup="cambiarcolor(this)" class="input" id="campo-4" name="mconstruccion" type="number" maxlength="40" placeholder="Construccion m²" value="<%= propiedad.Titulo ? propiedad.Titulo : '' %>">
+                                        <input onkeyup="cambiarcolor(this)" class="input" id="campo-4" name="mconstruccion" type="number" maxlength="40" placeholder="Construccion m²" value="<%= propiedad.MConstruccion ? propiedad.MConstruccion : '' %>">
                                         </div>
                                     </div>
                                 </div>
@@ -172,7 +224,7 @@
                                     <div class="field">
                                         <label class="label">Colonia</label>
                                         <div class="control">
-                                            <input onkeyup="cambiarcolor(this)" class="input" type="text" maxlength="40" name="colonia" id="campo-7" placeholder="Colonia">
+                                            <input onkeyup="cambiarcolor(this)" class="input" type="text" maxlength="40" name="colonia" id="campo-7" placeholder="Colonia" value="<%= propiedad.Colonia ? propiedad.Colonia : '' %>">
                                         </div>
                                     </div>
                                 </div>
@@ -182,7 +234,7 @@
                                     <div class="field">
                                         <label class="label">Codigo Postal</label>
                                         <div class="control">
-                                            <input onkeyup="cambiarcolor(this)" class="input" type="number" maxlength="5" name="cp" id="campo-8" placeholder="Codigo Postal">
+                                            <input onkeyup="cambiarcolor(this)" class="input" type="number" maxlength="5" name="cp" id="campo-8" placeholder="Codigo Postal" value="<%= propiedad.CP ? propiedad.CP : '' %>">
                                         </div>
                                     </div>
                                 </div>
@@ -195,7 +247,7 @@
                                     <div class="field">
                                         <label class="label">Calle</label>
                                         <div class="control">
-                                            <input onkeyup="cambiarcolor(this)" class="input" type="text" maxlength="40" name="calle" id="campo-9" placeholder="Calle">
+                                            <input onkeyup="cambiarcolor(this)" class="input" type="text" maxlength="40" name="calle" id="campo-9" placeholder="Calle" value="<%= propiedad.Calle ? propiedad.Calle : '' %>">
                                         </div>
                                     </div>
                                 </div>
@@ -237,7 +289,7 @@
                                     <div class="field">
                                         <label class="label">Imagenes</label>
                                         <div class="control">
-                                            <input class="input" type="text" maxlength="500" name="imagenes" placeholder="">
+                                            <input class="input" type="text" maxlength="500" name="imagenes" placeholder="" value="<%= propiedad.Imagenes ? propiedad.Imagenes : '' %>">
                                         </div>
                                     </div>
                                 </div>
@@ -245,7 +297,7 @@
                                     <div class="field">
                                         <label class="label">Video</label>
                                         <div class="control">
-                                            <input class="input" type="text" maxlength="40" name="video" placeholder="URL de Youtube">
+                                            <input class="input" type="text" maxlength="40" name="video" placeholder="URL de Youtube" value="<%= propiedad.Video ? propiedad.Video : '' %>">
                                         </div>
                                     </div>
                                 </div>
@@ -263,7 +315,7 @@
                 </div>
             
                 <div class="content pb-5">
-                    <input class="button is-danger"type="submit" id="enviar" name="enviar" value="Registrar" >
+                    <input class="button is-danger"type="submit" id="enviar" name="enviar" value="Guardar" >
                     <div class="content">
                         <h2 id="mensaje" class="has-text-danger"></h2>
                     </div>

@@ -79,6 +79,32 @@ module.exports = class Propiedad {
             ]);     
     }
 
+    static agregarTerreno(d) {
+        return db.execute(
+            'CALL agregarTerreno(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [   d.titulo         , 
+                d.descripcion    , 
+                d.precio         , 
+                d.estado         , 
+                d.muncipio       , 
+                d.colonia        , 
+                d.calle          , 
+                d.cp             , 
+                d.uso            , 
+                d.mterreno       , 
+                d.mconstruccion  , 
+                d.tipotransaccion, 
+                d.tipopropiedad  , 
+                d.imagenes       , 
+                d.video          , 
+                d.cuartos        , 
+                d.banos          ,
+                d.pisos          , 
+                d.estacionamiento, 
+                d.userid          
+            ]);     
+    }
+
     static actulizarResidencial(d) {
         return db.execute(
             'CALL actulizarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
