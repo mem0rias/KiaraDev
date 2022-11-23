@@ -44,6 +44,8 @@
                 </div>
                 <form action="/expediente/miexpediente" method="POST"  enctype="multipart/form-data" id="subirarch"> 
                     <input type="hidden" value="<%= user %>" id="user" name="user">
+                    <input type="hidden" value="" id="Tipo_Exp" name="Tipo_Exp">
+                    <input type="hidden" value="<%= init %>" id="initval" name="initval">
                     <input type="hidden" name="_csrf" value="<%=csrfToken%>">
                     <div id="dynelements">
 
