@@ -1,0 +1,35 @@
+
+<div class="field is-grouped is-grouped-center columns">
+    <div class="column">
+        <span id="<%=paso.paso%>" class="steps-marker">
+            <% if(paso.Estatus != 0){ %>
+            <span class="icon">
+                <i class="mdi mdi-check"></i>
+            </span>
+            <% } %>
+        </span>
+
+        <input id="idPaso-<%=paso.paso%>" type="hidden"  value="<%=paso.id%>">
+        <div class="steps-content ">
+            <p class="is-size-4"><%= paso.paso %></p>
+            <p><%= paso.Descripcion %> </p>
+            
+        </div>
+    </div>
+
+    <div class="container column">
+        <div class="select">
+            <select id="select-<%=paso.paso%>" onchange="enableGuardar(this)">
+                
+                <option value=0 <% if(paso.Estatus == 0){ %>selected<% } %>>Incompleto</option>
+                <option value=1 <% if(paso.Estatus != 0){ %>selected<% } %>>Completo</option>   
+
+            </select>
+        </div>
+        
+        <button class="button is-right is-hidden is-danger" id="boton-<%=paso.paso%>"> Guardar </button>
+    </div>
+   
+   
+</div>
+

@@ -4,29 +4,56 @@
         <br>
         
         <div class="container is-max-widescreen">
-            <div class="box is-shadowless">
+            <div class="box ">
                 <h1 class="label is-size-2"> Expediente de: <%= usuario.nombre %> </h1>
-                <div class="columns" >
+                <div class="columns is-multiline">
+                    <%if(map.size != 0){ %>
+                        <% for(const [key, value] of map) { %>
+                            <div class="column">
+                                <button class="button is-danger is-fullwidth" onclick="llamarcarga(this)" value="<%= key %>"><%= value %> </button>
+                            </div>
+                        <%}%>
+                    <%} else {%>
+                        <div class="column">
+                            No tienes ningun tipo de expediente asignado
+                        </div>
+                    <%}%>
+                     
+                </div>
+            </div>
+
+            <div class="box is-hidden" id="mainbody">   
+                    
+                
+                    
+                <div class="columns "  >
                     <!--<div class="column is-1"> </div> -->
                     <div class="column is-3"><h2 class="Title label">Archivo</h2> </div>
-                    <div class="column is-2"></div>
+                    <div class="column" ></div>
                     
-                    <div class="column"> <h2 class="Title label">Comentarios</h2></div>
+                    <div class="column is-5"> <h2 class="Title label">Comentarios</h2></div>
                     <div class="column is-2"> <h2 class="Title label">Estatus </h2> </div> 
                 </div>
             </div>
-        <form action="/expediente/actualizar" method="POST">  
-            <% for(let element of info) { %>
+        <form action="/expediente/actualizar" method="POST" id="actualizar">  
+            <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+            <div id="exp">
+
+            </div>
+            <!-- /*<% for(let element of info) { %>
                 
                 <%- include('../Expediente/bloqueArchivo.ejs', {info: element}) %>
                 
-            <% } %>
+            <% } %> */ -->
             <div class="box is-shadowless">
 
-                <input type="hidden" name="IdUsuario" value="<%=usuario.IdUsuario%>">
-                <div class="columns">  
-                    <div class="column is-10"></div>
-                    <div class="column"><button class="button is-primary is-fullwidth" type="submit" id="botonguardar" name="boton" value="salvar"> Guardar </button></div>
+                <input type="hidden" name="IdUsuario" value="<%=usuario.IdUsuario%>" id="IdUsuario">
+                <div class="columns ">
+                    <div class="column is-3">
+                        
+                        <button  type="button" class="button is-danger is-fullwidth is-hidden"   id="botonguardar" name="boton" onclick="actualizarExp()"> Guardar Cambios</button>
+                    </div>
+                    
                 </div>
                 
             
@@ -36,11 +63,15 @@
     </section> 
     <script src="../js/dist/bulma-toast.min.js"></script>
     
-    <% if(msg != '') { %>
 
-        <% if(exito == 1) { tipo = 'is-success'; } else { tipo = 'is-danger';} %> 
+    <% if(info != '') { %>
         <script>
-            bulmaToast.toast({ message: '<%= msg %>', type: '<%= tipo %>', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+            bulmaToast.toast({ message: '<%= info %>', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+        </script>
+    <% } %>
+    <% if(infopositiva != '') { %>
+        <script>
+            bulmaToast.toast({ message: '<%= infopositiva %>', type: 'is-success', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
         </script>
     <% } %>
     <script src="../js/expediente.js"></script>

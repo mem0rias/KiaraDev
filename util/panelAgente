@@ -1,0 +1,6 @@
+module.exports = (request, response, next) => {
+    if (!request.session.permisos.indexOf('panel_agente') != -1) {
+        return response.redirect('/user/login');
+    }
+    next();
+}

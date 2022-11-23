@@ -11,6 +11,7 @@ exports.get_dashboard = (request, response, next) => {
                 usuario: usuarioData[0],
                 sesionId: response.locals.IdRol, 
                 sesionUser: response.locals.IdUser,
+                permisos: request.session.permisos,
             }); 
             
 
@@ -34,6 +35,7 @@ exports.get_propiedadesAsignadas = (request, response, next) => {
                         sesionUser: response.locals.IdUser,
                         propiedad: propiedadesAsignadas,
                         cantidad: cantidad,
+                        permisos: request.session.permisos,
                     }); 
                     
         
@@ -52,6 +54,7 @@ exports.get_userlist = (request, response, next) =>{
         usuario: '',
         sesionId: response.locals.IdRol, 
         sesionUser: response.locals.IdUser,
+        permisos: request.session.permisos,
 
     });
 
@@ -62,6 +65,7 @@ exports.get_roluserlist = (request, response, next) =>{
         usuario: '',
         sesionId: response.locals.IdRol, 
         sesionUser: response.locals.IdUser,
+        permisos: request.session.permisos,
 
     });
 

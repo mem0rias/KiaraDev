@@ -6,109 +6,75 @@
         <div class="container is-max-widescreen">
             <div class="box ">
                 <h1 class="label is-size-2"> Mi Expediente:  </h1>
-                <div class="columns">
-                    <% if(arr[0]) {%>
-                    <div class="column is-2 ">
-                        <button class="button is-danger is-fullwidth" onclick="cargarexp(this)" value="5"> Arrendador </button>
-                    </div>
-                    <% } %>
-                    <% if(arr[1]) {%>
-                    <div class="column is-2">
-                        <button class="button is-danger is-fullwidth" onclick="cargarexp(this)" value="1"> Vendedor </button>
-                    </div>
-                    <% } %>
-                    <% if(arr[2]) {%>
-                    <div class="column is-2">
-                        <button class="button is-danger is-fullwidth" onclick="cargarexp(this)" value="3"> Comprador </button>
-                    </div>
-                    <% } %>
+                <div class="columns  is-multiline">
+                    <%if(map.size != 0){ %>
+                        <% for(const [key, value] of map) { %>
+                            <div class="column">
+                                <button class="button is-danger is-fullwidth" onclick="llamarcarga(this)" value="<%= key %>"><%= value %> </button>
+                            </div>
+                        <%}%>
+                    <%} else {%>
+                        <div class="column">
+                            No tienes ningun tipo de expediente asignado
+                        </div>
+                    <%}%>
+                    
+                    
                 </div>
             </div>   
-                
-            <div class="box">    
-                <div class="columns" >
-                    <!--<div class="column is-1"> </div> -->
-                    <div class="column is-3"><h2 class="Title label">Archivo</h2> </div>
-                    <div class="column is-2"></div>
-                    
-                    <div class="column"> <h2 class="Title label">Comentarios</h2></div>
-                    <div class="column is-2"> <h2 class="Title label">Estatus </h2> </div> 
-                </div>
-            </div>
-            <form action="/expediente/miexpediente" method="POST"  enctype="multipart/form-data"> 
-                <div id="exp">
-
-                </div>
+            <div class="notification is-warning is-hidden" id="aviso">
+                <button class="delete"></button>
+                    Vas a eliminar/reemplazar un archivo que ya tenias guardado. Si estas seguro de esto, presiona <strong> 'Guardar Cambios' </strong>. Si no, presiona aqui.
                 <br>
-                <div class="columns">
-                    <div class="column is-3">
-                        <button  type="submit" class="button is-danger is-fullwidth"  onclick="" id="botonguardar" name="boton"> Guardar Cambios</button>
-                    </div>
+                <button class="button" onclick="revertirCambios(this)"> Revertir </button>
+              </div> 
+            <%if(map.size != 0){ %>
+                <div class="box is-hidden" id="mainbody">   
                     
+                
+                    
+                    <div class="columns "  >
+                        <!--<div class="column is-1"> </div> -->
+                        <div class="column is-3"><h2 class="Title label">Archivo</h2> </div>
+                        <div class="column" ></div>
+                        
+                        <div class="column is-5"> <h2 class="Title label">Comentarios</h2></div>
+                        <div class="column is-2"> <h2 class="Title label">Estatus </h2> </div> 
+                    </div>
                 </div>
-            </form>
-            
-        <script>
-            const cargarexp = (elemento) =>{
-                let query = elemento.value;
-                fetch('/expediente/fetch/' + query, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                }).then(result => {
-                    return result.json();
-                }).then(data => {
-                    console.log(data);
-                    let html = ''
-                    let docs = data.files;
-                    let tipo_docs = new Array();
-                    let estados = ['Faltante', 'Pendiente', 'Aceptado', 'Recahzado'];
-                    console.log(docs);
-                    for(let elems of docs){
-                        tipo_docs.push(elems.Tipo_doc);
-                    }
-                    console.log(tipo_docs);
-                    for(let elems of data.reqs){
-                        console.log(elems);
-                        let comment = '';
-                        let estatus = '0';
-                        if(tipo_docs.indexOf(elems.Tipo_doc) > -1){
-                            comment = docs[tipo_docs.indexOf(elems.Tipo_doc)].comentarios;
-                            estatus = docs[tipo_docs.indexOf(elems.Tipo_doc)].estatus;
-                        }
-                        console.log(comment);
-                        html +=' <div class="has-background-light box">';
-                        html += '<div class="columns">';
-                        html += '<input type="hidden" name="Tipo_Doc" value="">';
-                        html += '<div class="column is-3">';
-                        html += '<label class="label"> '+ elems.descripcion +' </label> </div>';
-                        html += '<div class="column is-2">'
-                        html +=    '<div class="file is-danger">'
-                        html +=        '<label class="file-label">'
-                        html +=            '<input class="file-input"  accept=".pdf" type="file" name="archivo2">'
-                        html +=            '<span class="file-cta">'
-                        html +=          '<span class="file-icon">'
-                        html +=          '  <i class="fas fa-upload"></i>'
-                        html +=          '</span>'
-                        html +=            '<span class="file-label has-text-centered">'
-                        html +=                'Subir Archivo'
-                        html +=            '</span>'
-                        html +=            '</span>'
-                        html +=         '</label>'
-                        html +=    '</div>'
-                        html += '</div>';
-                        html += '<div class="column is-5">'; 
-                        html += '<h2 class="label"> '+comment+' </h2>';
-                        html += '</div>';
-                        html+='<div class="column"> <h2 class="label">' + estados[estatus]+' </h2></div></div> </div>';
-                    }
-                    document.getElementById('exp').innerHTML = html;
-                }).catch(err => {
-                    console.log(err);
-                });
-            }
-        </script>
+                <form action="/expediente/miexpediente" method="POST"  enctype="multipart/form-data" id="subirarch"> 
+                    <input type="hidden" value="<%= user %>" id="user" name="user">
+                    <input type="hidden" value="" id="Tipo_Exp" name="Tipo_Exp">
+                    <input type="hidden" value="<%= init %>" id="initval" name="initval">
+                    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                    <div id="dynelements">
+
+                    </div>
+                    <div id="exp">
+
+                    </div>
+                    <br>
+                    <div class="columns ">
+                        <div class="column is-3">
+                            
+                            <button  type="button" class="button is-danger is-fullwidth is-hidden"  onclick="subirarchivo()" id="botonguardar" name="boton"> Guardar Cambios</button>
+                        </div>
+                        
+                    </div>
+                </form>
+            <%} %>
+            <script src="../js/expedienteCliente.js"></script>
+<script src="../js/dist/bulma-toast.min.js"></script>
+<% if(info != '') { %>
+    <script>
+        bulmaToast.toast({ message: '<%= info %>', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+    </script>
+<% } %>
+<% if(infopositiva != '') { %>
+    <script>
+        bulmaToast.toast({ message: '<%= infopositiva %>', type: 'is-success', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+    </script>
+<% } %>
 <%- include('../includes/foot.ejs') %>
 
         
