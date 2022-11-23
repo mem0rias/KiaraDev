@@ -38,10 +38,19 @@ exports.loginverf = (request, response, next) => {
                     request.session.user = info.User;
                     request.session.IdUser = rows[0].IdUsuario;
                     request.session.IdRol = rows[0].IdRol;
-                    return request.session.save(err => {
-                        //Redireccion al dashboard del usuario.
-                        response.redirect('/');
-                    });
+
+                    User.getPermisos(rows[0].IdUsuario)
+                                .then( ([permisos, fieldData]) => {
+                                    request.session.permisos = new Array();
+                                    for (let permiso of permisos) {
+                                        request.session.permisos.push(permiso.nombre);
+                                        console.log(permiso);
+                                    }
+                                    
+                                    return request.session.save(err => {
+                                        response.redirect('/');
+                                    });
+                                }).catch(err => console.log(err));
 
 
 
