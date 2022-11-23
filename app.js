@@ -7,11 +7,11 @@ const fs = require('fs');
 
 const app = express();
 
+
 //Configurar el motor de templates como ejs
 app.set('view engine', 'ejs');
 //Definir la carpeta views como carpeta de vistas para ejs
 app.set('views', 'views');
-
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -72,7 +72,7 @@ const expediente = require('./routes/expediente.routes');
 const resenas = require('./routes/resenas.routes');
 const intro = require('./routes/intro.routes');
 const contacto = require('./routes/contacto.routes');
-
+const aviso = require('./routes/aviso.routes');
 app.use(session({
     secret: 'aerfgtvythvyugt54cyh4yhyhy6h46yr5ky87br53tgc3g46gg',
     resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
@@ -97,6 +97,7 @@ app.use('/expediente', expediente);
 app.use('/resenas', resenas);
 app.use('/intro', intro);
 app.use('/contacto', contacto);
+app.use('/aviso', aviso);
 
 app.get('/', (request, response, next) => {
     response.redirect('/index');
