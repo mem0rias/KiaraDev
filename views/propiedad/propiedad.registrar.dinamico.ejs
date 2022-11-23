@@ -1,21 +1,19 @@
 <script>
     forma_dinamica = () => {
         
-        let tipoP = document.getElementById("tipoID").value;
-        let tipo;
+        let tipoPropiedad = document.getElementById("tipoID").value;
 
-        if(tipoP === ''){
-            tipo = document.getElementById("tipoPropiedad").value;
+        const RESIDENCIAL = "1";
+
+        if(tipoPropiedad === ''){
+            tipoPropiedad = document.getElementById("tipoPropiedad").value;
         }
-        else{
-            tipo ="";
-        }
-        
-        console.log(tipoP);
-        console.log(tipo);
+
+        console.log(tipoPropiedad);
 
         let html = '';
-        if(tipo == "1" || tipoP == "1"){
+        if(tipoPropiedad == RESIDENCIAL) {
+            
             html += '<div class="section px-0 py-5">';
             html += '     <div class="card">';
             html += '         <div class="card-content">';
@@ -28,7 +26,11 @@
             html += '                <div class="select is-expanded is-fullwidth">';
             html += '                    <select class="select is-fullwidth" name="recamaras" id="recamaras">';
             html += '                        <option value="" disabled selected hidden>Cantidad</option>';
-            html += '                        <option value="1">1</option>';
+            html += '                        <option value="1"';
+            if (residencial.Recamaras == 1){
+                html += 'selected';     
+            }
+            html += '>1</option>';
             html += '                        <option value="2">2</option>';
             html += '                        <option value="3">3</option>';
             html += '                        <option value="4">4</option>';
@@ -136,7 +138,7 @@
 
         }
 
-        else if(tipo == "2" || tipoP == "2"){
+        else if(tipoPropiedad == "2") {
             html += `<div class="section px-0 py-5">
                  <div class="card">
                      <div class="card-content">
@@ -144,28 +146,18 @@
                              <div class="columns is-multiline">
                                  <div class="column is-auto">
                                      <div class="field">
-                                         <label class="label">Oficinas <%comercial.Cuartos%></label>
+                                         <label class="label">Oficinas</label>
                                          <div class="control">
                                              <div class="select is-expanded is-fullwidth">
                                                  <select class="select" name="oficinas" id="oficinas">
                                                      <option value="" disabled selected hidden>Cantidad</option>
-                                                     <% if ( comercial.Cuartos === 1){ %>
                                                      <option value="1" selected>1</option>
                                                      <option value="2">2</option>
                                                      <option value="3">3</option>
                                                      <option value="4">4</option>
                                                      <option value="5">5</option>
                                                      <option value="6">6</option>
-                                                     <option value="7">7</option>
-                                                     <%} else { %> 
-                                                     <option value="1">1</option>
-                                                     <option value="2">2</option>
-                                                     <option value="3">3</option>
-                                                     <option value="4">4</option>
-                                                     <option value="5">5</option>
-                                                     <option value="6">6</option>
-                                                     <option value="7">7</option>
-                                                     <% } %>
+                                                     <option value="7">7</option>                           
                                                  </select>
                                             </div>
                                         </div>
@@ -238,21 +230,13 @@
     };
 
 
-
-    let tipoP = document.getElementById("tipoID").value;
-
-    if(tipoP === ''){
+    if(document.getElementById("tipoID").value === '') {
          document.getElementById("tipoPropiedad").oninput = forma_dinamica;
          console.log("Trigger cambio de propiedad");
-    }
-    else{
+    } else {
         window.onload = forma_dinamica;
         console.log("Trigger id de servidor");
     }
-    
-
-
-
     
 
 </script>
