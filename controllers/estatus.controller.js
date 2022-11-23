@@ -66,9 +66,7 @@ exports.post_update =(request, response, next) => {
 
 
     listEstatus.isEstatusC(request.body.idpro).then(([rows,fieldData]) => {
-
-        listEstatus.updateEstatusC(request.body.estado, request.body.id, request.body.idpro)
-        .then(([rows, fieldData])=> {
+        console.log(rows);
         if(rows.length > 0){
             listEstatus.updateEstatusC(request.body.estado, request.body.id, request.body.idpro)
             .then(([rows, fieldData])=> {
@@ -77,6 +75,8 @@ exports.post_update =(request, response, next) => {
                 response.status(200).json({
                     mensaje: "El estado fue actualizado para c ",
                     status: request.body.estado,
+                    id: request.body.id,
+                    idpro: request.body.idpro,
                 }); 
             }).catch(error => {
                 console.log(error)
@@ -90,13 +90,13 @@ exports.post_update =(request, response, next) => {
                 response.status(200).json({
                     mensaje: "El estado fue actualizado para r",
                     status: request.body.estado,
+                    id: request.body.id,
+                    idpro: request.body.idpro,
                 });   
             }).catch(error => {console.log(error)})
 
         }
-        }).catch(error => {
-            console.log(error)
-        });
+
 
        
     }).catch(error => {console.log(error)});

@@ -17,11 +17,11 @@ module.exports = class listEstatus{
     }
 
     static isEstatusC(IdProperty){
-        return db.execute('SELECT * FROM `cliente_pc_prop`',[IdProperty]);
+        return db.execute('SELECT * FROM `cliente_pc_prop`  WHERE IdPropiedad = ?',[IdProperty]);
     }
 
     static isEstatusR(IdProperty){
-        return db.execute('SELECT * FROM `cliente_pr_prop`',[IdProperty]);
+        return db.execute('SELECT * FROM `cliente_pr_prop`  WHERE IdPropiedad = ?',[IdProperty]);
     }
 
     static updateEstatusC(Estado, id, idpro) {
