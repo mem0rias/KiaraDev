@@ -48,6 +48,7 @@ exports.actualizar = (request, response, next) => {
     let Estatus = "";
     let Tipo_Doc = "";
     let IdUsuario = body.IdUsuario;
+    let Tipo_Exp = body.Tipo_Exp;
     //Concatenacion de datos en strings separados por comas, la BD los decodifica despues
     for(let i = 0; i < nupdates; i++){
         Comments += body.Comments[i];
@@ -64,8 +65,9 @@ exports.actualizar = (request, response, next) => {
     console.log(Tipo_Doc);
     console.log(IdUsuario)
     console.log(nupdates);
+    console.log(Tipo_Exp);
     
-    expediente.UpdateRequirements(Comments,Estatus,IdUsuario,Tipo_Doc,nupdates).then(()=>{
+    expediente.UpdateRequirements(Comments,Estatus,IdUsuario,Tipo_Doc,nupdates, Tipo_Exp).then(()=>{
         response.status(200).json('OK');
     }).catch(err =>{
         console.log(err);
