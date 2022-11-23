@@ -6,7 +6,7 @@ const Dashboard = require('../models/dashboard.model');
 const listEstatus = require('../models/estatus.model');
 
 exports.get_EstatusP = (request, response, next) => {
-    let userid = 10;
+    let userid = request.session.IdUser;
     Dashboard.fetchUser(userid).then( ([usuarioData, fieldData]) => {
         listEstatus.fetchPropertiesC(userid)
         .then( ([rows, fieldData]) => {
