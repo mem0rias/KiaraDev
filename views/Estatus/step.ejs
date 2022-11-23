@@ -17,6 +17,7 @@
         </div>
     </div>
 
+    <% if (permisos.indexOf('editar_seguimiento') != -1) { %>
     <div class="container column">
         <div class="select">
             <select id="select-<%=paso.paso%>" onchange="enableGuardar(this)">
@@ -29,7 +30,7 @@
         
         <button class="button is-right is-hidden is-danger" id="boton-<%=paso.paso%>"> Guardar </button>
     </div>
-   
+    <% } %>
    
 </div>
 

@@ -20,6 +20,7 @@ exports.get_EstatusP = (request, response, next) => {
                         usuario :usuarioData,
                         sesionId: response.locals.IdRol, 
                         sesionUser: response.locals.IdUser,
+                        permisos: request.session.permisos,
                     });
                 }).catch( (error) => {
                     console.log(error);
@@ -49,6 +50,7 @@ exports.get_AvanceP = (request, response, next) => {
                     response.render(path.join('Estatus', 'estatus.ejs'), {
                         listEstatus: rows,
                         listEstatus2: rows2,
+                        permisos: request.session.permisos,
                     });
                                 
                 }).catch( (error) => {
@@ -74,6 +76,7 @@ exports.post_update =(request, response, next) => {
                     status: request.body.estado,
                     idPaso: request.body.idPaso,
                     idpro: request.body.idpro,
+                    permisos: request.session.permisos,
                 }); 
             }).catch(error => {
                 console.log(error)
