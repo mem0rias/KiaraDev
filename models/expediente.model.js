@@ -10,8 +10,8 @@ module.exports = class expediente{
         //return db.execute('(SELECT etd.Tipo_Doc, descripcion, etd.Comentarios, etd.Estatus, etd.URL FROM exp_tipo_doc etd, tipo_doc td WHERE etd.Tipo_Doc = td.Tipo_Doc AND etd.IdCliente = ?) UNION ((SELECT r.Tipo_Doc, descripcion, NULL AS "Comentarios", 0 AS "Estatus", NULL AS "URL"  FROM requisitos r, tipo_doc td WHERE r.Tipo_Exp = 3 AND r.Tipo_Doc = td.Tipo_Doc ) except (SELECT etd.Tipo_Doc, descripcion,  NULL AS "Comentarios",  0 AS "Estatus", NULL AS "URL" FROM exp_tipo_doc etd, tipo_doc td WHERE etd.Tipo_Doc = td.Tipo_Doc AND etd.IdCliente = ?))',[te,te]);
     }
 
-    static UpdateRequirements(Comments, estatus, IdUsuario, Tipo_Doc, N_docs){
-        return db.execute('CALL `ActualizarExp`(?, ?, ?, ?, ?)', [N_docs,IdUsuario,Comments,estatus,Tipo_Doc]);
+    static UpdateRequirements(Comments, estatus, IdUsuario, Tipo_Doc, N_docs, Tipo_Exp){
+        return db.execute('CALL `ActualizarExp`(?, ?, ?, ?, ?, ?)', [N_docs,IdUsuario,Comments,estatus,Tipo_Doc, Tipo_Exp]);
     }
 
     static fetchExpTypes(IdUsuario){

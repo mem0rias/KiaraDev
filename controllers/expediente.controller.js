@@ -9,28 +9,35 @@ exports.rev = (request, response, next) =>{
 }
 
 exports.getReqs = (request, response, next) => {
-    expediente.fetchRequirements(request.params.id).then(([rows, fieldData]) => {
-        Dashboard.fetchUser(request.params.id).then( ([usuarioData, fieldData]) => {
-            console.log(usuarioData);
-            response.render('./Expediente/expediente', {
-                usuario: usuarioData[0],
-                sesionId: response.locals.IdRol, 
-                sesionUser: response.locals.IdUser,
-                info:rows,
-                
-            }); 
-            
-        }).catch( (error) => {
-            console.log(error);
-        });  
-        //console.log(rows);
-        //response.render('exito');
-       
+    let msgpos = request.session.infopositiva ? request.session.infopositiva : '';
+    request.session.infopositiva = ''; 
+    let msg = request.session.info ? request.session.info : '';
+    request.session.info = '';
+
+    let exp_types = new Map();
+    expediente.fetchExpTypes(request.params.id).then(([rows, fieldData]) => {
+        Dashboard.fetchUser(request.params.id).then(([username, fieldData2]) =>{
+            for(elements of rows){
+                exp_types.set(elements.Tipo_Exp, elements.descripion);
+            }
+    
+            // Render de la consulta con los valores del mapa, mensajes, etc.
+            return request.session.save(err => {
+                response.render('./Expediente/expediente', {map: exp_types, usuario: username[0], info: msg, infopositiva: msgpos});
+            });
+        }).catch(err =>{
+            console.log(err);
+        });
+        // Inicializacion del mapa con los valores de la consulta
         
-    }).catch((error) => {
-        console.log(error);
-        response.render('./Expediente/expediente', {name: 'Andrea Castillo', Id: '10', info: ''});
+    }).catch(err=>{
+        msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
+        msgpos = '';
+        return request.session.save(err => {
+            response.render('./Expediente/expediente', {map: exp_types, usuario: userid, info: msg, infopositiva: msgpos});
+        });
     });
+
 }
 
 exports.actualizar = (request, response, next) => {
@@ -41,6 +48,7 @@ exports.actualizar = (request, response, next) => {
     let Estatus = "";
     let Tipo_Doc = "";
     let IdUsuario = body.IdUsuario;
+    let Tipo_Exp = body.Tipo_Exp;
     //Concatenacion de datos en strings separados por comas, la BD los decodifica despues
     for(let i = 0; i < nupdates; i++){
         Comments += body.Comments[i];
@@ -57,29 +65,37 @@ exports.actualizar = (request, response, next) => {
     console.log(Tipo_Doc);
     console.log(IdUsuario)
     console.log(nupdates);
+    console.log(Tipo_Exp);
+    
+    expediente.UpdateRequirements(Comments,Estatus,IdUsuario,Tipo_Doc,nupdates, Tipo_Exp).then(()=>{
+        response.status(200).json('OK');
+    }).catch(err =>{
+        console.log(err);
+        response.status(503).json('FAIL');
+    });
+
     //Ya solo se hace un procedimiento para garantizar atomicidad en la operacion.
+    /*
     expediente.UpdateRequirements(Comments,Estatus,IdUsuario,Tipo_Doc,nupdates).then(()=>{
-        console.log('Se logro!');
+        
         //Token para toast 
-        request.session.msg = 'Expediente Actualizado!';
-        request.session.exito = 1;
+        request.session.infopositiva = 'Expediente Actualizado!';
         return request.session.save(err => {
             console.log(request.session.msg);
             //response.redirect('/inicio');
-            response.redirect('/dashboard/usuarios');
+            response.redirect('/expediente/revisar/' + IdUsuario);
         });
     }).catch((error) =>{
         console.log(error);
         //Token para toast 
-        request.session.msg = 'Error al Actualizar Expediente';
-        request.session.exito = 0;
+        request.session.info = 'Error al Actualizar Expediente';
         return request.session.save(err => {
             console.log(request.session.msg);
             //response.redirect('/inicio');
-            response.redirect('/expediente/revisar');
+            response.redirect('/expediente/revisar/' + IdUsuario);
         });
     })
-    
+    */
 }
 
 
@@ -123,7 +139,7 @@ exports.fetchinfo = (request, response, next) => {
     // para el tipo de expediente dado
     let query = request.params.tipo;
     let user = request.session.IdUser;
-    console.log(query + " "+  user);
+    console.log(query + ' ' +  user);
     expediente.fetchRequirements(query,user).then(([rows, fieldData]) =>{
         response.status(200).json(rows);
     }).catch(err =>{
@@ -132,6 +148,24 @@ exports.fetchinfo = (request, response, next) => {
     });
     
 }
+
+
+exports.fetchiuserinfo = (request, response, next) => {
+    // Obtencion de manera asincrona de los archivos que ya tiene el usuario y los pendientes 
+    // para el tipo de expediente dado
+    let query = request.params.tipo;
+    let user = request.params.usuario;
+    console.log(query +  ' ' +  user);
+    expediente.fetchRequirements(query,user).then(([rows, fieldData]) =>{
+        response.status(200).json(rows);
+    }).catch(err =>{
+        response.status(503).json('fail');
+        console.log(err);
+    });
+    
+}
+
+
 exports.descargarArchivo = (request, response, next) => {
     console.log(request.params);
     const file = `./public/Expedientes/10/`+request.params.id+'.txt';
