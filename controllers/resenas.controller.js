@@ -26,6 +26,9 @@ exports.postAdd = (request, response, next) => {
 exports.resena_ajax = (request, response, next) => {
     let info = request.body;
     Resenas.fetchAll().then(([rows, fieldData]) => {
+        for (let elements of rows) {
+            elements.fecha = moment(elements.fecha).format('llll');
+        }
         response.status(200).json(rows);
     }).catch(err => {
         console.log(err);
