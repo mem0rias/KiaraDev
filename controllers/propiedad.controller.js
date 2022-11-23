@@ -18,9 +18,13 @@ exports.get_propiedades = (request, response, next) => {
 
 exports.get_one = (request, response, next) => {
     Propiedad.fetchOne(request.params.id).then( ([rows, fieldData]) => {
+
+
             console.log(rows);
             var monto = rows[0].Precio;
             precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
+
+
              Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
                 if (res.length > 0){
                     console.log(res);
@@ -29,10 +33,10 @@ exports.get_one = (request, response, next) => {
                         propiedad: rows[0],
                         residencial: res[0],
                         precio: precio,
-                        
                     }); 
                 }
-                else {
+                else 
+                {
                     Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
                         if (com.length > 0){
                             console.log(com);
@@ -82,6 +86,7 @@ exports.post_new = (request, response, next) => {
             
     let v                   = request.body;
     const userId            = parseInt(response.locals.IdUser);
+    console.log(v)
 
     if(v.uso == '1') {
 
@@ -175,6 +180,7 @@ exports.get_edit = (request, response, next) => {
             console.log(rows);
             var monto = rows[0].Precio;
             let tipoP;
+            let comercial;
             precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
             
             Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
@@ -187,6 +193,7 @@ exports.get_edit = (request, response, next) => {
                         propiedad: rows[0],
                         residencial: res[0],
                         tipoP: tipoP,
+                        comercial: comercial,
                         
                     }); 
                 }
