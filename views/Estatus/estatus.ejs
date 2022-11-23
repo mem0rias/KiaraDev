@@ -5,11 +5,12 @@
             <div class="level-item has ">
                 
                 <ul class="steps is-vertical is-hollow">
-                    <input id="idp" type="hidden" value="<%= listEstatus %>"></input>
+                    
                     <% if(listEstatus != '') { %>
+                        <input id="idp" type="hidden" value="<%= listEstatus[0].idpropiedad %>">
                         <div class="content pb-3">
-                        <h2 class="title is-large"> Propiedad en venta</h2>
-                       <p></p>
+                            <h2 class="title is-large"> Propiedad en venta</h2>
+                            <p></p>
                         </div>
                         <% for(let l of listEstatus) { %>
                             <% if(l.SumaFechas == l.fechaInicio){%>
@@ -23,7 +24,12 @@
                             <% } %>
                         <% } %>
                     <% } else { %>
-                        <h1 class="title is-large"> Propiedad en renta</h1>
+                        <input id="idp" type="hidden" value="<%= listEstatus2[0].idpropiedad %>">
+                        <div class="content pb-3">
+                            <h2 class="title is-large"> Propiedad en renta</h2>
+                            <p></p>
+                        </div>
+                        
                         <% for(let l of listEstatus2) { %>
                             <% if(l.SumaFechas == l.fechaInicio){%>
                                 <li class="steps-segment is-active">
@@ -62,11 +68,11 @@
     const guardarEstado = (estado, id, boton) => {
         //document.getElementById('idp').value;
         const csrf = document.getElementById('_csrf').value;
-
-        console.log(document.getElementById('idp').value);
-
+        const idpro = document.getElementById('idp').value;
+    
         //función que manda la petición asíncrona
         fetch('/estatus/update', {
+            
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -74,12 +80,13 @@
             body: JSON.stringify({
                 estado: estado,
                 id: id,
+                idpro: idpro,
                 _csrf: csrf,
             }),
         }).then(result => {
             return result.json(); //Regresa otra promesa
         }).then(data => {
-            //console.log(data);
+            console.log(data);
             boton.classList.add('is-hidden');
 
             let steps_marker = document.getElementById(id);

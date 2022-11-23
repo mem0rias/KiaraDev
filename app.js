@@ -3,14 +3,15 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
+const fs = require('fs');
 
 const app = express();
+
 
 //Configurar el motor de templates como ejs
 app.set('view engine', 'ejs');
 //Definir la carpeta views como carpeta de vistas para ejs
 app.set('views', 'views');
-
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -19,7 +20,13 @@ app.use(bodyParser.json());
 const fileStorage = multer.diskStorage({
     destination: (request, file, callback) => {
         //'uploads': Es el directorio del servidor donde se subirán los archivos 
-        callback(null, './Expedientes');
+        // Se obtiene el id del usuario y se revisa si hay una carpeta con el ID ya hecha, si no, la crea. 
+        //console.log(request.body);
+        //console.log(request.files);
+        let user = request.body.user;
+        let newpath = `./Expedientes/${user}`;
+        fs.mkdirSync(newpath, { recursive: true})
+        callback(null, newpath);
     },
     filename: (request, file, callback) => {
         //aquí configuramos el nombre que queremos que tenga el archivo en el servidor, 
@@ -27,28 +34,45 @@ const fileStorage = multer.diskStorage({
         callback(null, new Date().getSeconds() + '' + new Date().getDay() + '' + new Date().getMonth() + '' + new Date().getYear() + file.originalname);
     },
 });
-
 const fileFilter = (request, file, callback) => {
+    
+    
     if (file.mimetype == 'application/pdf') {
         callback(null, true);
     } else {
-        console.log('te equivocaste pana');
         callback(null, false);
-
     }
 }
 
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).any('archivo2'));
+
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20*1024*1024}}).any('archivo2'));
 //app.use(multer({ storage: fileStorage }).single('archivo')); 
 
 
+// Middleware que analiza errores de multer en caso que las protecciones del front end se salten.
+// Si hay exception, se limpian las variables que permiten que se suban archivos, por lo que el controlador no hace nada.
+// Y nada explota en consecuencia.
+app.use((err, request, response, next) => {
+    if( err instanceof multer.MulterError){
+        console.log(request.body);
+        request.body.SelFiles = '';
+        request.body.NRMFiles = '';
+        request.files = ''
+    }
+    
+    next();
+});
 //Declarar rutas
 const rutasPropiedades = require('./routes/propiedad.routes');
 const rutasIndex = require('./routes/index.routes');
 const rutasDashboard = require('./routes/dashboard.routes');
 const rutasLogin = require('./routes/Login.routes');
 const expediente = require('./routes/expediente.routes');
+const resenas = require('./routes/resenas.routes');
+const intro = require('./routes/intro.routes');
+const contacto = require('./routes/contacto.routes');
+const aviso = require('./routes/aviso.routes');
 const estatus = require('./routes/estatus.routes');
 
 app.use(session({
@@ -72,6 +96,10 @@ app.use('/index', rutasIndex);
 app.use('/dashboard', rutasDashboard);
 app.use('/login', rutasLogin);
 app.use('/expediente', expediente);
+app.use('/resenas', resenas);
+app.use('/intro', intro);
+app.use('/contacto', contacto);
+app.use('/aviso', aviso);
 app.use('/estatus', estatus);
 
 app.get('/', (request, response, next) => {
@@ -89,7 +117,6 @@ app.use((request, response, next) => {
 });
 
 
-//
 let formatc = new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" })
 
 app.listen(3000);

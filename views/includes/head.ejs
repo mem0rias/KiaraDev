@@ -1,14 +1,16 @@
-<!doctype html>
-<html lang="en">
-  <head>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Kiara</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link rel="stylesheet" href="../css/bulma-divider.min.css" >
+    <link rel="stylesheet" href="../css/bulma-divider.min.css">
     <link rel="stylesheet" href="../css/bulma-steps.min.css">
     <link rel="stylesheet" href="../css/my.css">
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/2.1.19/css/materialdesignicons.min.css" >
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.0.0/animate.min.css"/>
     <link
      rel="stylesheet"
@@ -18,63 +20,63 @@
   </head>
   <body>
     <header class="box">
-      <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-          <a class="navbar-item" href="/index">
-            <!--<figure class="image is-64x64 pl-1 pr-1">-->
-              <img  src="../../images/kiaralogo.png" width="200%">
-            <!--</figure>-->
-          </a>
-          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </a>
-        </div>
-      
-        <div id="navbarBasicExample" class="navbar-menu">
-          <div class="navbar-start">
-            
-              
-            
-      
-            <a class="navbar-item">
-              <h2 class="label is-size-5"> ¿Quienes somos? </h2>
-            </a>
-      
-            <a href="/propiedades" class="navbar-item">
-              <h2 class="label is-size-5">Propiedades </h2>
-            </a>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/index">
 
-            <a class="navbar-item">
-              <h2 class="label is-size-5" >Contacto </h2>
-            </a>
-            
-          </div>
-
-          <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                
-                <% if(sesion != '') { %>
-
-                  <a class="button is-danger" href="/dashboard"> <strong> Mi Perfil</strong></a>
-                
-                <% } %>
-                <% if(sesion != '') { logbot = 'Cerrar Sesion'; logpath = '/login/logout'} else {logbot = 'Iniciar Sesion'; logpath = '/login'} %>
-                <a class="button is-danger" href="<%= logpath %>"> <%= logbot %> </a>
-                
-              </div>
+                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
             </div>
-          </div>
-  
-      
-          
-        </div>
-      </nav>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/">
+                        <figure class="image is-96x64 pl-1 pr-1">
+                            <img src="./images/kiaralogo.png">
+                        </figure>
+                    </a>
+                    <a href="/intro" class="navbar-item">
+                        <h2 class="label is-size-5"> ¿Quienes somos? </h2>
+                    </a>
+
+                    <a href="/propiedades" class="navbar-item">
+                        <h2 class="label is-size-5">Propiedades </h2>
+                    </a>
+
+                    <a href="/contacto" class="navbar-item">
+                        <h2 class="label is-size-5">Contacto </h2>
+                    </a>
+                    <a href="/resenas" class="navbar-item">
+                        <h2 class="label is-size-5">Blog</h2>
+                    </a>
+
+
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+
+                            <% if(sesion != '') { %>
+
+                                <a class="button is-danger" href="/dashboard"> <strong> Mi Perfil</strong></a>
+
+                                <% } %>
+                                    <% if(sesion != '') { logbot = 'Cerrar Sesion'; logpath = '/login/logout'} else {logbot = 'Iniciar Sesion'; logpath = '/login'} %>
+                                        <a class="button is-danger" href="<%= logpath %>">
+                                            <%= logbot %>
+                                        </a>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
     </header>
+</body>
 
-
-   
-
-    
+</html>
