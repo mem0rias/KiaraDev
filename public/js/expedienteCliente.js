@@ -38,7 +38,10 @@ const cargarexp = (elemento) =>{
     // Estados posibles de los archivos.
     let estados = ['Faltante', 'Pendiente', 'Aceptado', 'Rechazado'];
     let query = elemento.value;
+    if(query == 0)
+        return;
     prevsel = query;
+    document.getElementById('Tipo_Exp').value = query;
     //Fetch de requisitos del tipo de expediente seleccionado
     fetch('/expediente/fetch/' + query, {
         method: 'GET',
@@ -252,3 +255,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+
+
+  window.onload = llamarcarga(document.getElementById('initval'));

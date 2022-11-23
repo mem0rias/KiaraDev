@@ -91,6 +91,9 @@ exports.miexp = (request, response, next) => {
     let msg = request.session.info ? request.session.info : '';
     request.session.info = '';
     let userid = request.session.IdUser;
+    // init query nos permite hacer que despues de guardar un archivo se mantenga la seleccion de expediente al recargar la pagina.
+    let initquery = request.session.initquery ? request.session.initquery : 0;
+    request.session.initquery = '';
     // Este mapa almacena los tipos de expediente que tiene ligado el usuario
     let exp_types = new Map();
     expediente.fetchExpTypes(userid).then(([rows, fieldData]) => {
@@ -102,13 +105,13 @@ exports.miexp = (request, response, next) => {
 
         // Render de la consulta con los valores del mapa, mensajes, etc.
         return request.session.save(err => {
-            response.render('./Expediente/expedienteCliente', {map: exp_types, user: userid, info: msg, infopositiva: msgpos});
+            response.render('./Expediente/expedienteCliente', {map: exp_types, user: userid, init: initquery, info: msg, infopositiva: msgpos});
         });
     }).catch(err=>{
         msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
         msgpos = '';
         return request.session.save(err => {
-            response.render('./Expediente/expedienteCliente', {map: exp_types, user: userid, info: msg, infopositiva: msgpos});
+            response.render('./Expediente/expedienteCliente', {map: exp_types, user: userid, init: initquery, info: msg, infopositiva: msgpos});
         });
     });
    
@@ -167,7 +170,8 @@ exports.subirarch = (request, response, next) => {
     let user = request.session.IdUser;
     let totalfiles = request.files.length + parseInt(request.body.NRMFiles);
     let estatuslist = '';
-
+    let Tipo_Exp = request.body.Tipo_Exp;
+    let initquery = request.body.Tipo_Exp;
     //Se genera un string con los paths de los nuevos archivos
     // De igual manera se crea la lista de estatus con 1s para simbolizar que ese archivo esta pendiente a ser revisado
 
@@ -185,7 +189,7 @@ exports.subirarch = (request, response, next) => {
     console.log(tiposArchivos);
     console.log(totalfiles);
     // Stored procedure que recibe los strings que generamos y los aplica en la BD
-    expediente.UploadFile(tiposArchivos,totalfiles,user,filepaths, estatuslist).then(() =>{
+    expediente.UploadFile(tiposArchivos,totalfiles,user,filepaths, estatuslist, Tipo_Exp).then(() =>{
         // Se revisa si hay archivos que remover de la carpeta del usuario
         if(request.body.removepaths != ''){
             let removepaths = request.body.removepaths.split(',');
@@ -203,6 +207,7 @@ exports.subirarch = (request, response, next) => {
         }   
         // Respuesta positiva.
         request.session.infopositiva = 'Archivos guardados Exitosamente';
+        request.session.initquery = initquery;
         return request.session.save(err => {
             response.redirect('/expediente/miexpediente');
         });
@@ -211,6 +216,7 @@ exports.subirarch = (request, response, next) => {
         // Si hay un error no se hace ningun cambio y se le informa al usuario.
         console.log(err);
         request.session.info = 'Error al subir los archivos';
+        request.session.initquery = initquery;
         // Se borran los archivos que se pretendian añadir a la BD.
         delfiles(request.files);
         return request.session.save(err => {
