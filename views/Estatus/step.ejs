@@ -9,7 +9,7 @@
             <% } %>
         </span>
 
-
+        <input id="idPaso-<%=paso.paso%>" type="hidden"  value="<%=paso.id%>">
         <div class="steps-content ">
             <p class="is-size-4"><%= paso.paso %></p>
             <p><%= paso.Descripcion %> </p>
@@ -29,6 +29,7 @@
         
         <button class="button is-right is-hidden is-danger" id="boton-<%=paso.paso%>"> Guardar </button>
     </div>
+   
    
 </div>
 

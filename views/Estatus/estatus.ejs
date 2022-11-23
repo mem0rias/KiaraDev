@@ -59,14 +59,17 @@
         const enableGuardar = (elemento)=>{
             let id = elemento.id.split('-')[1];
             let boton = document.getElementById('boton-'+id);
+            let idPaso = document.getElementById('idPaso-'+id).value;
+            console.log(idPaso);
             //console.log(elemento.value);
-            boton.onclick = () => guardarEstado(elemento.value, id, boton);
+            boton.onclick = () => guardarEstado(elemento.value, idPaso, boton, id);
             boton.classList.remove('is-hidden');
         }
         
 
-    const guardarEstado = (estado, id, boton) => {
-        //document.getElementById('idp').value;
+    const guardarEstado = (estado, idPaso, boton, id) => {
+        document.getElementById('idp').value;
+        
         const csrf = document.getElementById('_csrf').value;
         const idpro = document.getElementById('idp').value;
     
@@ -79,7 +82,7 @@
             },
             body: JSON.stringify({
                 estado: estado,
-                id: id,
+                idPaso: idPaso,
                 idpro: idpro,
                 _csrf: csrf,
             }),

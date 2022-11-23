@@ -63,19 +63,16 @@ exports.get_AvanceP = (request, response, next) => {
 exports.post_update =(request, response, next) => {
     //console.log(request.body.estado)
     //console.log(request.body.id)
-
-
     listEstatus.isEstatusC(request.body.idpro).then(([rows,fieldData]) => {
         console.log(rows);
         if(rows.length > 0){
-            listEstatus.updateEstatusC(request.body.estado, request.body.id, request.body.idpro)
-            .then(([rows, fieldData])=> {
-                console.log(rows);
-                console.log('entro en update status');
-                response.status(200).json({
+            listEstatus.updateEstatusC(request.body.estado, request.body.idPaso, request.body.idpro).then(([rows, fieldData])=> {
+                    console.log(rows);
+                    console.log('entro en update status');
+                    response.status(200).json({
                     mensaje: "El estado fue actualizado para c ",
                     status: request.body.estado,
-                    id: request.body.id,
+                    idPaso: request.body.idPaso,
                     idpro: request.body.idpro,
                 }); 
             }).catch(error => {
@@ -83,22 +80,19 @@ exports.post_update =(request, response, next) => {
             });
         }
         else {
-            listEstatus.updateEstatusR(request.body.estado, request.body.id, request.body.idpro)
+            listEstatus.updateEstatusR(request.body.estado, request.body.idPaso, request.body.idpro)
             .then(([rows2, fieldData2])=> {
                 console.log('entro en update rnta');
                 console.log(rows2);
                 response.status(200).json({
                     mensaje: "El estado fue actualizado para r",
                     status: request.body.estado,
-                    id: request.body.id,
+                    idPaso: request.body.idPaso,
                     idpro: request.body.idpro,
                 });   
             }).catch(error => {console.log(error)})
-
         }
 
-
-       
     }).catch(error => {console.log(error)});
 
     
