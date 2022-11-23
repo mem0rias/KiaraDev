@@ -5,6 +5,7 @@
             <div class="level-item has ">
                 
                 <ul class="steps is-vertical is-hollow">
+                    <input id="idp" type="hidden" value="<%= listEstatus %>"></input>
                     <% if(listEstatus != '') { %>
                         <div class="content pb-3">
                         <h2 class="title is-large"> Propiedad en venta</h2>
@@ -40,6 +41,10 @@
             </div>
         </div>
     </div>
+    <div class="columns">
+        <div class="column is-10"></div>
+        <a href="/estatus/" class="column"><button class="button is-primary is-danger"> Regresar </button></a>
+    </div>
 
     <input type="hidden" id="_csrf" value="<%= csrfToken %>">
 
@@ -48,15 +53,18 @@
         const enableGuardar = (elemento)=>{
             let id = elemento.id.split('-')[1];
             let boton = document.getElementById('boton-'+id);
-            console.log(elemento.value);
+            //console.log(elemento.value);
             boton.onclick = () => guardarEstado(elemento.value, id, boton);
             boton.classList.remove('is-hidden');
         }
         
 
     const guardarEstado = (estado, id, boton) => {
+        //document.getElementById('idp').value;
         const csrf = document.getElementById('_csrf').value;
-        //console.log(estado);
+
+        console.log(document.getElementById('idp').value);
+
         //función que manda la petición asíncrona
         fetch('/estatus/update', {
             method: 'POST',
@@ -71,7 +79,7 @@
         }).then(result => {
             return result.json(); //Regresa otra promesa
         }).then(data => {
-            console.log(data);
+            //console.log(data);
             boton.classList.add('is-hidden');
 
             let steps_marker = document.getElementById(id);

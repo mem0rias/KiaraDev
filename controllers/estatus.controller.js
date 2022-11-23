@@ -61,12 +61,12 @@ exports.get_AvanceP = (request, response, next) => {
 }
 
 exports.post_update =(request, response, next) => {
-    console.log(request.body.estado)
-    console.log(request.body.id)
+    //console.log(request.body.estado)
+    //console.log(request.body.id)
 
     listEstatus.updateEstatusC(request.body.estado, request.body.id)
         .then(([rows, fieldData])=> {
-            console.log(rows);
+            //console.log(rows);
             listEstatus.updateEstatusR(request.body.estado, request.body.id)
             .then(([rows2, fieldData2])=> {
                 response.status(200).json({
