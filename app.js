@@ -3,6 +3,8 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
+const fs = require('fs');
+
 const app = express();
 
 
@@ -18,7 +20,13 @@ app.use(bodyParser.json());
 const fileStorage = multer.diskStorage({
     destination: (request, file, callback) => {
         //'uploads': Es el directorio del servidor donde se subirán los archivos 
-        callback(null, './Expedientes');
+        // Se obtiene el id del usuario y se revisa si hay una carpeta con el ID ya hecha, si no, la crea. 
+        //console.log(request.body);
+        //console.log(request.files);
+        let user = request.body.user;
+        let newpath = `./Expedientes/${user}`;
+        fs.mkdirSync(newpath, { recursive: true})
+        callback(null, newpath);
     },
     filename: (request, file, callback) => {
         //aquí configuramos el nombre que queremos que tenga el archivo en el servidor, 
@@ -27,6 +35,8 @@ const fileStorage = multer.diskStorage({
     },
 });
 const fileFilter = (request, file, callback) => {
+    
+    
     if (file.mimetype == 'application/pdf') {
         callback(null, true);
     } else {
@@ -35,10 +45,24 @@ const fileFilter = (request, file, callback) => {
 }
 
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).any('archivo2'));
+
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20*1024*1024}}).any('archivo2'));
 //app.use(multer({ storage: fileStorage }).single('archivo')); 
 
 
+// Middleware que analiza errores de multer en caso que las protecciones del front end se salten.
+// Si hay exception, se limpian las variables que permiten que se suban archivos, por lo que el controlador no hace nada.
+// Y nada explota en consecuencia.
+app.use((err, request, response, next) => {
+    if( err instanceof multer.MulterError){
+        console.log(request.body);
+        request.body.SelFiles = '';
+        request.body.NRMFiles = '';
+        request.files = ''
+    }
+    
+    next();
+});
 //Declarar rutas
 const rutasPropiedades = require('./routes/propiedad.routes');
 const rutasIndex = require('./routes/index.routes');
