@@ -1,5 +1,5 @@
 
-
+let prevsel;
 let map = new Array();
 let changes = false;
 const checkbutton = (map) =>{

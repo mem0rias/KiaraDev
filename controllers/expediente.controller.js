@@ -64,8 +64,16 @@ exports.actualizar = (request, response, next) => {
     console.log(Tipo_Doc);
     console.log(IdUsuario)
     console.log(nupdates);
-    /*
+    
+    expediente.UpdateRequirements(Comments,Estatus,IdUsuario,Tipo_Doc,nupdates).then(()=>{
+        response.status(200).json('OK');
+    }).catch(err =>{
+        console.log(err);
+        response.status(503).json('FAIL');
+    });
+
     //Ya solo se hace un procedimiento para garantizar atomicidad en la operacion.
+    /*
     expediente.UpdateRequirements(Comments,Estatus,IdUsuario,Tipo_Doc,nupdates).then(()=>{
         
         //Token para toast 
@@ -84,8 +92,8 @@ exports.actualizar = (request, response, next) => {
             //response.redirect('/inicio');
             response.redirect('/expediente/revisar/' + IdUsuario);
         });
-    })*/
-    
+    })
+    */
 }
 
 

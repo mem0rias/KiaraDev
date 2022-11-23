@@ -76,6 +76,7 @@
             else
                 cargarexp(elemento);
         }
+        // Generacion de los tipos de documentos dependiendo del tipo de expediente.
         const cargarexp = (elemento) =>{
             // Se vacian las variables de estado y el evento que pregunta si quieres recargar la pagina
             window.onbeforeunload = 0;
@@ -85,7 +86,7 @@
             let estados = ['Faltante', 'Pendiente', 'Aceptado', 'Rechazado'];
             let query = elemento.value;
             let user = document.getElementById('IdUsuario').value,
-            prevsel = query;
+            prevsel = elemento;
             //Fetch de requisitos del tipo de expediente seleccionado
             fetch('/expediente/fetch/' + query +'/' +  user, {
                 method: 'GET',
@@ -110,12 +111,7 @@
                         if(elements.Comentarios == undefined)
                             elements.Comentarios = ' ';
                         
-                        // Se define si ciertos parametros se deben esconder dependiento del estado del elemento.
-                        let hidden = (elements.URL != undefined && elements.URL != '') ? '' : 'is-hidden';
-                        let fileName = (elements.URL == undefined | elements.URL == '') ? '' : (elements.URL.split('\\')).pop();
-                        // Define si ya habia un tipo de archivo registrado en la BD.
-                        let preloaded = hidden != 'is-hidden' ? 1 : 0;
-
+                        // Se define si ciertos parametros se deben deshabilitar, si es que su estatus es igual a 0 (Faltante)
                         let present = (elements.estatus != 0) ? '' : 'disabled';
                         html +=
                         `
@@ -162,31 +158,49 @@
             });
         }
 
+        // Funcion que recupera el tipo de documento que fue editado.
+        const recuperarValidos = () => {
+            let tiposVal = document.getElementsByName('estatus');
+            let validos = new Array();
+            for(elements of tiposVal){
+                // Los elementos que no tengan estatus 0, es decire esten habilitados se toman en cuenta
+                // Se mete el tipo de documento en el arreglo.
+                if(elements.disabled == false){
+                    validos.push(elements.id.split('-')[1]);
+                }
+            }
+            // Se retorna el tipo de arreglo en el orden que se encuentra, esto nos ayuda a saber que comentario corresponde a que documento.
+            return validos;
+        }
+
+        // Funcion asincrona que obtiene los parametros que se han cambiado para subirlos a la BD
         const actualizarExp = () => {
-            let Estatus = document.getElementsByName('estatus').values();
-            let Commentarios = document.getElementsByName('Comments');
-            let Tipos_Doc = document.getElementsByName('Tipo_Doc').values();
             let user = document.getElementById('IdUsuario').value;
-            let forma = document.getElementById('actualizar');
-            let dati = new FormData(forma);
-            //console.log(dati.getAll('Comments'));
+            let forma = new FormData(document.getElementById('actualizar'));
             fetch('/expediente/actualizar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                       Comments : (dati.getAll('Comments')),
-                       estatus  :  (dati.getAll('estatus')),
-                       Tipo_Doc : (dati.getAll('Tipo_Doc')),
+                       Comments : (forma.getAll('Comments')),
+                       estatus  :  (forma.getAll('estatus')),
+                       Tipo_Doc : (recuperarValidos()),
                        IdUsuario : user,
                 }),
                 }).then(result => {
                     return result.json();
                 }).then(data => {
-
+                    if(data == 'OK'){
+                        bulmaToast.toast({message: 'Datos guardados correctamente', type: 'is-success',position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+                        cargarexp(prevsel);
+                    }else if(data == 'FAIL'){
+                        bulmaToast.toast({message: 'Hay un problema con la pagina, intenta mas tarde', type: 'is-danger',position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+                        cargarexp(prevsel);
+                    }
                 }).catch( err => {
-
+                    bulmaToast.toast({message: 'Hay un problema con la pagina, intenta mas tarde', type: 'is-danger',position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+                    cargarexp(prevsel);
                 });
         }
     </script>
