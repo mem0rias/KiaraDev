@@ -48,5 +48,7 @@ module.exports = class Login {
             [id]);
     }
 
+    static updatePassw(){}
+    
     
 }
