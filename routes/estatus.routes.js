@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 const estatusController = require('../controllers/estatus.controller');
 const isSeguimiento = require('../util/is-seguimiento');
+const isAuth= require('../util/is-auth.js');
 
-router.get('/', estatusController.get_EstatusP);
+router.get('/', isAuth, estatusController.get_EstatusP);
 
-router.post('/update', estatusController.post_update);
+router.post('/update',isAuth, estatusController.post_update);
 
-router.get('/:idPropiedad', isSeguimiento ,estatusController.get_AvanceP);
+router.get('/:idPropiedad',isAuth, isSeguimiento ,estatusController.get_AvanceP);
 
 
 
