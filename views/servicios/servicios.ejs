@@ -1,83 +1,146 @@
 <%- include('../includes/head.ejs') %>
-    <section class="hero is-danger is-small is-bold">
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <h1 class="title">Servicios Adicionales</h1>
+    <section class="is-relative section py-20">
+        <img class="is-absolute is-left-0 is-top-0 mt-16 is-hidden-mobile" src="zeus-assets/icons/dots/blue-dot-left-bars.svg" alt="">
+        <img class="is-absolute is-right-0 is-top-0 mt-48 is-hidden-mobile" src="zeus-assets/icons/dots/yellow-dot-right-shield.svg" alt="">
+        <div class="container">
+            <div class="has-mw-2xl mx-auto mb-20 has-text-centered">
+                <h2 class="mt-8 title is-2">Servicios Adicionales</h2>
+                <br>
+            </div>
+            <div class="has-mw-4xl mx-auto mb-12">
+                <div class="columns is-centered">
+                    <div class="column is-2 mb-6 mb-0-desktop">
+                        <button class="is-inline-block py-6 has-background-danger is-fullwidth is-rounded" style="width: 100%; border: none; cursor: pointer;">
+              <svg class="mx-auto mb-5" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.65991 17.7087L11.6508 12.5218L16.203 16.0977L20.1084 11.0573" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="24.6606" cy="3.60028" r="2.56293" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+                <path  d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z"stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path  d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <p class="is-size-6 has-text-white">Tramites y Gestoria</p>
+            </button>
+                    </div>
+                    <div class="column is-2 mb-6 mb-0-desktop">
+                        <button class="is-inline-block py-6 has-background-light is-fullwidth is-rounded" style="width: 100%; border: none; cursor: pointer;">
+              <svg class="mx-auto mb-5" width="26" height="28" viewBox="0 0 26 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="13.2336" cy="13.852" r="3.51487" stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+              </svg>
+              <p class="is-size-6 has-text-grey-dark">Asesoria Legal</p>
+            </button>
+                    </div>
+                    <div class="column is-2 mb-6 mb-0-desktop">
+                        <button class="is-inline-block py-6 has-background-light is-fullwidth is-rounded" style="width: 100%; border: none; cursor: pointer;">
+              <svg class="mx-auto mb-5" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M26.8521 16.1943H21.4543C19.4724 A16.1931 17.866 14.5879 17.8647 12.6059C17.8647 10.624 19.4724 9.01879 21.4543 9.01758H26.8521" stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M22.0649 12.5238H21.6493" stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <p class="is-size-6 has-text-grey-dark">Administración de Inmuebles</p>
+            </button>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="has-mw-4xl mx-auto">
+                <ul class="-mb-6">
+                    <li class="p-12 mb-6 box">
+                        <a class="px-0 is-flex is-justify-content-between is-align-items-center has-text-left" style="width: 100%; border: none;">
+                            <span class="is-size-4 has-text-dark has-text-weight-semibold">Tramites y Gestoria</span>
+                            <svg class="is-flex-shrink-0 ml-auto" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.750214 10C0.750214 15.108 4.89121 19.25 10.0002 19.25C15.1082 19.25 19.2502 15.108 19.2502 10C19.2502 4.892 15.1082 0.75 10.0002 0.75C4.89121 0.75 0.750214 4.892 0.750214 10Z" stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M6.52902 8.55774L10 12.0437L13.471 8.55774" stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+                        </a>
+                        <p class="is-active has-mw-2xl mt-4 has-text-grey-dark">
+                            <br>Trámite de crédito hipotecario bancario e Infonavit
+                            <br>Trámites municipales
+                            <br>Renovaciones de contrato de arrendamiento
+                            <br>Trámite de número oficial
+                            <br>Trámite de alineamiento
+                            <br>Cambio de nombre en servicios como luz y agua
+                            <br>Entre otros
+                        </p>
+                    </li>
+                    <li class="p-12 mb-6 box">
+                        <a class="px-0 is-flex is-justify-content-between is-align-items-center has-text-left" style="width: 100%; border: none;">
+                            <span class="is-size-4 has-text-dark has-text-weight-semibold">Asesoría Legal</span>
+                            <svg class="is-flex-shrink-0 ml-auto" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.750214 10C0.750214 15.108 4.89121 19.25 10.0002 19.25C15.1082 19.25 19.2502 15.108 19.2502 10C19.2502 4.892 15.1082 0.75 10.0002 0.75C4.89121 0.75 0.750214 4.892 0.750214 10Z" stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M6.52902 8.55774L10 12.0437L13.471 8.55774" stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+                        </a>
+                        <br>
+                        <strong>  <p class="has-text-justified">
+                            Tu tranquilidad es nuestra responsabilidad, por lo que brindamos asesoría y proceder legal acerca de todos los asuntos que tengan que ver con el condominio y sus procesos:</p>
+                            </strong>
+                        <br>Elaboración de actas
+                        <br>Presentación de asambleas
+                        <br>Defensa legal para la asociación de colonos
+                        <br>Representación con autoridades
+                        <br>Protocolización de actas ante notaria
+                        <br>Demandas para residentes morosos
+                        <br>
+                        <br>
+                        <strong>
+                                <p class="has-text-justified">Basados en alianzas con proveedores expertos en su rama, te ofrecemos mantener en aptas condiciones las instalaciones de tu condominio:</p>
+                            </strong>
+                        <br>Mantenimiento en general
+                        <br>Mantenimiento de áreas comunes
+                        <br>Mantenimiento de áreas verdes
+                        <br>Mantenimiento de albercas y fuentes
+
+
+
+                    </li>
+                    <li class="p-12 mb-6 box">
+                        <a class="px-0 is-flex is-justify-content-between is-align-items-center has-text-left" style="width: 100%; border: none;">
+                            <span class="is-size-4 has-text-dark has-text-weight-semibold">Administración de Inmuebles</span>
+                            <svg class="is-flex-shrink-0 ml-auto" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.750214 10C0.750214 15.108 4.89121 19.25 10.0002 19.25C15.1082 19.25 19.2502 15.108 19.2502 10C19.2502 4.892 15.1082 0.75 10.0002 0.75C4.89121 0.75 0.750214 4.892 0.750214 10Z" stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M6.52902 8.55774L10 12.0437L13.471 8.55774" stroke="#838EA4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+                        </a>
+                        <p class="is-active has-mw-2xl mt-4 has-text-grey-dark">
+                            <br>Administración de recursos
+                            <br>Convocatorias a asambleas
+                            <br>Control de gastos
+                            <br>Envío de estados de cuenta mensual
+                            <br>Comunicación efectiva y avisos importantes
+                            <br>Reservaciones
+                            <br>Manejo de proveedores
+                            <br>Seguimiento a cobro de cuotas de mantenimiento
+                            <br>Elaboración y seguimiento de reglamento
+                            <br>Trámites y gestiones ante dependencias de gobierno
+                            <br>Difusión y ejecución de acuerdos
+                            <br> Reuniones de trabajo con comité de vigilancia y mesa directiva
+                            <br>Establecimiento y ejecución de bitácoras
+                            <br>Elaboración de directorio general del condominio
+                            <br>Atención y solución a quejas y sugerencias
+                            <br>Contabilidad de la asociación
+                            <br>Declaración de impuestos (costo adicional)
+                            <br>Alta ante SAT
+                            <br>Reporte de ingresos y egresos
+                            <br>Manejo de cuentas
+                            <br>Cobranza
+                            <br>Convenios
+                            <br>Estados de cuenta
+                        </p>
+                    </li>
+                </ul>
             </div>
         </div>
     </section>
-    <div class="tile is-ancestor">
-        <div class="tile is-4 is-vertical is-parent">
-            <div class="tile is-child box">
-                <p class="title">Tramites y Gestoría</p>
-                <li>Trámite de crédito hipotecario bancario e Infonavit</li>
-                <li>Trámites municipales</li>
-                <li>Renovaciones de contrato de arrendamiento</li>
-                <li>Trámite de número oficial</li>
-                <li>Trámite de alineamiento</li>
-                <li>Cambio de nombre en servicios como luz y agua</li>
-                <li>Entre otros</li>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
-            </div>
-            <div class="tile is-child box">
-                <p class="title">Asesoría Legal</p>
-                <p class="has-text-justified">
-                    Tu tranquilidad es nuestra responsabilidad, por lo que brindamos asesoría y proceder legal acerca de todos los asuntos que tengan que ver con el condominio y sus procesos:
-                </p>
-                <br>
-                <li>Elaboración de actas</li>
-                <li>Presentación de asambleas</li>
-                <li>Defensa legal para la asociación de colonos</li>
-                <li>Representación con autoridades</li>
-                <li>Protocolización de actas ante notaria</li>
-                <li>Demandas para residentes morosos</li>
-                <br>
-                <p class="has-text-justified">Basados en alianzas con proveedores expertos en su rama, te ofrecemos mantener en aptas condiciones las instalaciones de tu condominio:</p>
-                <br>
-                <li>Mantenimiento en general</li>
-                <li>Mantenimiento de áreas comunes</li>
-                <li>Mantenimiento de áreas verdes</li>
-                <li>Mantenimiento de albercas y fuentes</li>
-
-            </div>
-        </div>
-        <div class="tile is-parent">
-            <div class="tile is-child box">
-                <p class="title">Administración de Inmuebles</p>
-                <p class="has-text-justified">Administramos desde propiedades pequeñas hasta unidades condominales.
-                </p>
-                <br>
-                <p class="has-text-justified"> Nuestro servicio consiste en administrar y controlar los recursos tangibles e intangibles del condominio buscando como objetivo mantener y mejorar la plusvalía de tu hogar. Atendemos las necesidades de los residentes con acciones preventivas
-                    y correctivas para el correcto funcionamiento y sana convivencia entre los involucrados como sigue:</p>
-                <br>
-                <li>Administración de recursos</li>
-                <li>Convocatorias a asambleas</li>
-                <li>Control de gastos</li>
-                <li>Envío de estados de cuenta mensual</li>
-                <li>Comunicación efectiva y avisos importantes</li>
-                <li>Reservaciones</li>
-                <li>Manejo de proveedores</li>
-                <li>Seguimiento a cobro de cuotas de mantenimiento</li>
-                <li>Elaboración y seguimiento de reglamento</li>
-                <li>Trámites y gestiones ante dependencias de gobierno</li>
-                <li>Difusión y ejecución de acuerdos</li>
-                <li> Reuniones de trabajo con comité de vigilancia y mesa directiva</li>
-                <li>Establecimiento y ejecución de bitácoras</li>
-                <li>Elaboración de directorio general del condominio</li>
-                <li>Atención y solución a quejas y sugerencias</li>
-                <li>Contabilidad de la asociación</li>
-                <li>Declaración de impuestos (costo adicional)</li>
-                <li>Alta ante SAT</li>
-                <li>Reporte de ingresos y egresos</li>
-                <li>Manejo de cuentas</li>
-                <li>Cobranza</li>
-                <li>Convenios</li>
-                <li>Estados de cuenta</li>
-            </div>
-        </div>
-
-    </div>
-
-
-
+    <script>
+        var dropdown = document.querySelector('.dropdown');
+        dropdown.addEventListener('click', function(event) {
+            event.stopPropagation();
+            dropdown.classList.toggle('is-active');
+        });
+    </script>
     <%- include('../includes/foot.ejs') %>
