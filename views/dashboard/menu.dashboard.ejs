@@ -13,9 +13,9 @@
         <% } %>    
         <div class="media-content">
           <div class="content is-small"> 
-            <h1><%=usuario.nombre ? usuario.nombre : ''%> <%=usuario.PA  ? usuario.PA : ''%></h1>
-            <p class="pt-0 pb-0 m-0"><i class="mdi mdi-phone pr-2 "></i><%=usuario.Telefono  ? usuario.Telefono  : ''%></p>
-            <p class="pt-0 pb-0"><i class="mdi mdi-email pr-2"></i><%=usuario.email  ?  usuario.email  : ''%></p>
+            <h1><%=nombre ? nombre : ''%></h1>
+            <p class="pt-0 pb-0 m-0"><i class="mdi mdi-phone pr-2 "></i><%=telefono  ? telefono  : ''%></p>
+            <p class="pt-0 pb-0"><i class="mdi mdi-email pr-2"></i><%=email  ?  email  : ''%></p>
           </div>
     </article>
 
@@ -31,9 +31,9 @@
 <!-- Botones del menu del dashboard, cada uno esta en un footer para separarlos -->
 
 
-<% if (sesionId == 2) { %>
+<% if (permisos.indexOf('panel_agente') != -1)  { %>
   <%- include ('menu.agente.ejs') %>
-<% } else if(sesionId == 0) { %>
+<% } else if(permisos.indexOf('panel_usuario') != -1)  { %>
   <%- include ('menu.usuario.ejs') %>
 <% } else { %>
   <%- include ('menu.admin.ejs') %>

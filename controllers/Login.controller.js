@@ -34,10 +34,16 @@ exports.loginverf = (request, response, next) => {
             bcrypt.compare(info.Pass, rows[0].password).then(doMatch => {
                 // Si la contraseña coincide, se almacena informacion clave del usuario en la sesion
                 if (doMatch) {
+
+                    
                     request.session.isLoggedIn = true;
                     request.session.user = info.User;
                     request.session.IdUser = rows[0].IdUsuario;
                     request.session.IdRol = rows[0].IdRol;
+                    request.session.Telefono = rows[0].Telefono;
+                    request.session.Email = rows[0].email;
+                    request.session.NombreUser= rows[0].Nombre + rows[0].PA + rows[0].SA;
+                    
 
                     User.getPermisos(rows[0].IdUsuario)
                                 .then( ([permisos, fieldData]) => {
@@ -45,6 +51,7 @@ exports.loginverf = (request, response, next) => {
                                     for (let permiso of permisos) {
                                         request.session.permisos.push(permiso.nombre);
                                         console.log(permiso);
+                        
                                     }
                                     
                                     return request.session.save(err => {
