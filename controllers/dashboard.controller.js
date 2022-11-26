@@ -36,6 +36,7 @@ exports.get_propiedadesAsignadas = (request, response, next) => {
                         propiedad: propiedadesAsignadas,
                         cantidad: cantidad,
                         permisos: request.session.permisos,
+                        info: request.session.info,
                     }); 
                     
         
