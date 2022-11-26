@@ -3,10 +3,12 @@
         <div class="container">
             <div class="columns is-multiline">
                 <div class="column is-3">
-                    <%- include('menu.dashboard.ejs') %>
+                    <%- include('menu.dashboard.ejs')
+                    %>
                 </div>
                 <div class="column is-9 is-multiline">
-                    <%- include('info.dashboard.ejs') %>
+                    <%- include('info.dashboard.ejs', {
+                        usuario: usuario})  %>
                 </div>
             </div>
         </div>

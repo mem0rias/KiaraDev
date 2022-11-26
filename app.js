@@ -86,6 +86,9 @@ app.use((request, response, next) => {
     response.locals.sesion = request.session.user ? request.session.user : '';
     response.locals.IdUser = request.session.IdUser ? request.session.IdUser : '';
     response.locals.IdRol = request.session.IdRol ? request.session.IdRol : '';
+    response.locals.NombreUser = request.session.NombreUser ? request.session.NombreUser : '';
+    response.locals.Telefono = request.session.Telefono ? request.session.Telefono : '';
+    response.locals.Email = request.session.Email ? request.session.Email : '';
     response.locals.msg = request.session.msg ? request.session.msg : '';
     response.locals.exito = request.session.exito ? request.session.exito : 0;
     next();

@@ -7,7 +7,7 @@
                 <ul class="steps is-vertical is-hollow">
                     
                     <% if(listEstatus != '') { %>
-                        <input id="idp" type="hidden" value="<%= listEstatus[0].idpropiedad %>">
+                        <input id="idp" type="hidden" value="<%= listEstatus[0].idpropiedad  ? listEstatus[0].idpropiedad  : ''%>">
                         <div class="content pb-3">
                             <h2 class="title is-large"> Propiedad en venta</h2>
                             <p></p>
@@ -24,7 +24,7 @@
                             <% } %>
                         <% } %>
                     <% } else { %>
-                        <input id="idp" type="hidden" value="<%= listEstatus2[0].idpropiedad %>">
+                        <input id="idp" type="hidden" value="<%= listEstatus2[0].idpropiedad ? listEstatus2[0].idpropiedad : ''%>">
                         <div class="content pb-3">
                             <h2 class="title is-large"> Propiedad en renta</h2>
                             <p></p>
