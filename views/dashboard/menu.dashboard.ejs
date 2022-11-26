@@ -4,7 +4,7 @@
 
 <!-- Generar información del usuario -->
     <article class="media">
-      <% if (permisos.indexOf('panel_agente') != -1) { %>
+      <% if (permisos.indexOf('panel_agente') != -1 || permisos.indexOf('panel_admin') != -1  ) { %>
         <figure class="media-left">
           <figure class="image is-64x64">
             <img class="is-rounded" src="https://pbs.twimg.com/profile_images/1505972991191965697/ZRm22tKG_400x400.jpg">
@@ -32,11 +32,11 @@
 
 
 <% if (permisos.indexOf('panel_agente') != -1)  { %>
-  <%- include ('menu.agente.ejs') %>
+  <%- include ('menu.agente.ejs')   %>
 <% } else if(permisos.indexOf('panel_usuario') != -1)  { %>
-  <%- include ('menu.usuario.ejs') %>
-<% } else { %>
-  <%- include ('menu.admin.ejs') %>
+  <%- include ('menu.usuario.ejs')  %>
+<% } else if(permisos.indexOf('panel_admin') != -1) { %>
+  <%- include ('menu.admin.ejs')    %>
 <% } %>
 
 <footer class="card-footer">
