@@ -4,7 +4,7 @@
         let tipoPropiedad = document.getElementById("tipoID").value;
 
         const RESIDENCIAL = "1";
-        const COMERCIAL = "1";
+        const COMERCIAL = "2";
 
         if(tipoPropiedad === ''){
             tipoPropiedad = document.getElementById("tipoPropiedad").value;
@@ -27,7 +27,7 @@
             html += '                <div class="select is-expanded is-fullwidth">';
             html += '                    <select class="select is-fullwidth" name="recamaras" id="recamaras">';
             html += '                        <option value="" disabled ';
-            if (residencial.Recamaras == ''){
+            if (residencial == null){
                 html += 'selected';     
             }
             html += 'hidden>Cantidad</option>';
@@ -313,7 +313,7 @@
 
         }
 
-        else if(tipoPropiedad == COMERCIAL) {
+        else if( tipoPropiedad == COMERCIAL) {
             html += `<div class="section px-0 py-5">
                  <div class="card">
                      <div class="card-content">
