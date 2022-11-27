@@ -43,27 +43,17 @@ module.exports = (request, response, next) => {
                         }
 
                     }
-                    if(discarda != 0){
-                        return next();
-                    }
-                    else{
-                        return response.redirect('/dashboard');
-                    }
 
                 }
-
-                
-                
-
-                            
+                else{
+                    return response.redirect('/dashboard');
+                }
+                 
             }).catch( (error) => {
                 console.log(error);
             }); 
-
-            
-            
+ 
         }
-
 
     }).catch( (error) => {
         console.log(error);
