@@ -168,9 +168,13 @@ exports.fetchiuserinfo = (request, response, next) => {
 
 exports.descargarArchivo = (request, response, next) => {
     console.log(request.params);
-    const file = `./public/Expedientes/10/`+request.params.id+'.txt';
-        expediente.DownloadFile(request.params.id, 3, 10).then(([rows, fieldData]) =>{
+    let userid = request.params.IdUsuario;
+    let Tipo_Doc = request.params.Tipo_Doc;
+    let Tipo_Exp = request.params.Tipo_Exp;
+    
+    expediente.DownloadFile(Tipo_Doc, Tipo_Exp, userid).then(([rows, fieldData]) =>{
         console.log(rows);
+        //response.redirect('/expediente/revisar/' + userid);
         response.download(rows[0].URL);
     }).catch( err =>{
         console.log(err);

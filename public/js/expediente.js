@@ -104,7 +104,7 @@ const descargarArchivo = (id) => {
                                         <label class="label"> ${elements.descripcion} </label> 
                                     </div>
                                     <div class="column is-2">
-                                        <a href="/expediente/download/<%= info.Tipo_Doc %>" class="button is-danger is-fullwidth" onclick="descargarArchivo(this)" type="button" id="boton" name="boton" value="${elements.tipo_doc}" ${present}>
+                                        <a href="/expediente/download/${user}/${elements.tipo_doc}/${Tipo_exp}" class="button is-danger is-fullwidth" onclick="descargarArchivo(this)" type="button" id="boton" name="boton" value="${elements.tipo_doc}" ${present}>
                                             Descargar Archivo
                                         </a>
                                     </div>

@@ -14,6 +14,6 @@ router.get('/miexpediente', isAuth, ExpControl.miexp);
 router.get('/fetch/:tipo/:usuario', isAuth, ExpControl.fetchiuserinfo);
 router.get('/fetch/:tipo', isAuth,ExpControl.fetchinfo);
 
-router.get('/download/:id', ExpControl.descargarArchivo);
+router.get('/download/:IdUsuario/:Tipo_Doc/:Tipo_Exp', ExpControl.descargarArchivo);
 
 module.exports = router;
