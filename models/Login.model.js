@@ -39,7 +39,13 @@ module.exports = class Login {
     }
 
     static fetchmail(u) {
-        return db.execute('SELECT email, password, IdUsuario, IdRol from usuario where email = (?)', [u]);
+        return db.execute('SELECT email, password, IdUsuario, Nombre, PA, SA, Telefono, IdRol from usuario where email = (?)', [u]);
+    }
+
+    static getPermisos(id) {
+        return db.execute(
+            'SELECT p.nombre FROM privilegios p, asignan a, otorgan o, roles r WHERE a.idUsuario = ? AND a.idRol = r.idRol AND r.idRol = o.idRol AND o.idPrivilegio = p.idPrivilegio',
+            [id]);
     }
 
     
