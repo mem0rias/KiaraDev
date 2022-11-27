@@ -118,3 +118,20 @@ exports.post_update =(request, response, next) => {
     
 }
 
+exports.Init_Proceso = (request, response, next) => {
+    /* To Do: 
+              - Generar el proceso dependiendo el tipo de propiedad. Se tiene que checar el uso que se le dara.
+              - Generar los tipos_docs 0 para el dueño y el interesado
+              - Añadir a los 2 interesados a las tablas de asignacion 
+    
+    */ 
+    let idprop = request.params.idPropiedad;
+    listEstatus.fetchTransactionType(idprop).then(([rows, fieldData]) => {
+        console.log(rows);
+    }).catch( err => {
+        console.log(err);
+    });
+    
+            
+}
+

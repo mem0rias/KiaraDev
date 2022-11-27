@@ -31,4 +31,8 @@ module.exports = class listEstatus{
     static updateEstatusR(Estado, id, idpro) {
         return db.execute('CALL `UpdateRenta`(?,?,?)', [Estado, id, idpro]);
     }
+
+    static fetchTransactionType(IdPropiedad) {
+        return db.execute('SELECT TipoTransaccion from propiedades where IdPropiedad = ?', [IdPropiedad]);
+    }
 }
