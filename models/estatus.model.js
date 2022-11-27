@@ -32,4 +32,8 @@ module.exports = class listEstatus{
     static updateEstatusR(Estado, id, idpro) {
         return db.execute('CALL `UpdateRenta`(?,?,?)', [Estado, id, idpro]);
     }
+
+    static cancelProceso(idpro){
+        return db.execute('UPDATE `asignacion` SET `VisibleProceso`=0 WHERE `IdPropiedad`=?', [idpro]);
+    }
 }

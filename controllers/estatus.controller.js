@@ -111,10 +111,14 @@ exports.post_update =(request, response, next) => {
             }).catch(error => {console.log(error)})
         }
 
-    }).catch(error => {console.log(error)});
-
-    
-
-    
+    }).catch(error => {console.log(error)});    
 }
 
+exports.post_cancelProcedimiento = (request, response, next) => {
+    listEstatus.cancelProceso(request.body.idpro)
+        .then(([rows2, fieldData2])=> {
+            response.status(200).json({
+                mensaje: "El avance de proceso fue cancelado ",   
+            }); 
+        }).catch(error => {console.log(error)});
+}
