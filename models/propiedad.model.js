@@ -195,5 +195,9 @@ module.exports = class Propiedad {
         return db.execute('SELECT * FROM terreno WHERE IdPropiedad = ?', [id]);
     }
 
+    static getAgenteTel(IdPropiedad) {
+        return db.execute('select Telefono from usuario u, asignacion a where u.IdUsuario = a.IdUsuario and a.IdPropiedad = ?', [IdPropiedad]);
+    }
+
 
 }
