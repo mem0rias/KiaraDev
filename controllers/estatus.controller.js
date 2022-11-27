@@ -10,14 +10,17 @@ exports.get_EstatusP = (request, response, next) => {
     Dashboard.fetchUser(userid).then( ([usuarioData, fieldData]) => {
         listEstatus.fetchPropertiesC(userid)
         .then( ([rows, fieldData]) => {
-           // console.log(rows);
+            console.log(rows);
             listEstatus.fetchPropertiesR(userid)
                 .then( ([rows2, fieldData2]) => {
-                   // console.log(rows2);
+                    console.log(rows2);
                     response.render(path.join('dashboard', 'dashboard.Seguimiento.ejs'), {
                         PropertiesC: rows,
                         PropertiesR: rows2,
                         usuario :usuarioData,
+                        nombre      : response.locals.NombreUser    ,
+                        telefono    : response.locals.Telefono  ,
+                        email       : response.locals.Email     ,
                         sesionId: response.locals.IdRol, 
                         sesionUser: response.locals.IdUser,
                         permisos: request.session.permisos,
@@ -111,10 +114,14 @@ exports.post_update =(request, response, next) => {
             }).catch(error => {console.log(error)})
         }
 
-    }).catch(error => {console.log(error)});
-
-    
-
-    
+    }).catch(error => {console.log(error)});    
 }
 
+exports.post_cancelProcedimiento = (request, response, next) => {
+    listEstatus.cancelProceso(request.body.idpro)
+        .then(([rows2, fieldData2])=> {
+            response.status(200).json({
+                mensaje: "El avance de proceso fue cancelado ",   
+            }); 
+        }).catch(error => {console.log(error)});
+}

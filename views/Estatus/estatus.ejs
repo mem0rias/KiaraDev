@@ -48,8 +48,18 @@
         </div>
     </div>
     <div class="columns">
-        <div class="column is-10"></div>
-        <a href="/estatus/" class="column"><button class="button is-primary is-danger"> Regresar </button></a>
+        <div class="column is-8"></div>
+        
+        <% if (permisos.indexOf('panel_agente') != -1 || permisos.indexOf('panel_admin') != -1) { %>
+        <a href="/dashboard/asignado" class="column is-1"><button class="button is-primary is-danger"> Regresar </button></a>
+        <% } else {%>    
+        <a href="/estatus/" class="column is-1"><button class="button is-primary is-danger"> Regresar </button></a>
+        <% } %>
+
+
+        <% if (permisos.indexOf('editar_seguimiento') != -1) { %>
+            <a class="column is-1"><button class="button is-primary is-danger" id="propiedad" value="<%= listEstatus2[0].idpropiedad ? listEstatus2[0].idpropiedad : listEstatus[0].idpropiedad%>" onclick="cancelProcedimiento(this)"> Terminar operación inmobiliaria </button></a>
+        <% } %>
     </div>
 
     <input type="hidden" id="_csrf" value="<%= csrfToken %>">
@@ -106,6 +116,32 @@
             console.log(err);
         });
 
+    }
+
+    const cancelProcedimiento = (elemento)=>{
+        const idpro = document.getElementById('propiedad').value;
+        const csrf = document.getElementById('_csrf').value;
+
+        //función que manda la petición asíncrona
+        fetch('/estatus/cancel', {
+            
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                idpro: idpro,
+                _csrf: csrf,
+                
+            }),
+        }).then(result => {
+            return result.json(); //Regresa otra promesa
+        }).then(data => {
+            
+           console.log(data.mensaje);
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     </script>
