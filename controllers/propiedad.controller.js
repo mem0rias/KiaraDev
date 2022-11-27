@@ -23,7 +23,7 @@ exports.get_one = (request, response, next) => {
                 var monto = rows[0].Precio;
                 precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
                 console.log(tel);
-
+                let TelAgente = tel[0].Telefono ? tel[0].Telefono : '';
                 Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
                     if (res.length > 0){
                         console.log(res);
@@ -33,7 +33,7 @@ exports.get_one = (request, response, next) => {
                             ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
                             residencial: res[0],
                             precio: precio,
-                            numeroenc: tel[0].Telefono,
+                            numeroenc: TelAgente,
                         }); 
                     }
                     else 
