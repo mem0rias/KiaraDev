@@ -23,7 +23,7 @@ exports.get_one = (request, response, next) => {
                 var monto = rows[0].Precio;
                 precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
                 console.log(tel);
-                let TelAgente = tel[0].Telefono ? tel[0].Telefono : '';
+                let TelAgente = tel.length > 0? tel[0].Telefono : '';
                 Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
                     if (res.length > 0){
                         console.log(res);
