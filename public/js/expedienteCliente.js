@@ -38,6 +38,7 @@ const cargarexp = (elemento) =>{
     // Estados posibles de los archivos.
     let estados = ['Faltante', 'Pendiente', 'Aceptado', 'Rechazado'];
     let query = elemento.value;
+    let Tipo_exp = query;
     if(query == 0)
         return;
     prevsel = query;
@@ -70,6 +71,7 @@ const cargarexp = (elemento) =>{
                 let fileName = (elements.URL == undefined | elements.URL == '') ? '' : (elements.URL.split('\\')).pop();
                 // Define si ya habia un tipo de archivo registrado en la BD.
                 let preloaded = hidden != 'is-hidden' ? 1 : 0;
+                //let msgbutton = (fileName != '') ? 'Descargar Archivo' : 'Selecciona Archivo';
                 html +=
                 `
                 <div class="has-background-light box">
@@ -87,16 +89,30 @@ const cargarexp = (elemento) =>{
                                         <span class="file-cta">
                                         
                                             <span class="file-label">
-                                                Selecciona Archivo
+                                                Seleccionar Archivo
                                             </span>
                                         </span>
+                                        
                                         <span class="file-name ${hidden}" id="archivo-${elements.tipo_doc}">
                                             ${fileName}
                                         </span>
+                                     
                                     </label>
-                                    <span id="erase-${elements.tipo_doc}" class="level-right button is-boxed is-danger ${hidden} "onclick="removerArchivo(this)" style="margin-left: 10px">
-                                            <i class="tiny material-icons"> clear </i>    
-                                        </span>
+                                    
+                                    <div>
+                                        <table>
+                                                <span id="erase-${elements.tipo_doc}" class="level-right button is-boxed is-danger ${hidden} "onclick="removerArchivo(this)" style="margin-left: 10px; margin-bottom: 10px">
+                                                    <i class="tiny material-icons"> clear </i>  
+                                                </span>
+                                            
+                                                <a href="/expediente/download/${elements.tipo_doc}/${Tipo_exp}" id="download-${elements.tipo_doc}" class="level-right button is-boxed is-danger ${hidden}" style="margin-left: 10px">
+                                                    <i class="tiny material-icons"> download </i>  
+                                                </a>
+                                        </table>
+                                    </div>
+                                    
+                                    
+                                    
                                 </div>
                             </div>
                     <div class="column is-5">
@@ -217,6 +233,7 @@ const removerArchivo = (element) => {
         button.value = '';
         document.getElementById('archivo-'+tipo_doc).innerHTML = '';
         document.getElementById('archivo-'+tipo_doc).classList.add('is-hidden');
+        document.getElementById('download-'+tipo_doc).classList.add('is-hidden');
         filemap.splice(filemap.indexOf(tipo_doc),1);
         element.classList.add('is-hidden');
         filemap.sort();
@@ -228,6 +245,7 @@ const removerArchivo = (element) => {
         element.classList.add('is-hidden');
         document.getElementById('archivo-'+tipo_doc).innerHTML = '';
         document.getElementById('archivo-'+tipo_doc).classList.add('is-hidden');
+        document.getElementById('download-'+tipo_doc).classList.add('is-hidden');
         if(document.getElementById('preloaded-'+tipo_doc).value == 1){
             removepaths.push(document.getElementById('archivofull-'+tipo_doc).value);
             document.getElementById('preloaded-'+tipo_doc).value = 0;
