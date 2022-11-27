@@ -95,6 +95,10 @@ const descargarArchivo = (id) => {
                         
                         // Se define si ciertos parametros se deben deshabilitar, si es que su estatus es igual a 0 (Faltante)
                         let present = (elements.estatus != 0) ? '' : 'disabled';
+                        // Si hay archivo que descargar se pone el path para hacer la consulta, si no se deshabilita el href.
+                        let filelink = (elements.estatus != 0) ? `/expediente/download/${user}/${elements.tipo_doc}/${Tipo_exp}` : 'javascript:void(0)';
+                        // Lo mismo, si hay archivo permite que el toast se active, si no no.
+                        let onclickaction = (elements.estatus != 0) ? 'descargarArchivo(this)' : '';
                         html +=
                         `
                             <div class="has-background-light box">
@@ -104,7 +108,7 @@ const descargarArchivo = (id) => {
                                         <label class="label"> ${elements.descripcion} </label> 
                                     </div>
                                     <div class="column is-2">
-                                        <a href="/expediente/download/${user}/${elements.tipo_doc}/${Tipo_exp}" class="button is-danger is-fullwidth" onclick="descargarArchivo(this)" type="button" id="boton" name="boton" value="${elements.tipo_doc}" ${present}>
+                                        <a href="${filelink}" class="button is-danger is-fullwidth" onclick="${onclickaction}" type="button" id="boton" name="boton" value="${elements.tipo_doc}" ${present}>
                                             Descargar Archivo
                                         </a>
                                     </div>
