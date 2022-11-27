@@ -1,20 +1,24 @@
 
         <% for(let l of PropertiesC) { %>
-            <div class="box">
-                <div class="columns">
-                    <div class="column"><h2 class="Title label"> Propiedad <%= l.Titulo %> </h2></div>
-                    <div class="column is-6"></div>
-                    <div class="column"><a href="/estatus/<%= l.idpropiedad %>"><button class="button is-primary is-danger"> Consultar Avance</button></a></div>
+            <% if(l.visibleproceso == 1){%>
+                <div class="box">
+                    <div class="columns">
+                        <div class="column"><h2 class="Title label"> Propiedad <%= l.Titulo %> </h2></div>
+                        <div class="column is-6"></div>
+                        <div class="column"><a href="/estatus/<%= l.idpropiedad %>"><button class="button is-primary is-danger"> Consultar Avance</button></a></div>
+                    </div>
                 </div>
-            </div>
+            <% } %>
         <% } %>
         <% for(let l of PropertiesR) { %>
-            <div class="box">
-                <div class="columns">
-                    <div class="column "><h2 class="Title label"> Propiedad <%= l.Titulo %></h2> </div>
-                    <div class="column is-6"></div>
-                    <div class="column "><a href="/estatus/<%= l.idpropiedad %>"><button class="button is-primary is-danger"> Consultar Avance</button></a></div>
+            <% if(l.visibleproceso == 1){%>
+                <div class="box">
+                    <div class="columns">
+                        <div class="column "><h2 class="Title label"> Propiedad <%= l.Titulo %></h2> </div>
+                        <div class="column is-6"></div>
+                        <div class="column "><a href="/estatus/<%= l.idpropiedad %>"><button class="button is-primary is-danger"> Consultar Avance</button></a></div>
+                    </div>
                 </div>
-            </div>
+            <% } %> 
         <% } %>
 

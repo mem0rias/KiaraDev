@@ -166,11 +166,38 @@ exports.fetchiuserinfo = (request, response, next) => {
 }
 
 
-exports.descargarArchivo = (request, response, next) => {
+exports.descargarArchivoAgente = (request, response, next) => {
     console.log(request.params);
-    const file = `./public/Expedientes/10/`+request.params.id+'.txt';
-        expediente.DownloadFile(request.params.id, 3, 10).then(([rows, fieldData]) =>{
+    let userid = request.params.IdUsuario;
+    let Tipo_Doc = request.params.Tipo_Doc;
+    let Tipo_Exp = request.params.Tipo_Exp;
+    
+    expediente.DownloadFile(Tipo_Doc, Tipo_Exp, userid).then(([rows, fieldData]) =>{
         console.log(rows);
+        //response.redirect('/expediente/revisar/' + userid);
+        response.download(rows[0].URL);
+    }).catch( err =>{
+        console.log(err);
+        request.session.msg = "No se puede descargar el archivo";
+        request.session.exito = 0;
+        return request.session.save(err => {
+            console.log(request.session.msg);
+            //response.redirect('/inicio');
+            response.redirect('/expediente/revisar');
+        });
+        
+    });
+}
+
+exports.descargarArchivoUser = (request, response, next) => {
+    console.log(request.params);
+    let userid = request.session.IdUser;
+    let Tipo_Doc = request.params.Tipo_Doc;
+    let Tipo_Exp = request.params.Tipo_Exp;
+    
+    expediente.DownloadFile(Tipo_Doc, Tipo_Exp, userid).then(([rows, fieldData]) =>{
+        console.log(rows);
+        //response.redirect('/expediente/revisar/' + userid);
         response.download(rows[0].URL);
     }).catch( err =>{
         console.log(err);
