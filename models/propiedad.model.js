@@ -1,5 +1,6 @@
 const db = require('../util/database');
 
+
 module.exports = class Propiedad {
 
     //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
@@ -20,29 +21,149 @@ module.exports = class Propiedad {
 
     save() {
         return db.execute(
-            'INSERT INTO propiedades (Descripcion, Precio, Estado, Municipio, Colonia, Calle, CP, Terreno, Video, Imagenes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [this.descripcion, this.precio, this.estado, this.municipio, this.colonia, this.calle, this.cp, this.terreno, this.video, this.imagenes]);
-
+            'INSERT INTO propiedades (Descripcion, Precio, Estado, Municipio, Colonia, Calle, CP, Terreno, Video, Imagenes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+            [this.descripcion, this.precio, this.estado,this.municipio,this.colonia,this.calle,this.cp,this.terreno,this.video,this.imagenes]);     
     }
 
-    saveResidencial(titulo, descripcion, precio, estado, municipio, colonia, calle, cp, terreno, video, imagenes, recamaras, estacionamiento, banos, pisos, gas, cocina) {
+    static agregarResidencial(d) {
         return db.execute(
-            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [titulo, descripcion, precio, estado, municipio, colonia, calle, cp, terreno, video, imagenes, recamaras, estacionamiento, banos, pisos, gas, cocina]);
-
+            'CALL agregarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [   d.titulo          ,
+                d.descripcion     ,
+                d.precio          ,
+                d.estado          ,
+                d.muncipio        ,
+                d.colonia         ,
+                d.calle           ,
+                d.cp              ,
+                d.uso             ,
+                d.mterreno        ,
+                d.mconstruccion   ,
+                d.tipotransaccion ,
+                d.tipopropiedad   ,
+                d.imagenes        ,
+                d.video           ,
+                d.recamaras       ,
+                d.banos           ,
+                d.cocina          ,
+                d.pisos           ,
+                d.estacionamiento ,
+                d.gas             ,
+                d.userid          
+            ]);
     }
 
-    saveComercial(descripcion, precio, estado, municipio, colonia, calle, cp, terreno, video, imagenes, estacionamiento, banos, oficinas, pisos) {
+    static agregarComercial(d) {
         return db.execute(
-            'CALL agregarComercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [descripcion, precio, estado, municipio, colonia, calle, cp, terreno, video, imagenes, estacionamiento, banos, oficinas, pisos]);
-
+            'CALL agregarComercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [   d.titulo         , 
+                d.descripcion    , 
+                d.precio         , 
+                d.estado         , 
+                d.muncipio       , 
+                d.colonia        , 
+                d.calle          , 
+                d.cp             , 
+                d.uso            , 
+                d.mterreno       , 
+                d.mconstruccion  , 
+                d.tipotransaccion, 
+                d.tipopropiedad  , 
+                d.imagenes       , 
+                d.video          , 
+                d.cuartos        , 
+                d.banos          ,
+                d.pisos          , 
+                d.estacionamiento, 
+                d.userid          
+            ]);     
     }
 
-    static updateResidencial(id, titulo, recamaras) {
+    static agregarTerreno(d) {
         return db.execute(
-            'CALL updateResidencial(?,?,?)', [id, titulo, recamaras]);
-
+            'CALL agregarTerreno(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [   d.titulo         , 
+                d.descripcion    , 
+                d.precio         , 
+                d.estado         , 
+                d.muncipio       , 
+                d.colonia        , 
+                d.calle          , 
+                d.cp             , 
+                d.uso            , 
+                d.mterreno       , 
+                d.mconstruccion  , 
+                d.tipotransaccion, 
+                d.tipopropiedad  , 
+                d.imagenes       , 
+                d.video          , 
+                d.cuartos        , 
+                d.banos          ,
+                d.pisos          , 
+                d.estacionamiento, 
+                d.userid          
+            ]);     
     }
 
-
+    static actulizarResidencial(d) {
+        return db.execute(
+            'CALL actulizarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [   d.id              ,
+                d.titulo          ,
+                d.descripcion     ,
+                d.precio          ,
+                d.estado          ,
+                d.muncipio        ,
+                d.colonia         ,
+                d.calle           ,
+                d.cp              ,
+                d.mterreno        ,
+                d.mconstruccion   ,
+                d.tipotransaccion ,
+                d.tipopropiedad   ,
+                d.imagenes        ,
+                d.video           ,
+                d.visibilidad     ,
+                d.recamaras       ,
+                d.banos           ,
+                d.cocina          ,
+                d.pisos           ,
+                d.estacionamiento ,
+                d.gas              
+            ]);    
+    }
+    
+    static actulizarComercial(d) {
+        return db.execute(
+            'CALL actulizarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            [   d.id             ,
+                d.titulo         , 
+                d.descripcion    , 
+                d.precio         , 
+                d.estado         , 
+                d.muncipio       , 
+                d.colonia        , 
+                d.calle          , 
+                d.cp             , 
+                d.uso            , 
+                d.mterreno       , 
+                d.mconstruccion  , 
+                d.tipotransaccion, 
+                d.tipopropiedad  , 
+                d.imagenes       , 
+                d.video          , 
+                d.cuartos        , 
+                d.banos          ,
+                d.pisos          , 
+                d.estacionamiento         
+            ]);    
+    } 
+    
+    static updateResidencial(id,titulo,descripcion,recamaras) {
+        return db.execute(
+            'CALL updateResidencial(?,?,?,?)', 
+            [id,titulo,descripcion,recamaras]);
+    }
 
 
     static find(valor_busqueda) {
