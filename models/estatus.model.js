@@ -3,10 +3,11 @@ const db = require('../util/database');
 module.exports = class listEstatus{
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchPropertiesC(IdUsuario) {
-        return db.execute('SELECT DISTINCT clp.idpropiedad, Titulo FROM cliente_pc_prop clp, propiedades p WHERE clp.idpropiedad = p.IdPropiedad and Idusuario= ?', [IdUsuario]);
+        return db.execute('SELECT DISTINCT a.idpropiedad, Titulo, visibleproceso FROM asignacion a, propiedades p WHERE a.idpropiedad = p.IdPropiedad and rolprop=21 and Idusuario= ?', [IdUsuario]);
     }
     static fetchPropertiesR(IdUsuario) {
-        return db.execute('SELECT DISTINCT clp.idpropiedad, Titulo FROM cliente_pr_prop clp, propiedades p WHERE clp.idpropiedad = p.IdPropiedad and Idusuario= ?', [IdUsuario]);
+        return db.execute('SELECT DISTINCT a.idpropiedad, Titulo, visibleproceso FROM asignacion a, propiedades p WHERE a.idpropiedad = p.IdPropiedad and rolprop=22 and Idusuario= ?', [IdUsuario]);
+    
     }
 
     static fetchAvanceC(IdProperty){

@@ -48,8 +48,11 @@
         </div>
     </div>
     <div class="columns">
-        <div class="column is-10"></div>
+        <div class="column is-8"></div>
         <a href="/estatus/" class="column"><button class="button is-primary is-danger"> Regresar </button></a>
+        <% if (permisos.indexOf('editar_seguimiento') != -1) { %>
+            <a class="column"><button class="button is-primary is-danger"> Terminar operación inmobiliaria </button></a>
+        <% } %>
     </div>
 
     <input type="hidden" id="_csrf" value="<%= csrfToken %>">

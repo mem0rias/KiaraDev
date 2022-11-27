@@ -10,10 +10,10 @@ exports.get_EstatusP = (request, response, next) => {
     Dashboard.fetchUser(userid).then( ([usuarioData, fieldData]) => {
         listEstatus.fetchPropertiesC(userid)
         .then( ([rows, fieldData]) => {
-           // console.log(rows);
+            console.log(rows);
             listEstatus.fetchPropertiesR(userid)
                 .then( ([rows2, fieldData2]) => {
-                   // console.log(rows2);
+                    console.log(rows2);
                     response.render(path.join('dashboard', 'dashboard.Seguimiento.ejs'), {
                         PropertiesC: rows,
                         PropertiesR: rows2,
