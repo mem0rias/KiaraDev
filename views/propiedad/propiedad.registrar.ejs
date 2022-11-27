@@ -82,13 +82,11 @@
                                             <div class="select is-expanded is-fullwidth">
                                                 <select class="select" name="tipopropiedad">
                                                     <option  disabled  <% if ( propiedad === ''){ %> selected <% } %> hidden >        Seleccionar tipo</option>
-                                                    
-                                                        <option value="1" <% if ( propiedad.TipoPropiedad === 1){ %>selected <% } %>>   Casa</option>
-                                                        <option value="2">Departamento</option>
-                                                        <option value="3">Local</option>
-                                                        <option value="4">Oficina</option>
-                                                        <option value="5">Bodega</option>
-                                                
+                                                        <option value="1" <% if ( propiedad.TipoPropiedad === 1){ %>selected <% } %>>   Casa        </option>
+                                                        <option value="2" <% if ( propiedad.TipoPropiedad === 2){ %>selected <% } %>>   Departamento</option>
+                                                        <option value="3" <% if ( propiedad.TipoPropiedad === 3){ %>selected <% } %>>   Local       </option>
+                                                        <option value="4" <% if ( propiedad.TipoPropiedad === 4){ %>selected <% } %>>   Oficina     </option>
+                                                        <option value="5" <% if ( propiedad.TipoPropiedad === 5){ %>selected <% } %>>   Bodega      </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -100,24 +98,10 @@
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
                                                 <select class="select" name="tipotransaccion" id="tipoVenta">
-                                                    <option  disabled selected hidden>Seleccionar tipo</option>
-                                                    <% if (propiedad.TipoTransaccion === "1"){ %>
-                                                        <option value="1" selected>Venta</option>
-                                                        <option value="2">Renta</option>
-                                                        <option value="3">Venta/Renta</option>
-                                                    <%} else if(propiedad.TipoTransaccion === "2"){ %>
-                                                        <option value="1">Venta</option>
-                                                        <option value="2" selected>Renta</option>
-                                                        <option value="3">Venta/Renta</option>
-                                                    <%} else if(propiedad.TipoTransaccion === "3"){ %> 
-                                                        <option value="1">Venta</option>
-                                                        <option value="2">Renta</option>
-                                                        <option value="3" selected>Venta/Renta</option>
-                                                    <%} else { %>
-                                                        <option value="1">Venta</option>
-                                                        <option value="2">Renta</option>
-                                                        <option value="3">Venta/Renta</option>
-                                                    <% } %>
+                                                    <option  disabled <% if ( propiedad === ''){ %> selected <% } %> hidden > Seleccionar tipo</option>
+                                                        <option value="1" <% if ( propiedad.TipoTransaccion === 1){ %>selected <% } %>>   Venta</option>
+                                                        <option value="2" <% if ( propiedad.TipoTransaccion === 2){ %>selected <% } %>>   Renta</option>
+                                                        <option value="3" <% if ( propiedad.TipoTransaccion === 3){ %>selected <% } %>>   Venta/Renta</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -131,7 +115,7 @@
                                 <div class="field">
                                     <label class="label">Descripción</label>
                                     <div class="control">
-                                    <textarea onkeyup="cambiarcolor(this)" class="textarea" id="campo-2" name="descripcion" placeholder="Descripcion" value="<%= propiedad.Descripcion ? propiedad.Descripcion : '' %>">
+                                    <textarea onkeyup="cambiarcolor(this)" class="textarea" id="campo-2" name="descripcion" placeholder="Descripcion" ><%= propiedad.Descripcion ? propiedad.Descripcion : '' %>
                                     </textarea></div>
                                 </div>
                             </div>
@@ -304,8 +288,14 @@
     let residencial = new Object();
     let comercial = new Object()
     <% if (residencial) { %>
-         residencial.IdPropiedad = <%= residencial.IdPropiedad %>;
-         residencial.Recamaras = <%= residencial.Recamaras %>;
+
+         residencial.IdPropiedad        = <%= residencial.IdPropiedad        %>;
+         residencial.Recamaras          = <%= residencial.Recamaras          %>;
+         residencial.Banos              = <%= residencial.Banos              %>;
+         residencial.Cocina             = <%= residencial.Cocina             %>;
+         residencial.Niveles            = <%= residencial.Niveles            %>;
+         residencial.Estacionamiento    = <%= residencial.Estacionamiento    %>;
+         residencial.Gas                = <%= residencial.Gas                %>;
          
         <% console.log("desde el ejs") %>
         <% console.log(residencial) %>

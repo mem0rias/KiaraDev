@@ -4,6 +4,7 @@
         let tipoPropiedad = document.getElementById("tipoID").value;
 
         const RESIDENCIAL = "1";
+        const COMERCIAL = "1";
 
         if(tipoPropiedad === ''){
             tipoPropiedad = document.getElementById("tipoPropiedad").value;
@@ -25,18 +26,53 @@
             html += '            <div class="control">';
             html += '                <div class="select is-expanded is-fullwidth">';
             html += '                    <select class="select is-fullwidth" name="recamaras" id="recamaras">';
-            html += '                        <option value="" disabled selected hidden>Cantidad</option>';
+            html += '                        <option value="" disabled ';
+            if (residencial.Recamaras == ''){
+                html += 'selected';     
+            }
+            html += 'hidden>Cantidad</option>';
+
             html += '                        <option value="1"';
             if (residencial.Recamaras == 1){
                 html += 'selected';     
             }
             html += '>1</option>';
-            html += '                        <option value="2">2</option>';
-            html += '                        <option value="3">3</option>';
-            html += '                        <option value="4">4</option>';
-            html += '                        <option value="5">5</option>';
-            html += '                        <option value="6">6</option>';
-            html += '                        <option value="7">7</option>';
+
+            html += '                        <option value="2"';
+            if (residencial.Recamaras == 2){
+                html += 'selected';     
+            }
+            html += '>2</option>';
+          
+            html += '                        <option value="3"';
+            if (residencial.Recamaras == 3){
+                html += 'selected';     
+            }
+            html += '>3</option>';
+
+            html += '                        <option value="4"';             
+            if (residencial.Recamaras == 4){
+                html += 'selected';     
+            }
+            html += '>4</option>';
+
+            html += '                        <option value="5"';
+            if (residencial.Recamaras == 5){
+                html += 'selected';     
+            }
+            html += '>5</option>';
+
+            html += '                        <option value="6"';  
+            if (residencial.Recamaras == 6){
+                html += 'selected';     
+            }
+            html += '>6</option>';
+            html += '                        <option value="7"';  
+            if (residencial.Recamaras == 7){
+                html += 'selected';     
+            }
+            html += '>7</option>';
+
             html += '                    </select>';
             html += '               </div>';
             html += '           </div>';
@@ -48,14 +84,51 @@
             html += '            <div class="control">';
             html += '                <div class="select is-expanded is-fullwidth">';
             html += '                    <select class="select is-fullwidth" name="estacionamiento" id="estacionamiento">';
-            html += '                        <option value="" disabled selected hidden>Cantidad</option>';
-            html += '                        <option value="1">1</option>';
-            html += '                        <option value="2">2</option>';
-            html += '                        <option value="3">3</option>';
-            html += '                        <option value="4">4</option>';
-            html += '                        <option value="5">5</option>';
-            html += '                        <option value="6">6</option>';
-            html += '                        <option value="7">7</option>';
+                html += '                        <option value="" disabled ';
+            if (residencial.Estacionamiento == ''){
+                html += 'selected';     
+            }
+            html += 'hidden>Cantidad</option>';
+            html += '                        <option value="1"';
+            if (residencial.Estacionamiento == 1){
+                html += 'selected';     
+            }
+            html += '>1</option>';
+
+            html += '                        <option value="2"';
+            if (residencial.Estacionamiento == 2){
+                html += 'selected';     
+            }
+            html += '>2</option>';
+          
+            html += '                        <option value="3"';
+            if (residencial.Estacionamiento == 3){
+                html += 'selected';     
+            }
+            html += '>3</option>';
+
+            html += '                        <option value="4"';             
+            if (residencial.Estacionamiento == 4){
+                html += 'selected';     
+            }
+            html += '>4</option>';
+
+            html += '                        <option value="5"';
+            if (residencial.Estacionamiento == 5){
+                html += 'selected';     
+            }
+            html += '>5</option>';
+
+            html += '                        <option value="6"';  
+            if (residencial.Estacionamiento == 6){
+                html += 'selected';     
+            }
+            html += '>6</option>';
+            html += '                        <option value="7"';  
+            if (residencial.Estacionamiento == 7){
+                html += 'selected';     
+            }
+            html += '>7</option>';
             html += '                    </select>';
             html += '                </div>';
             html += '            </div>';
@@ -67,14 +140,51 @@
             html += '            <div class="control">';
             html += '                <div class="select is-expanded is-fullwidth">';
             html += '                    <select class="select" name="banos" id="banos">';
-            html += '                        <option value="" disabled selected hidden>Cantidad</option>';
-            html += '                        <option value="1">1</option>';
-            html += '                        <option value="2">2</option>';
-            html += '                        <option value="3">3</option>';
-            html += '                        <option value="4">4</option>';
-            html += '                        <option value="5">5</option>';
-            html += '                        <option value="6">6</option>';
-            html += '                        <option value="7">7</option>';
+            html += '                        <option value="" disabled ';
+            if (residencial.Banos == ''){
+                html += 'selected';     
+            }
+            html += 'hidden>Cantidad</option>';
+            html += '                        <option value="1"';
+            if (residencial.Banos == 1){
+                html += 'selected';     
+            }
+            html += '>1</option>';
+
+            html += '                        <option value="2"';
+            if (residencial.Banos == 2){
+                html += 'selected';     
+            }
+            html += '>2</option>';
+          
+            html += '                        <option value="3"';
+            if (residencial.Banos == 3){
+                html += 'selected';     
+            }
+            html += '>3</option>';
+
+            html += '                        <option value="4"';             
+            if (residencial.Banos == 4){
+                html += 'selected';     
+            }
+            html += '>4</option>';
+
+            html += '                        <option value="5"';
+            if (residencial.Banos == 5){
+                html += 'selected';     
+            }
+            html += '>5</option>';
+
+            html += '                        <option value="6"';  
+            if (residencial.Banos == 6){
+                html += 'selected';     
+            }
+            html += '>6</option>';
+            html += '                        <option value="7"';  
+            if (residencial.Banos == 7){
+                html += 'selected';     
+            }
+            html += '>7</option>';
             html += '                    </select>';
             html += '                </div>';
             html += '            </div>';
@@ -86,21 +196,57 @@
             html += '            <div class="control">';
             html += '                <div class="select is-expanded is-fullwidth">';
             html += '                    <select class="select" name="pisos" id="pisos">';
-            html += '                        <option value="" disabled selected hidden>Cantidad</option>';
-            html += '                        <option value="1">1</option>';
-            html += '                        <option value="2">2</option>';
-            html += '                        <option value="3">3</option>';
-            html += '                        <option value="4">4</option>';
-            html += '                        <option value="5">5</option>';
-            html += '                        <option value="6">6</option>';
-            html += '                        <option value="7">7</option>';
+            html += '                        <option value="" disabled ';
+            if (residencial.Niveles == ''){
+                html += 'selected';     
+            }
+            html += 'hidden>Cantidad</option>';
+            html += '                        <option value="1"';
+            if (residencial.Niveles == 1){
+                html += 'selected';     
+            }
+            html += '>1</option>';
+
+            html += '                        <option value="2"';
+            if (residencial.Niveles == 2){
+                html += 'selected';     
+            }
+            html += '>2</option>';
+          
+            html += '                        <option value="3"';
+            if (residencial.Niveles == 3){
+                html += 'selected';     
+            }
+            html += '>3</option>';
+
+            html += '                        <option value="4"';             
+            if (residencial.Niveles == 4){
+                html += 'selected';     
+            }
+            html += '>4</option>';
+
+            html += '                        <option value="5"';
+            if (residencial.Niveles == 5){
+                html += 'selected';     
+            }
+            html += '>5</option>';
+
+            html += '                        <option value="6"';  
+            if (residencial.Niveles == 6){
+                html += 'selected';     
+            }
+            html += '>6</option>';
+            html += '                        <option value="7"';  
+            if (residencial.Niveles == 7){
+                html += 'selected';     
+            }
+            html += '>7</option>';
             html += '                    </select>';
             html += '                </div>';
             html += '            </div>';
             html += '        </div>';
             html += '    </div>';
             html += '</div>';
-
             html += '<div class="columns is-multiline">';
             html += '    <div class="column is-auto">';
             html += '        <div class="field">';
@@ -108,9 +254,24 @@
             html += '            <div class="control">';
             html += '                <div class="select is-expanded is-fullwidth">';
             html += '                    <select class="select" name="gas" id="gas">';
-            html += '                        <option value="" disabled selected hidden>Seleccionar</option>';
-            html += '                        <option value="1">Sì</option>';
-            html += '                        <option value="2">No</option>';
+            html += '                        <option value="" disabled ';
+            if (residencial.Gas == ''){
+                html += 'selected';     
+            }
+            html += 'hidden>Seleccionar</option>';
+
+            html += '                        <option value="1"';
+            if (residencial.Gas == 1){
+                html += 'selected';     
+            }
+            html += '>Sí</option>';
+
+            html += '                        <option value="2"';
+            if (residencial.Gas == 2){
+                html += 'selected';     
+            }
+            html += '>No</option>';
+
             html += '                    </select>';
             html += '                </div>';
             html += '            </div>';
@@ -122,9 +283,23 @@
             html += '            <div class="control">';
             html += '                <div class="select is-expanded is-fullwidth">';
             html += '                    <select class="select" name="cocina" id="cocina">';
-            html += '                        <option>Seleccionar</option>';
-            html += '                        <option value="1">Sì</option>';
-            html += '                        <option value="2">No</option>';
+            html += '                        <option value="" disabled ';
+            if (residencial.Cocina == ''){
+                html += 'selected';     
+            }
+            html += 'hidden>Seleccionar</option>';
+            html += '                        <option value="1"';
+            if (residencial.Cocina == 1){
+                html += 'selected';     
+            }
+            html += '>Sí</option>';
+
+            html += '                        <option value="2"';
+            if (residencial.Cocina == 2){
+                html += 'selected';     
+            }
+            html += '>No</option>';
+
             html += '                    </select>';
             html += '                </div>';
             html += '            </div>';
@@ -138,7 +313,7 @@
 
         }
 
-        else if(tipoPropiedad == "2") {
+        else if(tipoPropiedad == COMERCIAL) {
             html += `<div class="section px-0 py-5">
                  <div class="card">
                      <div class="card-content">

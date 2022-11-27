@@ -31,6 +31,7 @@ exports.get_one = (request, response, next) => {
                     
                     response.render(path.join('propiedad', 'propiedad.vista.residencial.ejs'), {
                         propiedad: rows[0],
+                        ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
                         residencial: res[0],
                         precio: precio,
                     }); 
@@ -251,7 +252,7 @@ exports.post_edit = (request, response, next) => {
     let v                   = request.body;
 
     if(v.usodata == '1') {
-
+        console.log(request.body);
         let d = {
             id              : v.id,
             titulo          : v.titulo,
