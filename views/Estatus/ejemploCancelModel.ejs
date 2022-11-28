@@ -24,13 +24,13 @@
                          <nav class = "level">
                             <div class = "level-left">
                                
-                                <a class="column is-5 level-item" data-target="#modal">
+                                <a class="column is-5 level-item" data-target="#modal" href="/dashboard/asignado">
                                     <button class="button is-primary is-danger" id="propiedad" value="<%= listEstatus2[0].idpropiedad ? listEstatus2[0].idpropiedad : listEstatus[0].idpropiedad%>" onclick="cancelProcedimiento(this)">
                                         Aceptar
                                     </button>
                                 </a>
                                
-                               <a class = "level-item">
+                               <a class = "level-item" href="/estatus/<%= listEstatus2[0].idpropiedad ? listEstatus2[0].idpropiedad : listEstatus[0].idpropiedad%>">
                                     <button class="button is-primary is-danger">
                                         Cancelar
                                     </button>
