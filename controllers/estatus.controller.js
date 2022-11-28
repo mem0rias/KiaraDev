@@ -10,14 +10,17 @@ exports.get_EstatusP = (request, response, next) => {
     Dashboard.fetchUser(userid).then( ([usuarioData, fieldData]) => {
         listEstatus.fetchPropertiesC(userid)
         .then( ([rows, fieldData]) => {
-           // console.log(rows);
+            console.log(rows);
             listEstatus.fetchPropertiesR(userid)
                 .then( ([rows2, fieldData2]) => {
-                   // console.log(rows2);
+                    console.log(rows2);
                     response.render(path.join('dashboard', 'dashboard.Seguimiento.ejs'), {
                         PropertiesC: rows,
                         PropertiesR: rows2,
                         usuario :usuarioData,
+                        nombre      : response.locals.NombreUser    ,
+                        telefono    : response.locals.Telefono  ,
+                        email       : response.locals.Email     ,
                         sesionId: response.locals.IdRol, 
                         sesionUser: response.locals.IdUser,
                         permisos: request.session.permisos,
@@ -111,23 +114,35 @@ exports.post_update =(request, response, next) => {
             }).catch(error => {console.log(error)})
         }
 
-    }).catch(error => {console.log(error)});
+    }).catch(error => {console.log(error)});    
+}
 
-    
-
-    
+exports.post_cancelProcedimiento = (request, response, next) => {
+    listEstatus.cancelProceso(request.body.idpro)
+        .then(([rows2, fieldData2])=> {
+            response.status(200).json({
+                mensaje: "El avance de proceso fue cancelado ",   
+            }); 
+        }).catch(error => {console.log(error)});
 }
 
 exports.Init_Proceso = (request, response, next) => {
     /* To Do: 
               - Generar el proceso dependiendo el tipo de propiedad. Se tiene que checar el uso que se le dara.
-              - Generar los tipos_docs 0 para el dueño y el interesado
+              - Generar los tipos_docs 0 para el dueño y el interesado - Se tiene que obtener la lista de pasos primero y despues de eso se genera en la tabla maestra mediante un procedure.
               - Añadir a los 2 interesados a las tablas de asignacion 
+              - Modificar los permisos del RBAC para los 2 interesados
     
     */ 
     let idprop = request.params.idPropiedad;
     listEstatus.fetchTransactionType(idprop).then(([rows, fieldData]) => {
-        console.log(rows);
+        listEstatus.getUsers().then(([UserList, fieldData2]) =>{
+            console.log(rows);
+            let Tipo_Transaccion = rows[0].TipoTransaccion;
+            response.render('Estatus/InitProceso', {TipoTransaccion: Tipo_Transaccion, list: UserList});
+        }).catch(err =>{
+            console.log(err);
+        })
     }).catch( err => {
         console.log(err);
     });
@@ -135,3 +150,15 @@ exports.Init_Proceso = (request, response, next) => {
             
 }
 
+exports.ProcessInit = (request,response,next) => {
+    console.log(request.body);
+}
+
+/*
+    El admin presiona iniciar proceso.
+
+    Seguido de esto se obteiene el tipo de la propiedad 
+
+
+
+*/

@@ -1,0 +1,66 @@
+<%- include('../includes/head.ejs') %>
+
+<div class="columns">
+    <div class="column"></div>
+    <div class="box column is-8">
+        
+        <form action="/estatus/iniciar" method="POST">
+            <h1 class="title"> Selecciona Usuarios para asignar </h2>
+            
+                <h2 class="title is-size-5"> Propietario </h2>
+                <input type="text" onchange="getUserId(this)" class="input" name="Propietario" list="productName" />
+                <datalist id="productName" >
+                    <% let i = 1; %>
+                    <% for(elements of list){ %>
+    
+                        <option value="<%= elements.Email %>" id="option-<%= i %>"> <%= elements.nombre %> <%=elements.PA %> <%=elements.SA %></option>
+                    
+                        <% i++; %>
+                    <%}%>
+                </datalist>
+                <br>
+                <br>
+                <h4 class="title is-size-5"> ¿La propiedad es por bienes mancomunados?</h4>
+                <label class="checkbox">
+                    <input type="checkbox" class="is-size-2" name="Bienes_mancomunados">
+                        Bienes Mancomunados
+                </label>
+                <br>
+                <br>
+                <h2 class="title is-size-5"> Interesado </h2>
+                <input type="text" onchange="getUserId(this)" class="input" name="Interesado" list="productName" />
+                <datalist id="productName" >
+                    <% i = 1; %>
+                    <% for(elements of list){ %>
+    
+                        <option value="<%= elements.Email %>" id="option-<%= i %>"> <%= elements.nombre %> <%=elements.PA %> <%=elements.SA %></option>
+                    
+                        <% i++; %>
+                    <%}%>
+                </datalist>
+                <br>
+                <br>
+                <% if(TipoTransaccion === '3'){ %>
+                    <h4 class="title is-size-5"> Tipo de tramite </h4>
+                    <select class="input" name="Tipo_Tramite">
+                        <option value="1"> Renta</option>
+                        <option value="2"> Venta</option>
+                    </select>
+                <%}%>
+    
+    
+                <input type="submit" class="button is-danger is-fullwidth" value="Iniciar Tramite"> 
+        </form>
+        
+    </div>
+    <div class="column"></div>
+</div>
+
+<script>
+    const getUserId = (element) => {
+        let valor = element.value;
+        console.log(valor);
+    }
+</script>
+
+<%- include('../includes/foot.ejs') %>
