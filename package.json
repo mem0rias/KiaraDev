@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/DanCordova/DW_2022#readme",
   "dependencies": {
+    "@creativebulma/bulma-collapsible": "^1.0.4",
     "@creativebulma/bulma-divider": "^1.1.0",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
