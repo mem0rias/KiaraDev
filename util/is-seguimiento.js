@@ -8,29 +8,23 @@ module.exports = (request, response, next) => {
     let a = permisos.indexOf('editar_seguimiento') == -1;
     console.log(a);
     if(permisos.indexOf('editar_seguimiento') == -1 ){
-    listEstatus.fetchPropertiesC(request.session.IdUser)
-    .then( ([propiedadComercial, fieldData]) => {
-        console.log(propiedadComercial);
-        console.log(request.params.idPropiedad);
+        listEstatus.fetchPropertiesC(request.session.IdUser)
+        .then( ([propiedadComercial, fieldData]) => {
+            console.log(propiedadComercial);
+            console.log(request.params.idPropiedad);
         if (propiedadComercial.length > 0){
             let discard = 0;
             for(let i = 0; i < propiedadComercial.length; i++){
                 if(propiedadComercial[i].idpropiedad == request.params.idPropiedad){
                     console.log('Es compra');
-                    discard++;
+                    return next();
                 }
             }
-            if( discard != 0){
-                return next();
-            }
-            else{
-                return response.redirect('/dashboard');
-            }
-
+            return response.redirect('/dashboard');
             
-        } 
-        
-        else {
+
+                
+        }else {
             listEstatus.fetchPropertiesR(request.session.IdUser)
             .then( ([rows2, fieldData2]) => {
                 console.log(rows2);
@@ -39,37 +33,25 @@ module.exports = (request, response, next) => {
                     for(let i = 0; i < rows2.length; i++){
                         if(rows2[i].idpropiedad == request.params.idPropiedad){
                             console.log('Es venta'); 
-                            discarda++;
+                            return next();
                         }
 
                     }
-                    if(discarda != 0){
-                        return next();
-                    }
-                    else{
-                        return response.redirect('/dashboard');
-                    }
+                    return response.redirect('/dashboard');
 
-                }
-
-                
-                
-
-                            
+                }              
             }).catch( (error) => {
                 console.log(error);
-            }); 
-
-            
-            
+            });   
         }
 
 
-    }).catch( (error) => {
-        console.log(error);
-    });
+        }).catch( (error) => {
+            console.log(error);
+        });
+    }else{
+        return next();
     }
 
-    return next();
    
 }
