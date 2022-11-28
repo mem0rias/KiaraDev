@@ -139,7 +139,7 @@ exports.Init_Proceso = (request, response, next) => {
         listEstatus.getUsers().then(([UserList, fieldData2]) =>{
             console.log(rows);
             let Tipo_Transaccion = rows[0].TipoTransaccion;
-            response.render('Estatus/InitProceso', {TipoTransaccion: Tipo_Transaccion, list: UserList});
+            response.render('Estatus/InitProceso', {IdPropiedad: idprop, TipoTransaccion: Tipo_Transaccion, list: UserList});
         }).catch(err =>{
             console.log(err);
         })
@@ -152,6 +152,20 @@ exports.Init_Proceso = (request, response, next) => {
 
 exports.ProcessInit = (request,response,next) => {
     console.log(request.body);
+    let Tipo_Transaccion = request.body.Tipo_Transaccion;
+    if(Tipo_Transaccion == 2){
+        listEstatus.fetchRentSteps().then(([rows,fieldData])=> {
+            console.log(rows);
+        }).catch(err =>{
+            console.log(err);
+        });
+    }else if(Tipo_Transaccion == 1){
+        listEstatus.fetchBuySteps().then(([rows,fieldData])=> {
+            console.log(rows);
+        }).catch(err =>{
+            console.log(err);
+        });
+    }
 }
 
 /*

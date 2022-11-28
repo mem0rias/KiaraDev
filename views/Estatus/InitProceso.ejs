@@ -4,11 +4,14 @@
     <div class="column"></div>
     <div class="box column is-8">
         
-        <form action="/estatus/iniciar" method="POST">
-            <h1 class="title"> Selecciona Usuarios para asignar </h2>
+        <form action="/estatus/iniciar" method="POST" id="forma_inicio">
+            <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+            <input type="hidden" name="Tipo_Transaccion" value="<%=TipoTransaccion%>">
+            <input type="hidden" name="IdPropiedad" value="<%=IdPropiedad%>">
+            <h1 class="title"> Selecciona usuarios para Iniciar el proceso </h2>
             
                 <h2 class="title is-size-5"> Propietario </h2>
-                <input type="text" onchange="getUserId(this)" class="input" name="Propietario" list="productName" />
+                <input type="text" onchange="getUserId(this)" class="input" id="Prop" name="Propietario" list="productName" />
                 <datalist id="productName" >
                     <% let i = 1; %>
                     <% for(elements of list){ %>
@@ -28,7 +31,7 @@
                 <br>
                 <br>
                 <h2 class="title is-size-5"> Interesado </h2>
-                <input type="text" onchange="getUserId(this)" class="input" name="Interesado" list="productName" />
+                <input type="text" onchange="getUserId(this)" class="input" id="Inter" name="Interesado" list="productName" />
                 <datalist id="productName" >
                     <% i = 1; %>
                     <% for(elements of list){ %>
@@ -49,7 +52,7 @@
                 <%}%>
     
     
-                <input type="submit" class="button is-danger is-fullwidth" value="Iniciar Tramite"> 
+                <input type="button" class="button is-danger is-fullwidth" value="Iniciar Tramite" id="boton_inicio" onclick="verificacion()"> 
         </form>
         
     </div>
@@ -58,9 +61,31 @@
 
 <script>
     const getUserId = (element) => {
-        let valor = element.value;
-        console.log(valor);
+        element.classList.remove('is-danger');
+    }
+    const verificacion = () => {
+        let forma = document.getElementById('forma_inicio');
+        let propietario = document.getElementById('Prop');
+        let interesado = document.getElementById('Inter');
+        if(interesado.value.length <= 0){
+            interesado.classList.add('is-danger');
+        }
+        if(propietario.value.length <= 0){
+            propietario.classList.add('is-danger');
+        }
+        
+        if(propietario.value.length <= 0 | interesado.value.length <= 0 ){
+            bulmaToast.toast({ message: 'Llena todos los campos de usuarios', type: 'is-danger', position: 'up-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+        }else if(propietario.value == interesado.value){
+            bulmaToast.toast({ message: 'El propietario e interesado no pueden ser la misma persona', type: 'is-danger', position: 'up-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+        }
+        else{
+            forma.submit();
+        }
+
     }
 </script>
+
+<script src="../js/dist/bulma-toast.min.js"></script>
 
 <%- include('../includes/foot.ejs') %>
