@@ -41,7 +41,6 @@ exports.get_EstatusP = (request, response, next) => {
 }
 
 exports.get_AvanceP = (request, response, next) => {
-    
     let properid = request.params.idPropiedad;
     console.log(request.params.idPropiedad);
     listEstatus.fetchAvanceC(properid)
