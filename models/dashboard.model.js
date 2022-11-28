@@ -11,6 +11,12 @@ module.exports = class Dashboard {
     static fetchAsigando(n){
         return db.execute('SELECT p.IdPropiedad, Descripcion, Imagenes, Titulo, Colonia, Estado, Municipio FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
     }
+
+    
+    static fetchAsigando(query){
+        return db.execute('SELECT p.IdPropiedad, Descripcion, Imagenes, Titulo, Colonia, Estado, Municipio FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
+        return db.execute('SELECT p.IdPropiedad, Descripcion, Imagenes, Titulo, Colonia, Estado, Municipio FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad IN(select LIKE ? Titulo OR Colonia LIKE ? ', ['%' + query + '%']);
+    }
     
 
 

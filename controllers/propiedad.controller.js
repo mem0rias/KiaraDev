@@ -333,10 +333,24 @@ exports.post_delete = (request, response, next) => {
         .then(()=> {
             Dashboard.fetchAsigando(idUser).then(([propiedades, fieldData])=>{
                 response.status(200).json({
-                    mensaje: "La propiedad "+ request.body.id + " fue eliminada",
-                    propiedades: propiedades,
+                    data: propiedades,
                 });
             }).catch(error => {console.log(error)});
         }).catch(error => {console.log(error)});
     
+};
+
+
+exports.get_buscarAsigandos =  (request, response, next) => {
+    
+    console.log(request.params.valor_busqueda);
+    Propiedad.find(request.params.valor_busqueda)
+        .then( ([rows, fieldData]) => {
+
+            response.status(200).json(rows);
+            console.log(rows)
+        }).catch( (error) => {
+            console.log(error);
+        });
+
 };

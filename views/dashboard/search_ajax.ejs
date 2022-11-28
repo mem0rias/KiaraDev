@@ -1,25 +1,22 @@
-
-
 <script>
-    const eliminar = (id) => {
-        console.log(id);
-        fetch('/propiedades/borrar/', {
-            method: 'POST',
+    const accion_asincrona = () => {
+        let valor_busqueda = document.getElementById('buscar').value;
+
+        fetch('/propiedades/buscarasigandos/' + valor_busqueda, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: id,
-
-            }),
+            }
         }).then(result => {
-            return result.json(); 
+            return result.json();
         }).then(data => {
-                    console.log('response');
-            console.log(data);
+            
             let html = '';
-             if (data.data.length > 0) { 
-                       for (let p of data.data  ) { 
+            if (data.length > 0) { 
+                html +=    '<div class="section">';
+                html +=       ' <div class="container">';
+                    if (data.length > 0) { 
+                       for (let p of data  ) { 
                         console.log(p);
                         html += '    <div class="container m-0 pt-5" > ';         
                         html += '        <div class="card is-horizontal">    ';       
@@ -60,13 +57,14 @@
                         html += '            </div>';
                         html += '        </div>';
                        } 
-                   }  
-
+                   }  else { 
+                html += '<h3>No hay propiedades</h3>';
+            } 
             document.getElementById('resultados').innerHTML = html;
         }).catch(err => {
             console.log(err);
         });
 
     }
-    
+    document.getElementById('buscar').onkeyup = accion_asincrona;
 </script>
