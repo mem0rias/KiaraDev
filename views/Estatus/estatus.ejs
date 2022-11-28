@@ -58,7 +58,7 @@
 
 
         <% if (permisos.indexOf('editar_seguimiento') != -1) { %>
-            <a class="column is-1"><button class="button is-primary is-danger" id="propiedad" value="<%= listEstatus2[0].idpropiedad ? listEstatus2[0].idpropiedad : listEstatus[0].idpropiedad%>" onclick="cancelProcedimiento(this)"> Terminar operación inmobiliaria </button></a>
+            <%- include('ejemploCancelModel.ejs') %>
         <% } %>
     </div>
 
