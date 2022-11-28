@@ -3,8 +3,8 @@ const listEstatus = require('../models/estatus.model');
 
 module.exports = (request, response, next) => {
 
-
-    if(!request.session.IdRol == '3'){
+    permisos= request.session.permisos;
+    if(permisos.indexOf('editar_seguimiento') == -1){
     listEstatus.fetchPropertiesC(request.session.IdUser)
     .then( ([propiedadComercial, fieldData]) => {
         console.log(propiedadComercial);

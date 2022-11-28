@@ -199,5 +199,8 @@ module.exports = class Propiedad {
         return db.execute('select Telefono from usuario u, asignacion a where u.IdUsuario = a.IdUsuario and a.IdPropiedad = ?', [IdPropiedad]);
     }
 
+    static delete(id) {
+        return db.execute('DELETE FROM propiedades WHERE IdPropiedad = ?', [id]);
+    }
 
 }
