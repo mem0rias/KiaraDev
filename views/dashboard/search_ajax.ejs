@@ -1,7 +1,7 @@
 <script>
     const accion_asincrona = () => {
         let valor_busqueda = document.getElementById('buscar').value;
-
+        console.log(valor_busqueda);
         fetch('/propiedades/buscarasigandos/' + valor_busqueda, {
             method: 'GET',
             headers: {
@@ -10,19 +10,20 @@
         }).then(result => {
             return result.json();
         }).then(data => {
-            
+            console.log('primer data');
+            console.log(data);
+  
             let html = '';
-            if (data.length > 0) { 
-                html +=    '<div class="section">';
-                html +=       ' <div class="container">';
-                    if (data.length > 0) { 
+
+
+                    if (data.length > 0) {     
                        for (let p of data  ) { 
                         console.log(p);
                         html += '    <div class="container m-0 pt-5" > ';         
                         html += '        <div class="card is-horizontal">    ';       
                         html += '            <div class="card-image">';
                         html += '            <figure class="image is-4by3">';
-                        html += '                <img src="'+data.Imagenes+'" alt="Placeholder image">';
+                        html += '                <img src="'+p.Imagenes+'" alt="Placeholder image">';
                         html += '            </figure>';
                         html += '            </div>';
                         html += '                <div class="card-stacked">';
@@ -60,7 +61,7 @@
                    }  else { 
                 html += '<h3>No hay propiedades</h3>';
             } 
-            document.getElementById('resultados').innerHTML = html;
+                    document.getElementById('resultados').innerHTML = html;
         }).catch(err => {
             console.log(err);
         });

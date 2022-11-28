@@ -345,10 +345,12 @@ exports.get_buscarAsigandos =  (request, response, next) => {
     let idUser = response.locals.IdUser;
     console.log(request.params.valor_busqueda);
     Dashboard.fetchAsigandoPropiedades(idUser,request.params.valor_busqueda)
-        .then( ([rows, fieldData]) => {
+        .then( ([propiedades, fieldData]) => {
+        
+            response.status(200).json(propiedades[0]);
+            console.log(propiedades[0])
 
-            response.status(200).json(rows);
-            console.log(rows)
+            ;
         }).catch( (error) => {
             console.log(error);
         });
