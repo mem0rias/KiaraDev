@@ -41,7 +41,7 @@ module.exports = (request, response, next) => {
         console.log(error);
     });
     }
-
+    console.log('le valio');
     return next();
-   
+    
 }
