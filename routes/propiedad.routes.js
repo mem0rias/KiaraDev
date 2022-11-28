@@ -15,6 +15,7 @@ router.get('/editar/:id', isAuth, propiedadController.get_edit);
 router.post('/editar',  isAuth,propiedadController.post_edit);
 
 router.get('/buscar/:valor_busqueda', propiedadController.get_buscar);
+router.get('/buscarAsigandos/:valor_busqueda', propiedadController.get_buscarAsigandos);
 
 router.post('/borrar', isAuth, propiedadController.post_delete);
 

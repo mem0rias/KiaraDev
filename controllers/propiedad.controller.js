@@ -342,9 +342,9 @@ exports.post_delete = (request, response, next) => {
 
 
 exports.get_buscarAsigandos =  (request, response, next) => {
-    
+    let idUser = response.locals.IdUser;
     console.log(request.params.valor_busqueda);
-    Propiedad.find(request.params.valor_busqueda)
+    Dashboard.fetchAsigandoPropiedades(idUser,request.params.valor_busqueda)
         .then( ([rows, fieldData]) => {
 
             response.status(200).json(rows);
