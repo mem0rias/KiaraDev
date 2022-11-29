@@ -51,4 +51,8 @@ module.exports = class listEstatus{
     static getUsers(){
         return db.execute('SELECT IdUsuario, nombre, PA, SA, Email from usuario')
     }
+
+    static IniciarVenta(ListPasos, NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC){
+        return db.execute('CALL `IniciarVenta`( ?, ?, ?, ?, ?, ?, ?)',[ListPasos,NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC]);
+    }
 }

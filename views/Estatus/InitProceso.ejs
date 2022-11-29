@@ -9,13 +9,14 @@
             <input type="hidden" name="Tipo_Transaccion" value="<%=TipoTransaccion%>">
             <input type="hidden" name="IdPropiedad" value="<%=IdPropiedad%>">
             <h1 class="title"> Selecciona usuarios para Iniciar el proceso </h2>
-            
+                <input type="hidden" name="Propietario" id="Prop" value="">
+                <input type="hidden" name="Interesado" id="Inter" value="">
                 <h2 class="title is-size-5"> Propietario </h2>
-                <input type="text" onchange="getUserId(this)" class="input" id="Prop" name="Propietario" list="productName" />
+                <input type="text" onchange="getUserId(this)" class="input" id="Propietario" list="productName" />
                 <datalist id="productName" >
                     <% let i = 1; %>
                     <% for(elements of list){ %>
-    
+                        <input type="hidden" id="userId/<%= elements.Email %>" value="<%= elements.IdUsuario %>">
                         <option value="<%= elements.Email %>" id="option-<%= i %>"> <%= elements.nombre %> <%=elements.PA %> <%=elements.SA %></option>
                     
                         <% i++; %>
@@ -25,22 +26,28 @@
                 <br>
                 <h4 class="title is-size-5"> ¿La propiedad es por bienes mancomunados?</h4>
                 <label class="checkbox">
-                    <input type="checkbox" class="is-size-2" name="Bienes_mancomunados">
+                    <input type="checkbox" class="is-size-2" name="PropC">
                         Bienes Mancomunados
                 </label>
                 <br>
                 <br>
                 <h2 class="title is-size-5"> Interesado </h2>
-                <input type="text" onchange="getUserId(this)" class="input" id="Inter" name="Interesado" list="productName" />
+                <input type="text" onchange="getUserId(this)" class="input" id="Interesado"  list="productName" />
                 <datalist id="productName" >
                     <% i = 1; %>
                     <% for(elements of list){ %>
-    
+                        <input type="hidden" id="userId/<%= elements.Email %>" value="<%= elements.IdUsuario %>">
                         <option value="<%= elements.Email %>" id="option-<%= i %>"> <%= elements.nombre %> <%=elements.PA %> <%=elements.SA %></option>
                     
                         <% i++; %>
                     <%}%>
                 </datalist>
+                <br>
+                <br>
+                <label class="checkbox">
+                    <input type="checkbox" class="is-size-2" name="ClienteC">
+                        Bienes Mancomunados
+                </label>
                 <br>
                 <br>
                 <% if(TipoTransaccion === '3'){ %>
@@ -62,6 +69,8 @@
 <script>
     const getUserId = (element) => {
         element.classList.remove('is-danger');
+        let usuario = document.getElementById('userId/'+element.value).value;
+        document.getElementsByName(element.id)[0].value = usuario;
     }
     const verificacion = () => {
         let forma = document.getElementById('forma_inicio');

@@ -132,9 +132,12 @@ exports.Init_Proceso = (request, response, next) => {
               - Generar los tipos_docs 0 para el dueño y el interesado - Se tiene que obtener la lista de pasos primero y despues de eso se genera en la tabla maestra mediante un procedure.
               - Añadir a los 2 interesados a las tablas de asignacion 
               - Modificar los permisos del RBAC para los 2 interesados
+              - Generar tipo de doc para la propiedad.
+              - Cambiar Visibilidad
     
     */ 
     let idprop = request.params.idPropiedad;
+    console.log(idprop);
     listEstatus.fetchTransactionType(idprop).then(([rows, fieldData]) => {
         listEstatus.getUsers().then(([UserList, fieldData2]) =>{
             console.log(rows);
@@ -152,16 +155,35 @@ exports.Init_Proceso = (request, response, next) => {
 
 exports.ProcessInit = (request,response,next) => {
     console.log(request.body);
+    let IdPropiedad = request.body.IdPropiedad;
+    let Propietario = request.body.Propietario;
+    let Cliente = request.body.Interesado;
+    let Prop_C = request.body.PropC ? request.body.PropC : 0;
+    Prop_C  = Prop_C == 'on' ? 1 : 0;
+    let Cliente_C = request.body.ClienteC ? request.body.ClienteC : 0;
+    Cliente_C = Cliente_C == 'on' ? 1 : 0;
     let Tipo_Transaccion = request.body.Tipo_Transaccion;
     if(Tipo_Transaccion == 2){
         listEstatus.fetchRentSteps().then(([rows,fieldData])=> {
             console.log(rows);
+            
         }).catch(err =>{
             console.log(err);
         });
     }else if(Tipo_Transaccion == 1){
         listEstatus.fetchBuySteps().then(([rows,fieldData])=> {
             console.log(rows);
+            let stringPasos = '';
+            for(pasos of rows){
+                stringPasos += pasos.Paso + ',';
+            }
+            console.log(stringPasos);
+            console.log(rows.length);
+            listEstatus.IniciarVenta(stringPasos, rows.length,Propietario,Cliente,IdPropiedad,Prop_C,Cliente_C).then(() =>{
+                response.redirect('/dashboard');
+            }).catch(err =>{
+                console.log(err);
+            });
         }).catch(err =>{
             console.log(err);
         });
