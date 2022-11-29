@@ -55,4 +55,8 @@ module.exports = class listEstatus{
     static IniciarVenta(ListPasos, NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC){
         return db.execute('CALL `IniciarVenta`( ?, ?, ?, ?, ?, ?, ?)',[ListPasos,NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC]);
     }
+
+    static IniciarRenta(ListPasos, NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC){
+        return db.execute('CALL `IniciarRenta`( ?, ?, ?, ?, ?, ?, ?)',[ListPasos,NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC]);
+    }
 }

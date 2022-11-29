@@ -167,7 +167,15 @@ exports.ProcessInit = (request,response,next) => {
     if(Tipo_Transaccion == 2){
         listEstatus.fetchRentSteps().then(([rows,fieldData])=> {
             console.log(rows);
-            
+            let stringPasos = '';
+            for(pasos of rows){
+                stringPasos += pasos.Paso + ',';
+            }
+            listEstatus.IniciarRenta(stringPasos, rows.length,Propietario,Cliente,IdPropiedad,Prop_C,Cliente_C).then(() =>{
+                response.redirect('/dashboard');
+            }).catch(err =>{
+                console.log(err);
+            });
         }).catch(err =>{
             console.log(err);
         });
