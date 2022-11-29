@@ -42,18 +42,16 @@ exports.get_EstatusP = (request, response, next) => {
 
 exports.get_AvanceP = (request, response, next) => {
     let properid = request.params.idPropiedad;
-    console.log(request.params.idPropiedad);
     listEstatus.fetchAvanceC(properid)
         .then( ([rows, fieldData]) => {
             //console.log(rows);
             listEstatus.fetchAvanceR(properid)
                 .then( ([rows2, fieldData2]) => {
                     if(rows.length > 0 || rows2.length > 0){
-                        response.render(path.join('Estatus', 'estatus.ejs'), {
+                        return response.render(path.join('Estatus', 'estatus.ejs'), {
                             listEstatus: rows,
                             listEstatus2: rows2,
                             permisos: request.session.permisos,
-                            
                         });
                     }
 
@@ -61,7 +59,7 @@ exports.get_AvanceP = (request, response, next) => {
 
                         request.session.info = 'La propiedad no cuenta con seguimiento activo';
 
-                        response.render(path.join('Dashboard', 'dashboard.noDisponible.ejs'), {
+                        return response.render(path.join('Dashboard', 'dashboard.noDisponible.ejs'), {
                             permisos: request.session.permisos,
                             nombre      : response.locals.NombreUser    ,
                             telefono    : response.locals.Telefono  ,

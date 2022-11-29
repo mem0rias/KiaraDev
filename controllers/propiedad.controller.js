@@ -1,5 +1,6 @@
 const path = require('path');
 const Propiedad = require('../models/propiedad.model');
+const Dashboard = require('../models/dashboard.model');
 
 exports.get_propiedades = (request, response, next) => {
 
@@ -325,3 +326,33 @@ exports.post_edit = (request, response, next) => {
     }  
 };
 
+exports.post_delete = (request, response, next) => {
+    let idUser = response.locals.IdUser;
+    console.log(idUser);
+    Propiedad.delete(request.body.id)
+        .then(()=> {
+            Dashboard.fetchAsigando(idUser).then(([propiedades, fieldData])=>{
+                response.status(200).json({
+                    data: propiedades,
+                });
+            }).catch(error => {console.log(error)});
+        }).catch(error => {console.log(error)});
+    
+};
+
+
+exports.get_buscarAsigandos =  (request, response, next) => {
+    let idUser = response.locals.IdUser;
+    console.log(request.params.valor_busqueda);
+    Dashboard.fetchAsigandoPropiedades(idUser,request.params.valor_busqueda)
+        .then( ([propiedades, fieldData]) => {
+        
+            response.status(200).json(propiedades[0]);
+            console.log(propiedades[0])
+
+            ;
+        }).catch( (error) => {
+            console.log(error);
+        });
+
+};
