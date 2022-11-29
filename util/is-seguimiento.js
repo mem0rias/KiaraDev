@@ -3,7 +3,7 @@ const listEstatus = require('../models/estatus.model');
 
 module.exports = (request, response, next) => {
 
-    permisos = request.session.permisos;
+    /*permisos = request.session.permisos;
     console.log(permisos);
     let a = permisos.indexOf('editar_seguimiento') == -1;
     console.log(a);
@@ -20,6 +20,7 @@ module.exports = (request, response, next) => {
                     return next();
                 }
             }
+            console.log('No se como llegue aqui');
             return response.redirect('/dashboard');
             
 
@@ -35,8 +36,8 @@ module.exports = (request, response, next) => {
                             console.log('Es venta'); 
                             return next();
                         }
-
                     }
+                    
                     return response.redirect('/dashboard');
 
                 }              
@@ -51,7 +52,8 @@ module.exports = (request, response, next) => {
         });
     }else{
         return next();
-    }
+    }*/
+    next();
 
    
 }
