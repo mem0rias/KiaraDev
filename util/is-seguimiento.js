@@ -3,7 +3,6 @@ const listEstatus = require('../models/estatus.model');
 
 module.exports = (request, response, next) => {
 
-=
     permisos = request.session.permisos;
     console.log(permisos);
     let a = permisos.indexOf('editar_seguimiento') == -1;
