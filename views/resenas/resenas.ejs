@@ -12,7 +12,7 @@
 
         <div class="box" id="coments">
         </div>
-        <% if (logged == true) { %>
+        <% if (logged == true && aprobado == 1) { %>
             <div class="box">
                 <form action="/resenas" method="post">
                     <article class="media">
@@ -99,14 +99,14 @@
             console.log('Esto es un id', id);
             console.log('Enter');
             fetch('/resenas/aprobado', {
-                method: 'UPDATE',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
 
                 },
                 body: JSON.stringify({
                     idComentario: id,
-                    aprobado: 0,
+                    aprobado: "1",
                 }),
             }).then(result => {
                 return result.json();
