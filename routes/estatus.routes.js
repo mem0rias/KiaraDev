@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const estatusController = require('../controllers/estatus.controller');
-const isSeguimiento = require('../util/is-seguimiento');
+const isSeguimiento = require('../util/is-seguimiento.js');
 const isAuth= require('../util/is-auth.js');
 
 router.get('/', isAuth, estatusController.get_EstatusP);
