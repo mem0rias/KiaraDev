@@ -48,19 +48,20 @@ exports.get_AvanceP = (request, response, next) => {
             listEstatus.fetchAvanceR(properid)
                 .then( ([rows2, fieldData2]) => {
                     if(rows.length > 0 || rows2.length > 0){
-
+                        console.log('entra a vistas');
                         console.log(rows);
                         console.log(rows2)
                         return response.render(path.join('Estatus', 'estatus.ejs'), {
                             listEstatus: rows,
                             listEstatus2: rows2,
+                            dummyval    : 'Ok',
                             
                             permisos: request.session.permisos,
                         });
                     }
 
                     else{
-
+                        console.log('entra a error');
                         request.session.info = 'La propiedad no cuenta con seguimiento activo';
 
                         return response.render(path.join('Dashboard', 'dashboard.noDisponible.ejs'), {
@@ -68,6 +69,7 @@ exports.get_AvanceP = (request, response, next) => {
                             nombre      : response.locals.NombreUser    ,
                             telefono    : response.locals.Telefono  ,
                             email       : response.locals.Email     ,
+                            dummyval    : '',
                             
                         });
 
