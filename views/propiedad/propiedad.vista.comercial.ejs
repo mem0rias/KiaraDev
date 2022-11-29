@@ -17,4 +17,12 @@
 <%- include('collage.ejs', {propiedad: propiedad}) %>
     </div>
 <%- include('seccion.comercial.ejs', {propiedad: propiedad, comercial: comercial}) %>
+
+<section onload="initialize()">
+    <div id="map" ></div>
+     <div>
+       <input id="address" type="textbox" value="<%=ubicacion  ? ubicacion : ''%>" hidden>
+     </div>
+</section>
+
 <%- include('../includes/foot.ejs') %>

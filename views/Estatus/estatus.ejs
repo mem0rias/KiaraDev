@@ -13,7 +13,7 @@
                             <p></p>
                         </div>
                         <% for(let l of listEstatus) { %>
-                            <% if(l.SumaFechas == l.fechaInicio){%>
+                            <% if(l.SumaFechas == null){%>
                                 <li class="steps-segment is-active">
                                     <%- include('step.ejs', {paso: l}) %>
                                 </li>
@@ -31,7 +31,7 @@
                         </div>
                         
                         <% for(let l of listEstatus2) { %>
-                            <% if(l.SumaFechas == l.fechaInicio){%>
+                            <% if(l.SumaFechas == null){%>
                                 <li class="steps-segment is-active">
                                     <%- include('step.ejs', {paso: l}) %>
                                 </li>

@@ -4,7 +4,7 @@ module.exports = class Dashboard {
 
 
     static fetchUser(n){
-        return db.execute('SELECT IdUsuario, nombre, PA, SA, eciv, ocupacion, Telefono, email from usuario where IdUsuario = (?)', [n]);
+        return db.execute('SELECT IdUsuario, nombre, PA, SA, eciv, ocupacion, Telefono, email, CURP from usuario where IdUsuario = (?)', [n]);
     }
 
 
@@ -28,6 +28,16 @@ module.exports = class Dashboard {
 
     static updateRol(umap, urol, l){
         return db.execute('CALL `ActualizarRoles`(?, ?, ?)', [umap,urol,l]);
+
+    }
+
+    static updateInfo(id){
+        return db.execute('CALL `ActualizarRoles`(?, ?, ?)', [umap,urol,l]);
+
+    }
+
+    static updateInfo(nombre,pa,sa,email,telefono,ocupacion,curp,iduser){
+        return db.execute('UPDATE usuario SET Nombre=?,PA=?,SA=?,Email=?,Telefono=?,ocupacion=?,CURP=? WHERE IdUsuario = ?', [nombre,pa,sa,email,telefono,ocupacion,curp,iduser]);
 
     }
 

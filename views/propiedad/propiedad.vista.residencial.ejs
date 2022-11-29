@@ -16,6 +16,12 @@
     
 <%- include('collage.ejs', {propiedad: propiedad}) %>
 <%- include('seccion.residencial.ejs', {propiedad: propiedad, residencial: residencial}) %>
+<body onload="initialize()">
+  <div id="map" ></div>
+   <div>
+     <input id="address" type="textbox" value="<%=ubicacion  ? ubicacion : ''%>" hidden>
+   </div>
+  </body>
 
 
 
