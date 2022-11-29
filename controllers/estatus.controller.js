@@ -163,7 +163,8 @@ exports.ProcessInit = (request,response,next) => {
     Prop_C  = Prop_C == 'on' ? 1 : 0;
     let Cliente_C = request.body.ClienteC ? request.body.ClienteC : 0;
     Cliente_C = Cliente_C == 'on' ? 1 : 0;
-    let Tipo_Transaccion = request.body.Tipo_Transaccion;
+    let Tipo_Transaccion = request.body.Tipo_Tramite ? request.body.Tipo_Tramite : request.body.Tipo_Transaccion;
+    console.log(Tipo_Transaccion);
     if(Tipo_Transaccion == 2){
         listEstatus.fetchRentSteps().then(([rows,fieldData])=> {
             console.log(rows);
