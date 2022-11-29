@@ -29,6 +29,42 @@ exports.get_dashboard = (request, response, next) => {
         });    
 };
 
+exports.get_Info =  (request, response, next) => {
+    let sesionID = response.locals.IdUser;
+    Dashboard.fetchUser(sesionID)
+        .then( ([info, fieldData]) => {
+        
+            response.status(200).json(info[0]);
+            console.log(['info del servidor']);
+            console.log(info[0]);
+
+            ;
+        }).catch( (error) => {
+            console.log(error);
+        });
+
+};
+
+exports.post_Info =  (request, response, next) => {
+    let sesionID = response.locals.IdUser;
+    let v = request.body;
+    console.log('request.body que ha');
+    console.log(request.body);
+
+    request.session.Telefono = v.telefono;
+    request.session.Email = v.email;
+    request.session.NombreUser= v.nombre + ' ' + v.pa + ' ' + v.sa;
+
+    Dashboard.updateInfo(v.nombre,v.pa,v.sa,v.email,v.telefono,v.ocupacion,v.curp,sesionID).then(()=>{
+        response.status(200).json('OK');
+    }).catch(err =>{
+        console.log(err);
+        response.status(503).json('FAIL');
+    });
+
+
+};
+
 exports.get_propiedadesAsignadas = (request, response, next) => {
     let id = response.locals.IdUser;
     Dashboard.fetchAsigando(id)

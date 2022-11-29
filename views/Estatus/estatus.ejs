@@ -13,7 +13,7 @@
                             <p></p>
                         </div>
                         <% for(let l of listEstatus) { %>
-                            <% if(l.SumaFechas == l.fechaInicio){%>
+                            <% if(l.SumaFechas == null){%>
                                 <li class="steps-segment is-active">
                                     <%- include('step.ejs', {paso: l}) %>
                                 </li>
@@ -31,7 +31,7 @@
                         </div>
                         
                         <% for(let l of listEstatus2) { %>
-                            <% if(l.SumaFechas == l.fechaInicio){%>
+                            <% if(l.SumaFechas == null){%>
                                 <li class="steps-segment is-active">
                                     <%- include('step.ejs', {paso: l}) %>
                                 </li>
@@ -57,9 +57,9 @@
         <% } %>
 
 
-        <!--<%// if (permisos.indexOf('editar_seguimiento') != -1) { %>
-            <%- //include('ejemploCancelModel.ejs') %>
-        <% //} %>-->
+        <% if (permisos.indexOf('editar_seguimiento') != -1) { %>
+            <%- include('ejemploCancelModel.ejs') %>
+        <% } %>
     </div>
 
     <input type="hidden" id="_csrf" value="<%= csrfToken %>">

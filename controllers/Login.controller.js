@@ -42,7 +42,7 @@ exports.loginverf = (request, response, next) => {
                     request.session.IdRol = rows[0].IdRol;
                     request.session.Telefono = rows[0].Telefono;
                     request.session.Email = rows[0].email;
-                    request.session.NombreUser= rows[0].Nombre + ' ' + rows[0].PA;
+                    request.session.NombreUser= rows[0].Nombre + ' ' + rows[0].PA + ' ' +  rows[0].SA;
                     
 
                     User.getPermisos(rows[0].IdUsuario)

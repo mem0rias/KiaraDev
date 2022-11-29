@@ -19,6 +19,18 @@ app.use(bodyParser.json());
 //fileStorage: Es nuestra constante de configuración para manejar el almacenamiento
 const fileStorage = multer.diskStorage({
     destination: (request, file, callback) => {
+
+        callback(null, '/images');
+    },
+    filename: (request, file, callback) => {
+        //aquí configuramos el nombre que queremos que tenga el archivo en el servidor, 
+        //para que no haya problema si se suben 2 archivos con el mismo nombre concatenamos el timestamp
+        callback(null, new Date().getSeconds() + '' + new Date().getDay() + '' + new Date().getMonth() + '' + new Date().getYear() + file.originalname);
+    },
+});
+
+const imageStore = multer.diskStorage({
+    destination: (request, file, callback) => {
         //'uploads': Es el directorio del servidor donde se subirán los archivos 
         // Se obtiene el id del usuario y se revisa si hay una carpeta con el ID ya hecha, si no, la crea. 
         //console.log(request.body);
@@ -47,7 +59,7 @@ const fileFilter = (request, file, callback) => {
 
 
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20*1024*1024}}).any('archivo2'));
-//app.use(multer({ storage: fileStorage }).single('archivo')); 
+app.use(multer({ storage: imageStore }).single('archivo')); 
 
 
 // Middleware que analiza errores de multer en caso que las protecciones del front end se salten.
