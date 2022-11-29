@@ -48,5 +48,10 @@ module.exports = class Login {
             [id]);
     }
 
+    static asignan(){
+        return db.execute(
+            'CALL agregarRol');
+    }
+
     
 }
