@@ -29,14 +29,21 @@
                 <p><%=usuario.ocupacion %> </p>
             </div>
 
+            <% if (permisos.indexOf('panel_agente') != -1 || permisos.indexOf('panel_admin') != -1) { %>
+                <input type="hidden" id="usuario" value="agente">
+            <% } else{ %>   
+                    <input type="hidden" id="usuario" value="cliente">
+                    <input type="hidden" id="curp" value="">
+             <% } %> 
             
             <% if ((permisos.indexOf('panel_agente') != -1 || permisos.indexOf('panel_admin') != -1) && (usuario.CURP == '') ) { %>
-
+                <input type="hidden" id="usuario" value="agente">
             <div class="content">
                 <label class="label has-text-danger	">CURP</label>
                 <p class="has-text-danger"> Se requiere añadir CURP </p>
             </div>
-            <% } if  ((permisos.indexOf('panel_agente') != -1 || permisos.indexOf('panel_admin') != -1) && (usuario.CURP != '') ){ %>   
+            <% } %> 
+            <%  if  ((permisos.indexOf('panel_agente') != -1 || permisos.indexOf('panel_admin') != -1) && (usuario.CURP != '') ){ %>   
             <div class="content ">
                 <label class="label">CURP</label>
                 <p><%=usuario.CURP %> </p>
@@ -55,8 +62,12 @@
     </div>
 
 <script>
-    const accion_asincrona = () => {
 
+let usuario = document.getElementById('usuario').value;
+
+    const accion_asincrona = () => {
+        
+        console.log(usuario);
         fetch('/dashboard/info', {
             method: 'GET',
             headers: {
@@ -105,6 +116,8 @@
 
                 html +='                    <div class="content">';
                 html +='                        <label class="label ';
+                if(usuario != 'cliente'){
+                    
                 if(data.CURP == ''){
                 html +=' has-text-danger';
                 }
@@ -113,13 +126,15 @@
                  if(data.CURP == ''){
                 html +=' is-danger';
                 } 
-                html +='  " type="text" maxlength="40" name="curp" id="curp" placeholder="CURP" value="'+data.CURP+'">';  
+                html +='  " type="text" maxlength="40" name="curp" id="curpa" placeholder="CURP" value="'+data.CURP+'">';  
                 if(data.CURP == ''){
                 html +='    <div class="notification is-danger is-light">';
                 html +='         Se requiere registrar el CURP del agente';
                 html +='         </div>';
                 } 
                 html +='                    </div>';  
+                html +=' <input type="file" name="archivo">';
+                }
                 html +='                </div>';
                 html +='            </div> </form>';
 
@@ -139,10 +154,21 @@
               let nombre = document.getElementById('nombre').value;
               let pa = document.getElementById('pa').value;
               let sa = document.getElementById('sa').value;
+              
               let email = document.getElementById('email').value;
               let telefono = document.getElementById('telefono').value;
               let ocupacion = document.getElementById('ocupacion').value;
-              let curp = document.getElementById('curp').value;
+              console.log(usuario);
+              let curp ;
+              if(usuario != 'cliente'){
+                curp = document.getElementById('curpa').value;
+              }
+              else {
+                curp = '';
+              }
+              console.log('este deberia ser el curp');
+              console.log(curp);
+              
               console.log(nombre);
 
             fetch('/dashboard/info/actualizar', {
@@ -151,13 +177,14 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    
                     nombre : nombre,
                     pa : pa,
                     sa : sa,
                     email : email,
                     telefono : telefono,
                     ocupacion : ocupacion,
-                    curp : curp
+                    curp : curp 
                 }),
                 }).then(result => {
                     return result.json();
