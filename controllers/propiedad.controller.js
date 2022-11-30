@@ -24,6 +24,12 @@ exports.get_one = (request, response, next) => {
     Propiedad.fetchOne(request.params.id).then( ([rows, fieldData]) => {
         Propiedad.fetchImages(request.params.id).then( ([imagenes, fieldData]) => {
             console.log(imagenes);
+
+                const imagenesLista = [];
+                for(p of imagenes){
+                    imagenesLista.push(p.Imagen.split('\\')[2]); 
+                }
+
             Propiedad.getAgenteTel(request.params.id).then(([tel, fieldDataTel]) =>{
                     console.log('id de propiedad');
                     console.log(request.params.id);
@@ -39,7 +45,7 @@ exports.get_one = (request, response, next) => {
                                 residencial: res[0],
                                 precio: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(rows[0].Precio),
                                 numeroenc: TelAgente,
-                                imagenes: imagenes,
+                                imagenes: imagenesLista,
                             }); 
                         }
                         else 
