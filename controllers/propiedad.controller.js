@@ -1,6 +1,7 @@
 const path = require('path');
 const Propiedad = require('../models/propiedad.model');
 const Dashboard = require('../models/dashboard.model');
+const expediente = require('../models/expediente.model');
 
 exports.get_propiedades = (request, response, next) => {
 
@@ -18,59 +19,74 @@ exports.get_propiedades = (request, response, next) => {
 };
 
 exports.get_one = (request, response, next) => {
+    let idPropiedad = request.params.id ;
+    console.log(idPropiedad);
     Propiedad.fetchOne(request.params.id).then( ([rows, fieldData]) => {
-        Propiedad.getAgenteTel(request.params.id).then(([tel, fieldDataTel]) =>{
-                console.log(rows);
-                var monto = rows[0].Precio;
-                precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
-                console.log(tel);
-                let TelAgente = tel.length > 0? tel[0].Telefono : '';
-                Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
-                    if (res.length > 0){
-                        console.log(res);
-                        
-                        response.render(path.join('propiedad', 'propiedad.vista.residencial.ejs'), {
-                            propiedad: rows[0],
-                            ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
-                            residencial: res[0],
-                            precio: precio,
-                            numeroenc: TelAgente,
-                        }); 
-                    }
-                    else 
-                    {
-                        Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
-                            if (com.length > 0){
-                                console.log(com);
-                                response.render(path.join('propiedad', 'propiedad.vista.comercial.ejs'), {
-                                    propiedad: rows[0],
-                                    comercial: com[0],
-                                    precio: precio,
-                                });
-                            }
-                            else{
-                                Propiedad.isTerreno(request.params.id).then( ([terr,fieldData]) => {
-                                    if (terr.length > 0){
-                                        console.log(terr);
-                                        response.render(path.join('propiedad', 'propiedad.vista.terreno.ejs'), {
-                                            propiedad: rows[0],
-                                            terreno: terr[0],
-                                            precio: precio,
-                                        });
-                                    }
-                                }).catch((error) => {
-                                    console.log(error);
-                                });
-                            }
-                        }).catch();
-                    }
-                }).catch();
+        Propiedad.fetchImages(request.params.id).then( ([imagenes, fieldData]) => {
+            console.log(imagenes);
 
-            }).catch( (error) => {
-                console.log(error);
-            });
+                const imagenesLista = [];
+                for(p of imagenes){
+                    imagenesLista.push(p.Imagen.split('\\')[2]); 
+                }
+
+            Propiedad.getAgenteTel(request.params.id).then(([tel, fieldDataTel]) =>{
+                    console.log('id de propiedad');
+                    console.log(request.params.id);
+                    let precio = 0;
+                    console.log(tel);
+                    let TelAgente = tel.length > 0? tel[0].Telefono : '';
+                    Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
+                        if (res.length > 0){
+                            console.log(res);
+                            response.render(path.join('propiedad', 'propiedad.vista.residencial.ejs'), {
+                                propiedad: rows[0],
+                                ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
+                                residencial: res[0],
+                                precio: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(rows[0].Precio),
+                                numeroenc: TelAgente,
+                                imagenes: imagenesLista,
+                            }); 
+                        }
+                        else 
+                        {
+                            Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
+                                if (com.length > 0){
+                                    console.log(com);
+                                    response.render(path.join('propiedad', 'propiedad.vista.comercial.ejs'), {
+                                        propiedad: rows[0],
+                                        comercial: com[0],
+                                        precio: precio,
+                                    });
+                                }
+                                else{
+                                    Propiedad.isTerreno(request.params.id).then( ([terr,fieldData]) => {
+                                        if (terr.length > 0){
+                                            console.log(terr);
+                                            response.render(path.join('propiedad', 'propiedad.vista.terreno.ejs'), {
+                                                propiedad: rows[0],
+                                                terreno: terr[0],
+                                                precio: precio,
+                                            });
+                                        }
+                                    }).catch((error) => {
+                                        console.log(error);
+                                    });
+                                }
+                            }).catch();
+                        }
+                    }).catch();
+
+                }).catch( (error) => {
+                    console.log(error);
+                });
+            
+            }).catch( err =>{
+                console.log(err);
+            });        
+        
         }).catch( err =>{
-            console.log(error);
+            console.log(err);
         });
             
 
@@ -93,7 +109,18 @@ exports.post_new = (request, response, next) => {
     let v                   = request.body;
     const userId            = parseInt(response.locals.IdUser);
     console.log(v)
-
+    console.log(request.files);
+    let stringpath = '';
+    let N_Pics = request.body.NPics;
+    if(request.files.imagen){
+        for(elements of request.files.imagen){
+            stringpath += elements.path + ',';
+        }
+        NPics = request.files.imagen.length;
+        console.log(stringpath);
+    }else{
+        NPics = 0;
+    }
     if(v.uso == '1') {
 
         const recamaras         = parseInt(v.recamaras);
@@ -102,11 +129,12 @@ exports.post_new = (request, response, next) => {
         const pisos             = parseInt(v.pisos);
         const gas               = parseInt(v.gas);
         const cocina            = parseInt(v.cocina);
+        const precio            = parseInt(v.precio);
 
         let d = {
             titulo          : v.titulo,
             descripcion     : v.descripcion,
-            precio          : v.precio,
+            precio          : precio,
             estado          : v.estado,
             muncipio        : v.muncipio,
             colonia         : v.colonia,
@@ -129,7 +157,12 @@ exports.post_new = (request, response, next) => {
         };
 
         Propiedad.agregarResidencial(d).then( () => {
-                response.redirect('/dashboard/asignado');
+                Propiedad.saveImages(stringpath,N_Pics).then(() =>{
+                    response.redirect('/dashboard/asignado');
+                }).catch(err =>{
+                    console.log(err);
+                });
+                
             }).catch( (error) => {
                 console.log(error);
         });
@@ -167,7 +200,12 @@ exports.post_new = (request, response, next) => {
 
         Propiedad.agregarComercial(d)
                 .then( () => {
-                    response.redirect('/dashboard/asignado');
+                    Propiedad.saveImages(stringpath,N_Pics).then(() =>{
+                        response.redirect('/dashboard/asignado');
+                    }).catch(err =>{
+                        console.log(err);
+                    });
+                    
                 }).catch( (error) => {
                     console.log(error);
         });

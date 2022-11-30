@@ -227,18 +227,20 @@ exports.subirarch = (request, response, next) => {
             Si se estan tanto añadiendo como eliminando archivos se insertan primero los archivos a añadir seguido de los que se borraran.
 
     */
-    let tiposArchivos = request.files.length > 0 ? request.body.SelFiles + ',' + request.body.RMFiles : request.body.RMFiles ;
+    let lenghtarchivo2 = request.files.archivo2 ? request.files.archivo2.length : 0;
+    let tiposArchivos = lenghtarchivo2 > 0 ? request.body.SelFiles + ',' + request.body.RMFiles : request.body.RMFiles ;
     let user = request.session.IdUser;
-    let totalfiles = request.files.length + parseInt(request.body.NRMFiles);
+    let totalfiles = lenghtarchivo2 + parseInt(request.body.NRMFiles);
     let estatuslist = '';
     let Tipo_Exp = request.body.Tipo_Exp;
     let initquery = request.body.Tipo_Exp;
     //Se genera un string con los paths de los nuevos archivos
     // De igual manera se crea la lista de estatus con 1s para simbolizar que ese archivo esta pendiente a ser revisado
-
-    for(elements of request.files){
-        filepaths += elements.path + ',';
-        estatuslist += '1,';
+    if(lenghtarchivo2 > 0){
+        for(elements of request.files.archivo2){
+            filepaths += elements.path + ',';
+            estatuslist += '1,';
+        }
     }
 
     // Si hay archivos que se eliminaran se pone el path vacio y en la lista del estatus se pone un 0 que equivale a faltante
@@ -279,7 +281,8 @@ exports.subirarch = (request, response, next) => {
         request.session.info = 'Error al subir los archivos';
         request.session.initquery = initquery;
         // Se borran los archivos que se pretendian añadir a la BD.
-        delfiles(request.files);
+        if(lenghtarchivo2 > 0)
+            delfiles(request.files.archivo2);
         return request.session.save(err => {
             response.redirect('/expediente/miexpediente');
         });
