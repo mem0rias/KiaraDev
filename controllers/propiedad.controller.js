@@ -111,7 +111,7 @@ exports.post_new = (request, response, next) => {
 
     console.log(request.files);
     let stringpath = '';
-    let headerImage = "error";
+    let headerImage = null;
     let N_Pics = request.body.NPics;
     if(request.files.imagen){
 
