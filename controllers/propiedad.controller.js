@@ -27,7 +27,7 @@ exports.get_one = (request, response, next) => {
 
                 const imagenesLista = [];
                 for(p of imagenes){
-                    imagenesLista.push(p.Imagen.split('\\')[2]); 
+                    imagenesLista.push(p.Imagen.split('/')[2]); 
                 }
 
             Propiedad.getAgenteTel(request.params.id).then(([tel, fieldDataTel]) =>{
@@ -113,13 +113,18 @@ exports.post_new = (request, response, next) => {
     let stringpath = '';
     let headerImage = null;
     let N_Pics = request.body.NPics;
+    let arrayImages = [];
     if(request.files.imagen){
 
-        headerImage  = request.files.imagen[0].path.split('\\')[2];
+        headerImage  = request.files.imagen[0].path.split('/')[2];
         console.log('headerImage');
-        console.log(request.files.imagen[0].path.split('\\')[2]);
+        console.log(request.files.imagen[0].path.split('/')[2]);
         for(elements of request.files.imagen){
+
+            arrayImages.push(elements.path.split('/')[2]);
+            console.log(elements.path.split('/')[2]);
             stringpath += elements.path + ',';
+
         }
         NPics = request.files.imagen.length;
         console.log(stringpath);
@@ -139,7 +144,7 @@ exports.post_new = (request, response, next) => {
         const precio            = parseInt(v.precio);
 
         let d = {
-            titulo          : v.titulo,
+            titulo          : v.titulo ,
             descripcion     : v.descripcion,
             precio          : precio,
             estado          : v.estado,
@@ -164,8 +169,7 @@ exports.post_new = (request, response, next) => {
         };
 
         Propiedad.agregarResidencial(d).then( () => {
-                Propiedad.saveImages(stringpath,N_Pics).then(() =>{
-                        
+                Propiedad.saveImages(stringpath,N_Pics).then(() =>{     
                     Propiedad.updateHeader(headerImage).then(() =>{
                         response.redirect('/dashboard/asignado'); 
                     }).catch(err =>{
