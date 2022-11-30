@@ -170,6 +170,11 @@ module.exports = class Propiedad {
         return db.execute('SELECT * FROM propiedades WHERE Colonia LIKE ? ', ['%' + valor_busqueda + '%']);
     }
 
+    static find(valor_busqueda) {
+        return db.execute('SELECT * FROM propiedades WHERE Colonia LIKE ? ', ['%' + valor_busqueda + '%']);
+    }
+
+
     //Este método servirá para devolver los ultimos 4 objetos de la tabla 
     static fetchAll() {
         return db.execute('SELECT * FROM propiedades');
@@ -199,5 +204,8 @@ module.exports = class Propiedad {
         return db.execute('select Telefono from usuario u, asignacion a where u.IdUsuario = a.IdUsuario and a.IdPropiedad = ?', [IdPropiedad]);
     }
 
+    static delete(id) {
+        return db.execute('DELETE FROM propiedades WHERE IdPropiedad = ?', [id]);
+    }
 
 }

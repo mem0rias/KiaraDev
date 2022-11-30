@@ -3,7 +3,7 @@ const db = require('../util/database');
 module.exports = class listEstatus{
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchPropertiesC(IdUsuario) {
-        return db.execute('SELECT DISTINCT a.idpropiedad, Titulo, visibleproceso FROM asignacion a, propiedades p WHERE a.idpropiedad = p.IdPropiedad and rolprop=21 and Idusuario= ?', [IdUsuario]);
+        return db.execute('SELECT DISTINCT a.idpropiedad, Titulo, visibleproceso FROM asignacion a, propiedades p WHERE a.idpropiedad = p.IdPropiedad and (rolprop=21 or rolprop = 23) and Idusuario= ?', [IdUsuario]);
     }
     static fetchPropertiesR(IdUsuario) {
         return db.execute('SELECT DISTINCT a.idpropiedad, Titulo, visibleproceso FROM asignacion a, propiedades p WHERE a.idpropiedad = p.IdPropiedad and rolprop=22 and Idusuario= ?', [IdUsuario]);
@@ -35,5 +35,28 @@ module.exports = class listEstatus{
 
     static cancelProceso(idpro){
         return db.execute('UPDATE `asignacion` SET `VisibleProceso`=0 WHERE `IdPropiedad`=?', [idpro]);
+    }
+
+    static fetchTransactionType(IdPropiedad) {
+        return db.execute('SELECT TipoTransaccion from propiedades where IdPropiedad = ?', [IdPropiedad]);
+    }
+
+    static fetchRentSteps(){
+        return db.execute('SELECT Paso from pasos_renta');
+    }
+
+    static fetchBuySteps(){
+        return db.execute('SELECT Paso from pasos_compra');
+    }
+    static getUsers(){
+        return db.execute('SELECT IdUsuario, nombre, PA, SA, Email from usuario')
+    }
+
+    static IniciarVenta(ListPasos, NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC){
+        return db.execute('CALL `IniciarVenta`( ?, ?, ?, ?, ?, ?, ?)',[ListPasos,NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC]);
+    }
+
+    static IniciarRenta(ListPasos, NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC){
+        return db.execute('CALL `IniciarRenta`( ?, ?, ?, ?, ?, ?, ?)',[ListPasos,NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC]);
     }
 }
