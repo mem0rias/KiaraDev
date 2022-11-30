@@ -27,7 +27,7 @@ exports.get_one = (request, response, next) => {
 
                 const imagenesLista = [];
                 for(p of imagenes){
-                    imagenesLista.push(p.Imagen.split('\\')[2]); 
+                    imagenesLista.push(p.Imagen.split('/')[2]); 
                 }
 
             Propiedad.getAgenteTel(request.params.id).then(([tel, fieldDataTel]) =>{
