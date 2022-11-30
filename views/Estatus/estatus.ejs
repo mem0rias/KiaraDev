@@ -57,7 +57,7 @@
         <% } %>
 
 
-        <% if (permisos.indexOf('editar_seguimiento') != -1) { %>
+        <% if ((permisos.indexOf('editar_seguimiento') != -1) && dummyval != ''){ %>
             <%- include('ejemploCancelModel.ejs') %>
         <% } %>
     </div>

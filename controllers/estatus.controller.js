@@ -44,23 +44,30 @@ exports.get_AvanceP = (request, response, next) => {
     let properid = request.params.idPropiedad;
     listEstatus.fetchAvanceC(properid)
         .then( ([rows, fieldData]) => {
-            //console.log(rows);
+            if(rows.length > 0 ){
+                console.log('entra a vistas');
+                return response.render(path.join('Estatus', 'estatus.ejs'), {
+                    listEstatus: rows,
+                    dummyval    : 'compra',
+                    
+                    permisos: request.session.permisos,
+                });
+            }
+            else{
             listEstatus.fetchAvanceR(properid)
                 .then( ([rows2, fieldData2]) => {
-                    if(rows.length > 0 || rows2.length > 0){
-
-                        console.log(rows);
-                        console.log(rows2)
+                    if( rows2.length > 0){
+                        console.log('entra a vistas');
                         return response.render(path.join('Estatus', 'estatus.ejs'), {
-                            listEstatus: rows,
                             listEstatus2: rows2,
+                            dummyval    : 'renta',
                             
                             permisos: request.session.permisos,
                         });
                     }
 
                     else{
-
+                        console.log('entra a error');
                         request.session.info = 'La propiedad no cuenta con seguimiento activo';
 
                         return response.render(path.join('Dashboard', 'dashboard.noDisponible.ejs'), {
@@ -68,13 +75,17 @@ exports.get_AvanceP = (request, response, next) => {
                             nombre      : response.locals.NombreUser    ,
                             telefono    : response.locals.Telefono  ,
                             email       : response.locals.Email     ,
+                            dummyval    : '',
                             
                         });
 
                     }
+                
                 }).catch( (error) => {
                     console.log(error);
                 }); 
+
+            }
 
         }).catch( (error) => {
             console.log(error);
