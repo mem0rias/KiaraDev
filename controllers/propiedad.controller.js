@@ -116,13 +116,13 @@ exports.post_new = (request, response, next) => {
     let arrayImages = [];
     if(request.files.imagen){
 
-        headerImage  = request.files.imagen[0].path.split('\\')[2];
+        headerImage  = request.files.imagen[0].path.split('/')[2];
         console.log('headerImage');
-        console.log(request.files.imagen[0].path.split('\\')[2]);
+        console.log(request.files.imagen[0].path.split('/')[2]);
         for(elements of request.files.imagen){
 
-            arrayImages.push(elements.path.split('\\')[2]);
-            console.log(elements.path.split('\\')[2]);
+            arrayImages.push(elements.path.split('/')[2]);
+            console.log(elements.path.split('/')[2]);
             stringpath += elements.path + ',';
 
         }
