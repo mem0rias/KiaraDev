@@ -25,7 +25,7 @@ const fileStorage = multer.diskStorage({
         //console.log(request.files);
         let user = request.body.user;
         let newpath = `./Expedientes/${user}`;
-        fs.mkdirSync(newpath, { recursive: true})
+        fs.mkdirSync(newpath, { recursive: true })
         callback(null, newpath);
     },
     filename: (request, file, callback) => {
@@ -35,8 +35,8 @@ const fileStorage = multer.diskStorage({
     },
 });
 const fileFilter = (request, file, callback) => {
-    
-    
+
+
     if (file.mimetype == 'application/pdf') {
         callback(null, true);
     } else {
@@ -46,7 +46,9 @@ const fileFilter = (request, file, callback) => {
 
 
 
+
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20*1024*1024}}).any('archivo2'));
+
 
 
 
@@ -54,13 +56,13 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSiz
 // Si hay exception, se limpian las variables que permiten que se suban archivos, por lo que el controlador no hace nada.
 // Y nada explota en consecuencia.
 app.use((err, request, response, next) => {
-    if( err instanceof multer.MulterError){
+    if (err instanceof multer.MulterError) {
         console.log(request.body);
         request.body.SelFiles = '';
         request.body.NRMFiles = '';
         request.files = ''
     }
-    
+
     next();
 });
 //Declarar rutas
@@ -74,6 +76,7 @@ const intro = require('./routes/intro.routes');
 const contacto = require('./routes/contacto.routes');
 const aviso = require('./routes/aviso.routes');
 const estatus = require('./routes/estatus.routes');
+const servicios = require('./routes/servicios.routes')
 
 app.use(session({
     secret: 'aerfgtvythvyugt54cyh4yhyhy6h46yr5ky87br53tgc3g46gg',
@@ -104,6 +107,7 @@ app.use('/intro', intro);
 app.use('/contacto', contacto);
 app.use('/aviso', aviso);
 app.use('/estatus', estatus);
+app.use('/servicios', servicios);
 
 app.get('/', (request, response, next) => {
     response.redirect('/index');
