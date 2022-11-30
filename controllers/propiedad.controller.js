@@ -93,7 +93,7 @@ exports.post_new = (request, response, next) => {
     let v                   = request.body;
     const userId            = parseInt(response.locals.IdUser);
     console.log(v)
-
+    console.log(request.files);
     if(v.uso == '1') {
 
         const recamaras         = parseInt(v.recamaras);
