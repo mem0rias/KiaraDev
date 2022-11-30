@@ -111,8 +111,13 @@ exports.post_new = (request, response, next) => {
     console.log(v)
     console.log(request.files);
     let stringpath = '';
+    let headerImage = '';
     let N_Pics = request.body.NPics;
     if(request.files.imagen){
+
+        headerImage  = request.files.imagen[0].path.split('\\')[2];
+        console.log('headerImage');
+        console.log(headerImage);
         for(elements of request.files.imagen){
             stringpath += elements.path + ',';
         }
@@ -121,6 +126,8 @@ exports.post_new = (request, response, next) => {
     }else{
         NPics = 0;
     }
+        
+
     if(v.uso == '1') {
 
         const recamaras         = parseInt(v.recamaras);
@@ -158,7 +165,13 @@ exports.post_new = (request, response, next) => {
 
         Propiedad.agregarResidencial(d).then( () => {
                 Propiedad.saveImages(stringpath,N_Pics).then(() =>{
-                    response.redirect('/dashboard/asignado');
+                        
+                    Propiedad.updateHeader(headerImage).then(() =>{
+                        response.redirect('/dashboard/asignado'); 
+                    }).catch(err =>{
+                        console.log(err);
+                    });
+                            
                 }).catch(err =>{
                     console.log(err);
                 });
@@ -310,7 +323,7 @@ exports.post_edit = (request, response, next) => {
             mconstruccion   : v.mconstruccion,
             tipotransaccion : v.tipotransaccion,
             tipopropiedad   : v.tipopropiedad,
-            imagenes        : v.video,
+            imagenes        : v.tipopropiedad,
             video           : v.video,
             visibilidad     : v.visibilidad,
             recamaras       : v.recamaras,

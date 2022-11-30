@@ -212,6 +212,12 @@ module.exports = class Propiedad {
         return db.execute('CALL SubirImagen(?,?)', [ImgList,N_Pics]);
     }
 
+    static updateHeader(URL){
+        return db.execute('CALL updateHeader(?)', [URL]);
+    }
+
+
+
     static fetchImages(id){
         return db.execute('SELECT Imagen FROM Imagenes WHERE IdPropiedad = ?', [id]);
     }
