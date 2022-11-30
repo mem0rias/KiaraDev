@@ -57,11 +57,11 @@
                     html += ' <div class="column is-6 is-offset-11">';
                     html += '  <button class="button has-text-centered is-danger" onclick="eliminar(' + element.idComentario + ')" value="Eliminar">Eliminar</button>';
                     html += '  </div>';
-                    html += ' <div class="column is-6 is-offset-11">';
-                    html += '  <% if (' + element.aprobado + ' == 1 ) { %>';
-                    html += '  <button class="button has-text-centered is-success" onclick="aprobar(' + element.idComentario + ')" value="Aprobar">Aprobar</button>';
-                    html += ' <% } %>';
-                    html += '  </div>';
+                    if (element.aprobado == 0) {
+                        html += ' <div class="column is-6 is-offset-11">';
+                        html += '  <button class="button has-text-centered is-success" onclick="aprobar(' + element.idComentario + ')" value="Aprobar">Aprobar</button>';
+                        html += '  </div>';
+                    }
                     html += ' <% } %>';
                     html += ' <div class="column is-4">';
                     html += ' <small class ="has-text-grey-light">' + element.fecha + '</small> ';
@@ -73,10 +73,11 @@
             }).catch(err => {
                 console.log(err);
             });
-
         }
 
         window.onload = desplegar_comentarios;
+
+
 
         const eliminar = (id) => {
             fetch('/resenas/delete', {
@@ -102,7 +103,6 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-
                 },
                 body: JSON.stringify({
                     idComentario: id,

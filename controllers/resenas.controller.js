@@ -6,16 +6,18 @@ moment.locale('es-mx');
 
 
 exports.get_resena = (request, response, next) => {
+
     response.render('./resenas/resenas', {
         logged: request.session.isLoggedIn,
         admin: request.session.admin,
         aprobado: request.body.aprobado,
     });
+
 };
 
 exports.postAdd = (request, response, next) => {
     console.log(request.session.user);
-    const resenia = new Resenas(request.session.IdUser, request.body.contenido, apr);
+    const resenia = new Resenas(request.session.IdUser, request.body.contenido, '0');
     resenia.save().then(() => {
         response.redirect('/resenas')
             //response.status(200).json('Todo bien :D');
