@@ -1,7 +1,5 @@
 <div class="active-container m-0 pt-5" >
-<div class="card ">
-
-  <a href="/propiedades/<%=propiedad.IdPropiedad%>">
+<div class="card is-horizontal">
     <div class="card-image">
       <figure class="image is-4by3">
         <img src="<%=propiedad.Imagenes %>" alt="Placeholder image">
@@ -30,7 +28,10 @@
           </div>
           <div class="card-footer-item has-text-left">
             <a href="<%= propiedad.Visibilidad == 1 ? `/estatus/asignar/${propiedad.IdPropiedad}` : 'javascript:void(0)'%>"><h1><%= propiedad.Visibilidad == 1 ? 'Iniciar Proceso' : 'Cancelar Proceso'%> </h1></a>
-          </div>    
+          </div>
+          <div class="card-footer-item has-text-left">
+              <a href="/propiedades/<%=propiedad.IdPropiedad%>"><h1>Ver Anuncio</h1></a>
+          </div>         
           <div class="card-footer-item has-text-left">
             <a href="/estatus/<%=propiedad.IdPropiedad%>"><h1>Seguimiento</h1></a>
           </div>
@@ -41,6 +42,5 @@
         </footer>
         
       </div>
-    </a>
   </div>
 </div>
