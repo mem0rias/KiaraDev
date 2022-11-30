@@ -108,7 +108,7 @@ exports.post_new = (request, response, next) => {
             
     let v                   = request.body;
     const userId            = parseInt(response.locals.IdUser);
-    console.log(v)
+
     console.log(request.files);
     let stringpath = '';
     let headerImage = "error";
@@ -117,7 +117,7 @@ exports.post_new = (request, response, next) => {
 
         headerImage  = request.files.imagen[0].path.split('\\')[2];
         console.log('headerImage');
-        console.log(headerImage);
+        console.log(request.files.imagen[0].path.split('\\')[2]);
         for(elements of request.files.imagen){
             stringpath += elements.path + ',';
         }
