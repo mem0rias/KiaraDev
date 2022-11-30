@@ -1,0 +1,88 @@
+
+    <div class="section pt-0">
+        <div class="container pl-5 pr-5">
+            <div class="columns">
+                <div class="column is-8">
+                        <h1 class="title is-5"><%=precio%> MXN</h1>
+                        <div class="divider"></div>
+                        <h2 class="title is-4">Descripción</h2>
+                        <p><%=propiedad.Descripcion%></p>
+                        <div class="divider"></div>
+                        <div class="columns is-multiline">
+                            <div class="column ">
+                                <div class="container">
+                                    <div class="content is-normal">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="mdi mdi-shape-square-plus"></i>
+                                            </span>
+                                            <span>Recamaras <%=residencial.Recamaras%></span>
+                                        </span>
+                                    </div>
+                                    <div class="content is-normal">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="mdi mdi-floor-plan"></i>
+                                            </span>
+                                            <span>Cocina <%=residencial.Cocina%></span>
+                                        </span>
+                                    </div>
+                                    <div class="content is-normal">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="mdi mdi-car"></i>
+                                            </span>
+                                            <span>Estacionamientos <%=residencial.Estacionamiento%></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column">
+                                <div class="content is-normal">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="mdi mdi-home-variant"></i>
+                                        </span>
+                                        <span>Baños <%=residencial.Banos%></span>
+                                      </span>
+                                </div>
+                                
+                                <div class="content is-normal">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="mdi mdi-car"></i>
+                                        </span>
+                                        <span>Niveles <%=residencial.Niveles%></span>
+                                      </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                </div>
+                <div class="column is-4">
+                    <div class="card ">
+                        <div class="card-content">
+                          <div class="content">
+                            <input type="hidden" id="TelEnc" value="<%=numeroenc  ? numeroenc : ''%>">
+                            <button class="button"  id="contact" onclick="mandarWa()"> Contactar asesor </button>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //Funcion que genera un url para enviar un mensaje de WA al asesor inmobiliario asignado a la propiedad.
+        const mandarWa = () => {
+            let telefono = document.getElementById('TelEnc').value;
+            let URL = window.location.href;
+            let mensaje = `¡Hola! Estoy interesado en la propiedad ${URL} , ¿me podrias dar más informes?`
+            if(telefono != '')
+                location.href = `https://wa.me/${telefono}?text=${mensaje}`;
+
+        }
+    </script>

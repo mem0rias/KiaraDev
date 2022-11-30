@@ -1,0 +1,101 @@
+<%- include('../includes/head.ejs') %>
+
+<div class="columns">
+    <div class="column"></div>
+    <div class="box column is-8">
+        
+        <form action="/estatus/iniciar" method="POST" id="forma_inicio">
+            <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+            <input type="hidden" name="Tipo_Transaccion" value="<%=TipoTransaccion%>">
+            <input type="hidden" name="IdPropiedad" value="<%=IdPropiedad%>">
+            <h1 class="title"> Selecciona usuarios para Iniciar el proceso </h2>
+                <input type="hidden" name="Propietario" id="Prop" value="">
+                <input type="hidden" name="Interesado" id="Inter" value="">
+                <h2 class="title is-size-5"> Propietario </h2>
+                <input type="text" onchange="getUserId(this)" class="input" id="Propietario" list="productName" />
+                <datalist id="productName" >
+                    <% let i = 1; %>
+                    <% for(elements of list){ %>
+                        <input type="hidden" id="userId/<%= elements.Email %>" value="<%= elements.IdUsuario %>">
+                        <option value="<%= elements.Email %>" id="option-<%= i %>"> <%= elements.nombre %> <%=elements.PA %> <%=elements.SA %></option>
+                    
+                        <% i++; %>
+                    <%}%>
+                </datalist>
+                <br>
+                <br>
+                <h4 class="title is-size-5"> ¿La propiedad es por bienes mancomunados?</h4>
+                <label class="checkbox">
+                    <input type="checkbox" class="is-size-2" name="PropC">
+                        Bienes Mancomunados
+                </label>
+                <br>
+                <br>
+                <h2 class="title is-size-5"> Interesado </h2>
+                <input type="text" onchange="getUserId(this)" class="input" id="Interesado"  list="productName" />
+                <datalist id="productName" >
+                    <% i = 1; %>
+                    <% for(elements of list){ %>
+                        <input type="hidden" id="userId/<%= elements.Email %>" value="<%= elements.IdUsuario %>">
+                        <option value="<%= elements.Email %>" id="option-<%= i %>"> <%= elements.nombre %> <%=elements.PA %> <%=elements.SA %></option>
+                    
+                        <% i++; %>
+                    <%}%>
+                </datalist>
+                <br>
+                <br>
+                <label class="checkbox">
+                    <input type="checkbox" class="is-size-2" name="ClienteC">
+                        Bienes Mancomunados
+                </label>
+                <br>
+                <br>
+                <% if(TipoTransaccion === '3'){ %>
+                    <h4 class="title is-size-5"> Tipo de tramite </h4>
+                    <select class="input" name="Tipo_Tramite">
+                        <option value="2"> Renta</option>
+                        <option value="1"> Venta</option>
+                    </select>
+                <%}%>
+    
+                <br>
+                <br>
+                <input type="button" class="button is-danger is-fullwidth" value="Iniciar Tramite" id="boton_inicio" onclick="verificacion()"> 
+        </form>
+        
+    </div>
+    <div class="column"></div>
+</div>
+
+<script>
+    const getUserId = (element) => {
+        element.classList.remove('is-danger');
+        let usuario = document.getElementById('userId/'+element.value).value;
+        document.getElementsByName(element.id)[0].value = usuario;
+    }
+    const verificacion = () => {
+        let forma = document.getElementById('forma_inicio');
+        let propietario = document.getElementById('Prop');
+        let interesado = document.getElementById('Inter');
+        if(interesado.value.length <= 0){
+            interesado.classList.add('is-danger');
+        }
+        if(propietario.value.length <= 0){
+            propietario.classList.add('is-danger');
+        }
+        
+        if(propietario.value.length <= 0 | interesado.value.length <= 0 ){
+            bulmaToast.toast({ message: 'Llena todos los campos de usuarios', type: 'is-danger', position: 'up-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+        }else if(propietario.value == interesado.value){
+            bulmaToast.toast({ message: 'El propietario e interesado no pueden ser la misma persona', type: 'is-danger', position: 'up-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+        }
+        else{
+            forma.submit();
+        }
+
+    }
+</script>
+
+<script src="../js/dist/bulma-toast.min.js"></script>
+
+<%- include('../includes/foot.ejs') %>

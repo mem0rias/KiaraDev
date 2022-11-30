@@ -1,0 +1,82 @@
+
+    <section class = "section">
+       <div class = "container">
+          
+          <p>
+             <a class = "button is-primary modal-button is-danger" data-target="#modal">
+                Terminar operación inmobiliaria
+             </a>
+          </p>
+          <div id="modal" class = "modal">
+             <div class = "modal-background"></div>
+             <div class = "modal-content">
+                <div class = "box">
+                   <article class = "media">
+                      <div class = "media-left">
+                         
+                      </div>
+                      <div class = "media-content">
+                         <div class = "content">
+                            <p>
+                               <strong>¿Seguro que quieres terminar este proceso inmobiliario?</strong>
+                            </p>
+                         </div>
+                         <nav class = "level">
+                            <div class = "level-left">
+                               
+                              <% if (dummyval == 'compra'){ %>
+                                 <a class="column is-5 level-item" data-target="#modal" href="/dashboard/asignado">
+                                    <button class="button is-primary is-danger" id="propiedad" value="<%= listEstatus[0].idpropiedad ? listEstatus[0].idpropiedad : listEstatus[0].idpropiedad%>" onclick="cancelProcedimiento(this)">
+                                        Aceptar
+                                    </button>
+                                </a>
+                               <% } %>
+
+                               <% if (dummyval == 'renta'){ %>
+                                 <a class="column is-5 level-item" data-target="#modal" href="/dashboard/asignado">
+                                    <button class="button is-primary is-danger" id="propiedad" value="<%= listEstatus2[0].idpropiedad ? listEstatus2[0].idpropiedad : listEstatus2[0].idpropiedad%>" onclick="cancelProcedimiento(this)">
+                                        Aceptar
+                                    </button>
+                                </a>
+                               <% } %>                              
+
+                               
+                                <% if ((permisos.indexOf('editar_seguimiento') != -1) && dummyval == 'compra'){ %>
+                                 <a class = "level-item" href="/estatus/<%= listEstatus[0].idpropiedad ? listEstatus[0].idpropiedad : listEstatus[0].idpropiedad%>">
+                                    <button class="button is-primary is-danger">
+                                        Cancelar
+                                    </button>
+                                 </a>
+                               <% } %>
+
+                              <% if ((permisos.indexOf('editar_seguimiento') != -1) && dummyval == 'renta'){ %>
+                                 <a class = "level-item" href="/estatus/<%= listEstatus2[0].idpropiedad ? listEstatus2[0].idpropiedad : listEstatus2[0].idpropiedad%>">
+                                    <button class="button is-primary is-danger">
+                                        Cancelar
+                                    </button>
+                                 </a>
+                               <% } %>
+
+                            </div>
+                         </nav>
+                      </div>
+                   </article>
+                </div>
+             </div>
+             <button class = "modal-close is-large" aria-label="close"></button>
+          </div>
+       </div>
+    </section>
+    <script>
+       $(".modal-button").click(function() {
+       var target = $(this).data("target");
+       $("html").addClass("is-clipped");
+       $(target).addClass("is-active");
+       });
+       
+       $(".modal-close").click(function() {
+       $("html").removeClass("is-clipped");
+       $(this).parent().removeClass("is-active");
+       });
+    </script>
+

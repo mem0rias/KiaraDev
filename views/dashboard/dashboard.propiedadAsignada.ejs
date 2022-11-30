@@ -1,0 +1,56 @@
+<%- include('../includes/head.ejs') %>
+<div class="section">
+    <div class="container">
+        <div class="columns is-multiline">
+            <div class="column is-3">
+              <%- include('menu.dashboard.ejs', {usuario: usuario}) %>
+            </div>
+            <div class="column is-9 is-multiline">
+              <div class="content">
+                <h1 class="is-tittle">Propiedades Asignadas</h1>
+              </div>
+            
+            <div class="card is-shadowless has-background-light">
+              <div class="card-content m-0 py-0">
+                <div class="columns">
+                  <div class="column is-7">
+                    <div class="content pt-2">
+                      <p>Se encontraron <%=cantidad%> propiedades.</p>
+                    </div>
+                    
+                  </div>
+
+                  <div class="column is-5">
+                    <div class="field has-addons">
+                      <div class="control">
+                        <input class="input is-expanded" type="text" placeholder="Colonia / Titulo / ID" id="buscar">
+                      </div>
+                      <div class="control">
+                        <a class="button is-danger">
+                          Buscar
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>  
+
+              <div class="active-container" id="resultados">
+                <% if (propiedad.length > 0) { %>
+                      <% for (let p of propiedad  ) { %>
+                          <%- include('../propiedad/propiedad.horizontal.ejs', {propiedad: p}) %>
+                      <% } %>
+                  <% }  %>
+              </div>  
+            </div>
+        </div>
+    </div>
+</div>  
+
+
+<%- include('eliminar_ajax.ejs') %>
+
+<%- include('search_ajax.ejs') %>
+
+<%- include('../includes/foot.ejs') %>

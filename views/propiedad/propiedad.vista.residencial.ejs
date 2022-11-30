@@ -1,0 +1,69 @@
+<%- include('../includes/head.ejs') %>
+
+
+    <div class="container pb-2">
+        <div class="content is-normal">
+            <h1 class="m-0"><%= propiedad.Titulo %></h1>
+            <span class="icon-text">
+                <span class="icon">
+                    <i class="mdi mdi-map-marker"></i>
+                </span>
+                <span><%=propiedad.Estado %>, <%=propiedad.Municipio%>, <%=propiedad.Colonia%></span>
+              </span>
+        </div>
+    </div>
+
+    
+<%- include('collage.ejs', {propiedad: propiedad}) %>
+<%- include('seccion.residencial.ejs', {propiedad: propiedad, residencial: residencial}) %>
+<body onload="initialize()">
+  <div id="map" ></div>
+   <div>
+     <input id="address" type="textbox" value="<%=ubicacion  ? ubicacion : ''%>" hidden>
+   </div>
+  </body>
+
+
+
+
+<script>
+
+var geocoder;
+  var map;
+  function initialize() {
+    geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(-34.397, 150.644);
+    var mapOptions = {
+      zoom: 16,
+      center: latlng
+    }
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    codeAddress();
+  }
+
+  function codeAddress() {
+    var address = document.getElementById('address').value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == 'OK') {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+
+
+
+
+
+</script>   
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoH6Zli4y53NVP63fZrAlsVjiVmLq0IyE&callback=initMap">
+</script>
+
+<%- include('../includes/foot.ejs') %>

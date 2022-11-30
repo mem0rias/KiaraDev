@@ -1,0 +1,207 @@
+<div class="active-container" id="result">
+<div class="content is-normal" >
+    <h1>Información Personal</h1>
+</div>
+
+<div class="card">
+    <div class="card-content">
+        <div class="container">
+            <div class="is-divider" data-content="OR"> </div>
+            <div class="content ">
+                <label class="label">Nombre</label>
+                <p><%=nombre %></p>
+            </div>
+
+            <div class="is-divider" data-content="OR"> </div>
+
+            <div class="content ">
+                <label class="label">Correo</label>
+                <p><%=email%> </p>
+            </div>
+
+            <div class="content ">
+                <label class="label">Telefono</label>
+                <p><%=telefono %> </p>
+            </div>
+
+            <div class="content ">
+                <label class="label">Ocupacion</label>
+                <p><%=usuario.ocupacion %> </p>
+            </div>
+
+            <% if (permisos.indexOf('panel_agente') != -1 || permisos.indexOf('panel_admin') != -1) { %>
+                <input type="hidden" id="usuario" value="agente">
+            <% } else{ %>   
+                    <input type="hidden" id="usuario" value="cliente">
+                    <input type="hidden" id="curp" value="">
+             <% } %> 
+            
+            <% if ((permisos.indexOf('panel_agente') != -1 || permisos.indexOf('panel_admin') != -1) && (usuario.CURP == '') ) { %>
+                <input type="hidden" id="usuario" value="agente">
+            <div class="content">
+                <label class="label has-text-danger	">CURP</label>
+                <p class="has-text-danger"> Se requiere añadir CURP </p>
+            </div>
+            <% } %> 
+            <%  if  ((permisos.indexOf('panel_agente') != -1 || permisos.indexOf('panel_admin') != -1) && (usuario.CURP != '') ){ %>   
+            <div class="content ">
+                <label class="label">CURP</label>
+                <p><%=usuario.CURP %> </p>
+            </div>
+            <% } %>   
+        </div>
+    </div>
+</div>
+</div>
+
+    <div class="buttons  is-right m-0 pt-3">
+        <button class="button is-danger is-medium" onclick="accion_asincrona()">Editar</button>
+        <div id="boton">
+
+        </div>
+    </div>
+
+<script>
+
+let usuario = document.getElementById('usuario').value;
+
+    const accion_asincrona = () => {
+        
+        console.log(usuario);
+        fetch('/dashboard/info', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(result => {
+            return result.json();
+        }).then(data => {
+            console.log(data.length);
+            console.log(data.nombre);
+                 let html = '';
+                 let html2 = '';
+                html +=' <form action="/expediente/actualizar" method="POST" id="actualizar">';  
+                html +='        <div class="content is-normal">';
+                html +='        <h1>Información Personal</h1>';
+                html +='        </div>';
+                html +='        <div class="card">';
+                html +='            <div class="card-content">';
+                html +='                <div class="active-container">';
+                html +='                    <div class="is-divider" data-content="OR"> </div>';
+                html +='                    <div class="field ">';
+                html +='                        <label class="label">Nombre</label>';
+                html +='                        <input class="input" id="nombre" type="text" maxlength="40" name="nombre" placeholder="Nombre" value="'+data.nombre+'">';
+                html +='                    </div>';
+                html +='                    <div class="field ">';
+                html +='                        <label class="label">Primer Apellido</label>';
+                html +='                        <input class="input" id="pa" type="text" maxlength="40" name="pa" placeholder="Nombre" value="'+data.PA+'">';
+                html +='                    </div>';
+                html +='                    <div class="field ">';
+                html +='                        <label class="label">Segundo Apellido</label>';
+                html +='                        <input class="input" id="sa" type="text" maxlength="40" name="sa" placeholder="Nombre" value="'+data.SA+'">';
+                html +='                    </div>';
+                html +='                    <div class="is-divider" data-content="OR"> </div>';
+                html +='                    <div class="content ">';
+                html +='                        <label class="label">Correo</label>';
+                html +='                        <input class="input" id="email" type="text" maxlength="40" name="email" placeholder="Nombre" value="'+data.email+'">';                                    
+                html +='                    </div>';
+                html +='                    <div class="content ">';
+                html +='                        <label class="label">Telefono</label>';
+                html +='                        <input class="input" id="telefono" type="text" maxlength="40" name="telefono" placeholder="Nombre" value="'+data.Telefono+'">';                         
+                html +='                    </div>';
+                html +='                    <div class="content ">';
+                html +='                        <label class="label">Ocupacion</label>';
+                html +='                        <input class="input" type="text"  id="ocupacion" maxlength="40" name="ocupacion" placeholder="Nombre" value="'+data.ocupacion+'">';           
+                html +='                    </div>';
+
+                html +='                    <div class="content">';
+                html +='                        <label class="label ';
+                if(usuario != 'cliente'){
+                    
+                if(data.CURP == ''){
+                html +=' has-text-danger';
+                }
+                html +=' ">CURP</label>';
+                html +='                        <input class="input';
+                 if(data.CURP == ''){
+                html +=' is-danger';
+                } 
+                html +='  " type="text" maxlength="40" name="curp" id="curpa" placeholder="CURP" value="'+data.CURP+'">';  
+                if(data.CURP == ''){
+                html +='    <div class="notification is-danger is-light">';
+                html +='         Se requiere registrar el CURP del agente';
+                html +='         </div>';
+                } 
+                html +='                    </div>';  
+                html +=' <input type="file" name="archivo">';
+                }
+                html +='                </div>';
+                html +='            </div> </form>';
+
+            
+            
+                html2 +='  <button class="button is-danger is-medium" onclick="accion_asincrona2()" >Guardar</button>';
+            
+            document.getElementById('boton').innerHTML = html2; 
+            document.getElementById('result').innerHTML = html;
+        }).catch(err => {
+            console.log(err);
+        });
+
+    }
+
+    const accion_asincrona2 = () => {
+              let nombre = document.getElementById('nombre').value;
+              let pa = document.getElementById('pa').value;
+              let sa = document.getElementById('sa').value;
+              
+              let email = document.getElementById('email').value;
+              let telefono = document.getElementById('telefono').value;
+              let ocupacion = document.getElementById('ocupacion').value;
+              console.log(usuario);
+              let curp ;
+              if(usuario != 'cliente'){
+                curp = document.getElementById('curpa').value;
+              }
+              else {
+                curp = '';
+              }
+              console.log('este deberia ser el curp');
+              console.log(curp);
+              
+              console.log(nombre);
+
+            fetch('/dashboard/info/actualizar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    
+                    nombre : nombre,
+                    pa : pa,
+                    sa : sa,
+                    email : email,
+                    telefono : telefono,
+                    ocupacion : ocupacion,
+                    curp : curp 
+                }),
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+                    console.log(data);
+                    if(data == 'OK'){
+                        console.log('donde esta el redirect');
+                        location.replace("/dashboard/");
+                    }else if(data == 'FAIL'){
+
+                    }
+                }).catch( err => {
+                    console.log(err);
+                     console.log('donde esta el error');
+
+                });
+        }
+
+
+</script>

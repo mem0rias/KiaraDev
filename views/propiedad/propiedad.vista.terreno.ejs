@@ -1,0 +1,45 @@
+<%- include('../includes/head.ejs') %>
+
+
+    <div class="container pb-2">
+        <div class="content is-normal">
+            <h1 class="m-0"><%= propiedad.Titulo %> </h1>
+            <span class="icon-text">
+                <span class="icon">
+                    <i class="mdi mdi-map-marker"></i>
+                </span>
+                <span><%=propiedad.Estado %>, <%=propiedad.Municipio%>, <%=propiedad.Colonia%></span>
+              </span>
+        </div>
+    </div>
+
+    
+    <%- include('collage.ejs', {propiedad: propiedad}) %>
+    
+    <div class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-10">
+                    
+                </div>
+                <div class="column is-2">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container pb-2">
+        <div class="content is-normal">
+            <h1 class="m-0"><%= terreno.Drenaje %> </h1>
+            <span class="icon-text">
+                <span class="icon">
+                    <i class="mdi mdi-map-marker"></i>
+                </span>
+                <span><%=propiedad.Estado %>, <%=propiedad.Municipio%>, <%=propiedad.Colonia%></span>
+              </span>
+        </div>
+    </div>
+
+<%- include('../includes/foot.ejs') %>

@@ -1,0 +1,55 @@
+<%- include('../includes/head.ejs') %>
+<br>   
+<br>   
+<section>
+<div class="columns">
+        <div class="column is-4"></div>
+        <div class="has-background-light column is-4 box">
+            <div id="title" class="has-text-centered box has-background-white">
+                <h1 class="is-size-1"> Inicia Sesion </h1>
+            </div>
+            
+            <br>
+            <div>
+                <form action="/login" method="POST">
+                    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                    <h2> Correo Electronico</h2>
+                    
+                    <input class="input" type="text" id="nombre" name="User">
+                    <br><br>
+                    <h2> Contraseña </h2>
+            
+                    <input class="input" type="password" id="nombre" name="Pass">
+                    <br>
+                    <br>
+                    <input  class="button has-text-centered is-danger" type="submit" id="enviar" name="enviar" value="Iniciar Sesion">
+                    <br>
+                    <br>
+                    
+                </form>
+                <form action="/login/registrarse" method="GET">
+                    <h2> ¿No tienes una cuenta?</h2>
+                    <br>
+                    <input  class="button has-text-centered is-danger" type="submit" id="enviar" name="enviar" value="Registrarse">
+                </form>
+                
+            </div>  
+        </div> 
+        <div class="column is-4"></div> 
+    </div>
+</section> 
+
+
+<script src="../js/dist/bulma-toast.min.js"></script>
+
+<% if(info != '') { %>
+    <script>
+        bulmaToast.toast({ message: '<%= info %>', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+    </script>
+<% } %>
+<% if(infopositiva != '') { %>
+    <script>
+        bulmaToast.toast({ message: '<%= infopositiva %>', type: 'is-success', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+    </script>
+<% } %>
+<%- include('../includes/foot.ejs') %>

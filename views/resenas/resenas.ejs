@@ -1,0 +1,94 @@
+<%- include('../includes/head.ejs') %>
+
+    <section class="hero is-danger is-small is-bold">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title">Blog</h1>
+            </div>
+        </div>
+    </section>
+
+    <div class="has-background-light box">
+
+        <div class="box" id="coments">
+        </div>
+        <% if (logged == true) { %>
+            <div class="box">
+                <form action="/resenas" method="post">
+                    <article class="media">
+                        <div class="media-content">
+                            <div class="field">
+                                <p class="control">
+                                    <input class="input" type="text" id="resena_cont" name="contenido" onkeyup="" maxlength="255" placeholder="Añade un comentario...">
+                                </p>
+                            </div>
+                            <div class="field">
+                                <input class="button has-text-centered is-danger" type="submit" id="enviar" name="enviar" value="Publicar">
+                                </p>
+                            </div>
+
+                        </div>
+                    </article>
+                </form>
+                <% } %>
+            </div>
+    </div>
+
+    <script>
+        const desplegar_comentarios = () => {
+
+            let html = '';
+            fetch('/resenas/fetch/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(result => {
+                return result.json();
+            }).then(data  =>  {
+                for (element of data) {
+                    html += '<article class="media" id="' + element.idComentario + '">';
+                    html += '<div class="media-content">';
+                    html += '<strong>' + element.Nombre + element.PA + element.SA + '</strong>';
+                    html += '<br>';
+                    html += element.contenido;
+                    html += '   </br> ';
+                    html += ' <div class="column is-6 is-offset-11">';
+                    html += '  <button class="button has-text-centered is-danger" onclick="eliminar(' + element.idComentario + ')" value="Eliminar">Eliminar</button>';
+                    html += '  </div>';
+                    html += ' <div class="column is-4">';
+                    html += ' <small class ="has-text-grey-light">' + element.fecha + '</small> ';
+                    html += '  </div>';
+                    html += '</div> ';
+                    html += '</article> ';
+                }
+                document.getElementById('coments').innerHTML = html;
+            }).catch(err => {
+                console.log(err);
+            });
+
+        }
+
+        window.onload = desplegar_comentarios;
+
+        const eliminar = (id) => {
+            fetch('/resenas/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+
+                },
+                body: JSON.stringify({
+                    idComentario: id,
+                }),
+            }).then(result => {
+                return result.json();
+            }).then(data  =>  {
+                document.getElementById(id).innerHTML = "";
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+    </script>
+
+    <%- include('../includes/foot.ejs') %>
