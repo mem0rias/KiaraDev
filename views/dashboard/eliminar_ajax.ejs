@@ -1,0 +1,72 @@
+
+
+<script>
+    const eliminar = (id) => {
+        console.log(id);
+        fetch('/propiedades/borrar/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id,
+
+            }),
+        }).then(result => {
+            return result.json(); 
+        }).then(data => {
+                    console.log('response');
+            console.log(data);
+            let html = '';
+             if (data.data.length > 0) { 
+                       for (let p of data.data  ) { 
+                        console.log(p);
+                        html += '    <div class="active-container m-0 pt-5" > ';         
+                        html += '        <div class="card is-horizontal">    ';       
+                        html += '            <div class="card-image">';
+                        html += '            <figure class="image is-4by3">';
+                        html += '                <img src="'+p.Imagenes+'" alt="Placeholder image">';
+                        html += '            </figure>';
+                        html += '            </div>';
+                        html += '                <div class="card-stacked">';
+                        html += '                <div class="card-content">';
+                        html += '                <div class="media-content">';
+                        html += '                    <p class="title is-4">'+p.Titulo+' </p>';
+                        html += '                    <p class="subtitle is-6"><span class="icon-text"> ';
+                        html += '                        <span class="icon">';
+                        html += '                            <i class="mdi mdi-map-marker"></i>';
+                        html += '                        </span>';
+                        html += '                        <span>'+p.Estado+', '+p.Municipio+', '+p.Colonia+'</span>';
+                        html += '                    </span></p>';
+                        html += '                </div>';
+                        html += '                <div class="content">';
+                        html += '                    ';
+                        html += '                </div>';
+                        html += '                </div>';
+                        html += '                <footer class="card-footer">';
+                        html += '                <div class="card-footer-item has-text-left">';
+                        html += '                    <a href="/propiedades/editar/'+p.IdPropiedad+'"><h1>Editar</h1></a>';
+                        html += '                </div>';
+                        html += '                <div class="card-footer-item has-text-left">';
+                        html += '                    <a href="/propiedades/'+p.IdPropiedad+'>"><h1>Ver Auncio</h1></a>';
+                        html += '                </div>         ';
+                        html += '                <div class="card-footer-item has-text-left">';
+                        html += '                    <a href="/estatus/'+p.IdPropiedad+'>"><h1>Seguimiento</h1></a>';
+                        html += '                </div>';
+                        html += '                <div class="card-footer-item has-text-left">';
+                        html += '                    <a  onclick="eliminar('+p.IdPropiedad+')"><h1>Eliminar</h1></a>';
+                        html += '                </div>      ';          
+                        html += '                </footer>';
+                        html += '            </div>';
+                        html += '        </div>';
+                       } 
+                   }  
+
+            document.getElementById('resultados').innerHTML = html;
+        }).catch(err => {
+            console.log(err);
+        });
+
+    }
+    
+</script>

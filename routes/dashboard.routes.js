@@ -12,6 +12,9 @@ router.get('/usuarios/roles', isAuth, dashboardController.get_roluserlist);
 router.get('/usuarios', isAuth, dashboardController.get_userlist);
 
 
-router.get('/asignado', dashboardController.get_propiedadesAsignadas);
+router.get('/asignado', isAuth,dashboardController.get_propiedadesAsignadas);
+
+router.get('/info', isAuth,dashboardController.get_Info);
+router.post('/info/actualizar', isAuth,dashboardController.post_Info);
 
 module.exports = router;
