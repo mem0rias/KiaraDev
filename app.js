@@ -32,7 +32,7 @@ const fileStorage = multer.diskStorage({
                  newpath = `./Expedientes/${user}`;
                 fs.mkdirSync(newpath, { recursive: true })
             }else if(file.fieldname === 'imagen'){
-                newpath = `./Expedientes/fotos`;
+                newpath = 'public/uploads';
                 fs.mkdirSync(newpath, { recursive: true })
             }
             callback(null, newpath);
@@ -57,7 +57,7 @@ const fileFilter = (request, file, callback) => {
             callback(null, false);
         }
     }else if(file.fieldname == 'imagen'){
-        if(file.mimetype == 'image/png'){
+        if(file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg" || file.mimetype == "image/webp" ){
             callback(null, true);
         }else{
             callback(null, false);

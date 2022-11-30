@@ -211,4 +211,10 @@ module.exports = class Propiedad {
     static saveImages(ImgList, N_Pics){
         return db.execute('CALL SubirImagen(?,?)', [ImgList,N_Pics]);
     }
+
+    static fetchImages(id){
+        return db.execute('SELECT Imagen FROM Imagenes WHERE IdPropiedad = ?', [id]);
+    }
+
+    
 }

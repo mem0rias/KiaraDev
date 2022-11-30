@@ -19,59 +19,68 @@ exports.get_propiedades = (request, response, next) => {
 };
 
 exports.get_one = (request, response, next) => {
+    let idPropiedad = request.params.id ;
+    console.log(idPropiedad);
     Propiedad.fetchOne(request.params.id).then( ([rows, fieldData]) => {
-        Propiedad.getAgenteTel(request.params.id).then(([tel, fieldDataTel]) =>{
-                console.log(rows);
-                var monto = rows[0].Precio;
-                precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
-                console.log(tel);
-                let TelAgente = tel.length > 0? tel[0].Telefono : '';
-                Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
-                    if (res.length > 0){
-                        console.log(res);
-                        
-                        response.render(path.join('propiedad', 'propiedad.vista.residencial.ejs'), {
-                            propiedad: rows[0],
-                            ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
-                            residencial: res[0],
-                            precio: precio,
-                            numeroenc: TelAgente,
-                        }); 
-                    }
-                    else 
-                    {
-                        Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
-                            if (com.length > 0){
-                                console.log(com);
-                                response.render(path.join('propiedad', 'propiedad.vista.comercial.ejs'), {
-                                    propiedad: rows[0],
-                                    comercial: com[0],
-                                    precio: precio,
-                                });
-                            }
-                            else{
-                                Propiedad.isTerreno(request.params.id).then( ([terr,fieldData]) => {
-                                    if (terr.length > 0){
-                                        console.log(terr);
-                                        response.render(path.join('propiedad', 'propiedad.vista.terreno.ejs'), {
-                                            propiedad: rows[0],
-                                            terreno: terr[0],
-                                            precio: precio,
-                                        });
-                                    }
-                                }).catch((error) => {
-                                    console.log(error);
-                                });
-                            }
-                        }).catch();
-                    }
-                }).catch();
+        Propiedad.fetchImages(request.params.id).then( ([imagenes, fieldData]) => {
+            console.log(imagenes);
+            Propiedad.getAgenteTel(request.params.id).then(([tel, fieldDataTel]) =>{
+                    console.log('id de propiedad');
+                    console.log(request.params.id);
+                    let precio = 0;
+                    console.log(tel);
+                    let TelAgente = tel.length > 0? tel[0].Telefono : '';
+                    Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
+                        if (res.length > 0){
+                            console.log(res);
+                            response.render(path.join('propiedad', 'propiedad.vista.residencial.ejs'), {
+                                propiedad: rows[0],
+                                ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
+                                residencial: res[0],
+                                precio: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(rows[0].Precio),
+                                numeroenc: TelAgente,
+                                imagenes: imagenes,
+                            }); 
+                        }
+                        else 
+                        {
+                            Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
+                                if (com.length > 0){
+                                    console.log(com);
+                                    response.render(path.join('propiedad', 'propiedad.vista.comercial.ejs'), {
+                                        propiedad: rows[0],
+                                        comercial: com[0],
+                                        precio: precio,
+                                    });
+                                }
+                                else{
+                                    Propiedad.isTerreno(request.params.id).then( ([terr,fieldData]) => {
+                                        if (terr.length > 0){
+                                            console.log(terr);
+                                            response.render(path.join('propiedad', 'propiedad.vista.terreno.ejs'), {
+                                                propiedad: rows[0],
+                                                terreno: terr[0],
+                                                precio: precio,
+                                            });
+                                        }
+                                    }).catch((error) => {
+                                        console.log(error);
+                                    });
+                                }
+                            }).catch();
+                        }
+                    }).catch();
 
-            }).catch( (error) => {
-                console.log(error);
-            });
+                }).catch( (error) => {
+                    console.log(error);
+                });
+            
+            }).catch( err =>{
+                console.log(err);
+            });        
+        
         }).catch( err =>{
-            console.log(error);
+            console.log(err);
         });
             
 
@@ -114,11 +123,12 @@ exports.post_new = (request, response, next) => {
         const pisos             = parseInt(v.pisos);
         const gas               = parseInt(v.gas);
         const cocina            = parseInt(v.cocina);
+        const precio            = parseInt(v.precio);
 
         let d = {
             titulo          : v.titulo,
             descripcion     : v.descripcion,
-            precio          : v.precio,
+            precio          : precio,
             estado          : v.estado,
             muncipio        : v.muncipio,
             colonia         : v.colonia,
