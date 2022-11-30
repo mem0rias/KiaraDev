@@ -42,7 +42,7 @@ exports.loginverf = (request, response, next) => {
                     request.session.IdRol = rows[0].IdRol;
                     request.session.Telefono = rows[0].Telefono;
                     request.session.Email = rows[0].email;
-                    request.session.NombreUser= rows[0].Nombre + ' ' + rows[0].PA;
+                    request.session.NombreUser= rows[0].Nombre + ' ' + rows[0].PA + ' ' +  rows[0].SA;
                     
 
                     User.getPermisos(rows[0].IdUsuario)
@@ -127,10 +127,22 @@ exports.registrarse = (request, response, next) => {
 
                 // Se ejecuta el proceso para guardar toda la informacion del usuario dentro de la BD
                 reg.save().then(() => {
+                    User.asignan().then(() => {
                     // Se envia mensaje de registro y se redirige al login.
-                    request.session.infopositiva = 'Registro exitoso!';
-                    return request.session.save(err => {
+                        request.session.infopositiva = 'Registro exitoso!';
+                        return request.session.save(err => {
                         response.redirect('/login');
+                         });
+                    
+
+                    }).catch((error) => {
+                        // Si la BD no esta disponible se envia este mensaje
+                        request.session.info = 'Hay un problema con la pagina, intentalo mas tarde';
+                        return request.session.save(err => {
+                            response.redirect('/login/registrarse');
+                    
+                    
+                         });
                     });
                 }).catch((error) => {
                     // Si la BD no esta disponible se envia este mensaje
@@ -138,8 +150,10 @@ exports.registrarse = (request, response, next) => {
                     return request.session.save(err => {
                         response.redirect('/login/registrarse');
                     });
-                });
+                });      
             }
+            
+        
         }).catch(err => {
             //Error por si la BD falla cuando se checa el correo.
             request.session.info = 'Hay un problema con la pagina, intentalo mas tarde';
@@ -147,6 +161,7 @@ exports.registrarse = (request, response, next) => {
                 response.redirect('/login/registrarse');
             });
         });
+            
     } else {
         // Error si el correo o contra no pasan el middleware  de verificacion y se intenta salva
         request.session.info = 'Revisa tus campos';

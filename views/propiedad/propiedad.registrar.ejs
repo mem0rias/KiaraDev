@@ -26,7 +26,7 @@
                 <div class="section px-0 py-5">
                     <div class="card">
                         <div class="card-content">
-                        <div class="container">
+                        <div class="active-container">
                             <div class="content is-small">
                                 <div class="field">
                                     <label class="label">Titulo</label>
@@ -44,7 +44,7 @@
                                         <label class="label">Tipo de propiedad</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
-                                                <select class="select" name="uso" id="tipoPropiedad">
+                                                <select class="select" name="uso" id="tipoPropiedad" onchange="cambiarcolor(this)">
                                                     <option value="" disabled selected hidden>Seleccionar tipo</option>
                                                     <option value="1">Residencial</option>
                                                     <option value="2">Comercial</option>
@@ -145,7 +145,7 @@
             <div class="section px-0 py-5">
                 <div class="card">
                     <div class="card-content">
-                        <div class="container">
+                        <div class="active-container">
                             <div class="columns">
                                 <div class="column is-6">
                                     <div class="content is-small">
@@ -218,7 +218,7 @@
                 <div class="section px-0 py-5">
                     <div class="card">
                         <div class="card-content">
-                            <div class="container">
+                            <div class="active-container">
                                 <div class="content is-small">
                                     <div class="field">
                                         <label class="label">Precio</label>
@@ -236,7 +236,7 @@
                 <div class="section px-0 py-5">
                     <div class="card">
                         <div class="card-content">
-                            <div class="container">
+                            <div class="active-container">
                                 <div class="content is-small">  
                                     <div class="field">
                                         <label class="label">Imagenes</label>
@@ -259,7 +259,7 @@
                 </div>
 
 
-                <div class="container">
+                <div class="active-container">
 
                     <div id="form-complement"> 
                     </div>
@@ -286,9 +286,12 @@
 <script src="../js/validate.js"></script>
 <script>
     let residencial = new Object();
-    let comercial = new Object()
+    let comercial = new Object();
+
+
     <% if (residencial) { %>
 
+        
          residencial.IdPropiedad        = <%= residencial.IdPropiedad        %>;
          residencial.Recamaras          = <%= residencial.Recamaras          %>;
          residencial.Banos              = <%= residencial.Banos              %>;
@@ -304,8 +307,12 @@
          residencial = '';
          comercial = <%= comercial %>;
     <% } else { %>
-        residencial = null;
-        comercial = null;
+
+        residencial.Recamaras  = 0;
+        residencial = 0;
+        comercial = 0;
+
+
     <% } %>     
 </script>
 

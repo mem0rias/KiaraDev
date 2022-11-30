@@ -3,9 +3,11 @@ let map = ['1','2','3','4','5','6','7','8'];
 
 const checkbutton = (map) =>{
     let savebutton = document.getElementById('enviar');
+    let cambio = document.getElementById('tipoPropiedad').value;
+    console.log(cambio);
     //Si el arreglo tiene un tamaño mayor a 0 significa que hay inputs que no cumplen con la regla y se deshabilita el boton.
     console.log(map);
-    if(map.length > 0 ){
+    if(map.length > 0 && cambio != ''){
         savebutton.disabled = true;
         document.getElementById('mensaje').innerHTML= 'Llena todos los campos :)';
     }

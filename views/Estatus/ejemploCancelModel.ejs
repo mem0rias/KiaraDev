@@ -24,17 +24,39 @@
                          <nav class = "level">
                             <div class = "level-left">
                                
-                                <a class="column is-5 level-item" data-target="#modal" href="/dashboard/asignado">
-                                    <button class="button is-primary is-danger" id="propiedad" value="<%= listEstatus2[0].idpropiedad ? listEstatus2[0].idpropiedad : listEstatus[0].idpropiedad%>" onclick="cancelProcedimiento(this)">
+                              <% if (dummyval == 'compra'){ %>
+                                 <a class="column is-5 level-item" data-target="#modal" href="/dashboard/asignado">
+                                    <button class="button is-primary is-danger" id="propiedad" value="<%= listEstatus[0].idpropiedad ? listEstatus[0].idpropiedad : listEstatus[0].idpropiedad%>" onclick="cancelProcedimiento(this)">
                                         Aceptar
                                     </button>
                                 </a>
+                               <% } %>
+
+                               <% if (dummyval == 'renta'){ %>
+                                 <a class="column is-5 level-item" data-target="#modal" href="/dashboard/asignado">
+                                    <button class="button is-primary is-danger" id="propiedad" value="<%= listEstatus2[0].idpropiedad ? listEstatus2[0].idpropiedad : listEstatus2[0].idpropiedad%>" onclick="cancelProcedimiento(this)">
+                                        Aceptar
+                                    </button>
+                                </a>
+                               <% } %>                              
+
                                
-                               <a class = "level-item" href="/estatus/<%= listEstatus2[0].idpropiedad ? listEstatus2[0].idpropiedad : listEstatus[0].idpropiedad%>">
+                                <% if ((permisos.indexOf('editar_seguimiento') != -1) && dummyval == 'compra'){ %>
+                                 <a class = "level-item" href="/estatus/<%= listEstatus[0].idpropiedad ? listEstatus[0].idpropiedad : listEstatus[0].idpropiedad%>">
                                     <button class="button is-primary is-danger">
                                         Cancelar
                                     </button>
-                               </a>
+                                 </a>
+                               <% } %>
+
+                              <% if ((permisos.indexOf('editar_seguimiento') != -1) && dummyval == 'renta'){ %>
+                                 <a class = "level-item" href="/estatus/<%= listEstatus2[0].idpropiedad ? listEstatus2[0].idpropiedad : listEstatus2[0].idpropiedad%>">
+                                    <button class="button is-primary is-danger">
+                                        Cancelar
+                                    </button>
+                                 </a>
+                               <% } %>
+
                             </div>
                          </nav>
                       </div>

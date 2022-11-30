@@ -46,8 +46,8 @@ const fileFilter = (request, file, callback) => {
 
 
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits: { fileSize: 20 * 1024 * 1024 } }).any('archivo2'));
-//app.use(multer({ storage: fileStorage }).single('archivo')); 
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20*1024*1024}}).any('archivo2'));
+
 
 
 // Middleware que analiza errores de multer en caso que las protecciones del front end se salten.
