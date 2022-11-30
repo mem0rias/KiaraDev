@@ -9,7 +9,7 @@ module.exports = class Dashboard {
 
 
     static fetchAsigando(n){
-        return db.execute('SELECT p.IdPropiedad, Descripcion, Imagenes, Titulo, Colonia, Estado, Municipio FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
+        return db.execute('SELECT a.IdPropiedad,Visibilidad, Descripcion, Imagenes, Titulo, Colonia, Estado FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
     }
 
     
