@@ -1,6 +1,7 @@
 const path = require('path');
 const Propiedad = require('../models/propiedad.model');
 const Dashboard = require('../models/dashboard.model');
+const expediente = require('../models/expediente.model');
 
 exports.get_propiedades = (request, response, next) => {
 
@@ -94,6 +95,17 @@ exports.post_new = (request, response, next) => {
     const userId            = parseInt(response.locals.IdUser);
     console.log(v)
     console.log(request.files);
+    let stringpath = '';
+    let N_Pics = request.body.NPics;
+    if(request.files.imagen){
+        for(elements of request.files.imagen){
+            stringpath += elements.path + ',';
+        }
+        NPics = request.files.imagen.length;
+        console.log(stringpath);
+    }else{
+        NPics = 0;
+    }
     if(v.uso == '1') {
 
         const recamaras         = parseInt(v.recamaras);
@@ -129,7 +141,12 @@ exports.post_new = (request, response, next) => {
         };
 
         Propiedad.agregarResidencial(d).then( () => {
-                response.redirect('/dashboard/asignado');
+                Propiedad.saveImages(stringpath,N_Pics).then(() =>{
+                    response.redirect('/dashboard/asignado');
+                }).catch(err =>{
+                    console.log(err);
+                });
+                
             }).catch( (error) => {
                 console.log(error);
         });
@@ -167,7 +184,12 @@ exports.post_new = (request, response, next) => {
 
         Propiedad.agregarComercial(d)
                 .then( () => {
-                    response.redirect('/dashboard/asignado');
+                    Propiedad.saveImages(stringpath,N_Pics).then(() =>{
+                        response.redirect('/dashboard/asignado');
+                    }).catch(err =>{
+                        console.log(err);
+                    });
+                    
                 }).catch( (error) => {
                     console.log(error);
         });

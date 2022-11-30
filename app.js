@@ -50,12 +50,20 @@ const fileStorage = multer.diskStorage({
 
 const fileFilter = (request, file, callback) => {
 
-
-    if (file.mimetype == 'application/pdf') {
-        callback(null, true);
-    } else {
-        callback(null, false);
+    if(file.fieldname == 'archivo2'){
+        if (file.mimetype == 'application/pdf') {
+            callback(null, true);
+        } else {
+            callback(null, false);
+        }
+    }else if(file.fieldname == 'imagen'){
+        if(file.mimetype == 'image/png'){
+            callback(null, true);
+        }else{
+            callback(null, false);
+        }
     }
+    
 }
 
 

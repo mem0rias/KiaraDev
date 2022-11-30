@@ -265,7 +265,7 @@
                             <div id="bloque_imagenes">
                                 <div class="file is-small is-boxed has-name is-danger ">
                                     <label class="file-label ">
-                                        <input class="file-input" type="file" name="imagen" id="boton-0" onchange="clickArchivo(this)">
+                                        <input class="file-input" type="file" name="imagen" accept="image/*" id="boton-0" onchange="clickArchivo(this)">
                                         <span class="file-cta">
                                         
                                             <span class="file-label">
@@ -322,7 +322,7 @@
             `
                 <div class="file is-small is-boxed has-name is-danger ">
                     <label class="file-label ">
-                        <input class="file-input" type="file" name="imagen" id="boton-${i}" onchange="clickArchivo(this)">
+                        <input class="file-input" type="file" name="imagen" accept="image/*" id="boton-${i}" onchange="clickArchivo(this)">
                         <span class="file-cta">
                         
                             <span class="file-label">
@@ -369,12 +369,6 @@
         document.getElementById('NPics').value = Pics;
     }
 
-    /*const subirArch = () => {
-        let form = document.getElementById('formaimgs');
-        document.getElementById('NPics').value = Pics;
-        console.log(Pics);
-        form.submit();
-    }*/
 </script>
 
 <script>
