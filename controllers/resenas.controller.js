@@ -6,7 +6,6 @@ moment.locale('es-mx');
 
 
 exports.get_resena = (request, response, next) => {
-
     response.render('./resenas/resenas', {
         logged: request.session.isLoggedIn,
         admin: request.session.admin,
