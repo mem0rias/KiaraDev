@@ -5,7 +5,7 @@
         <div class="card-image">
           <a href="/propiedades/<%=propiedad.IdPropiedad%>">  
           <figure class="image is-4by3">
-            <img src="<%=propiedad.Imagenes %>" alt="Placeholder image">
+            <img src="../uploads/<%=propiedad.Imagenes %>" alt="Placeholder image">
           </figure>
           </a>
         </div>
@@ -25,19 +25,35 @@
               </a>
             </div>
           
+            
             <footer class="card-footer">
+              <% if(permisos.indexOf('editar_propiedad') != -1) { %>
               <div class="card-footer-item has-text-left">
                 <a href="/propiedades/editar/<%=propiedad.IdPropiedad%>"><h1>Editar</h1></a>
               </div>
-              <div class="card-footer-item has-text-left">
-                <a href="<%= propiedad.Visibilidad == 1 ? `/estatus/asignar/${propiedad.IdPropiedad}` : 'javascript:void(0)'%>"><h1><%= propiedad.Visibilidad == 1 ? 'Iniciar Proceso' : 'Cancelar Proceso'%> </h1></a>
-              </div>    
+              <% } %> 
+              <% if(permisos.indexOf('cancelar_proc') != -1) { %>
+                <div class="card-footer-item has-text-left">
+                  <a href="<%= propiedad.Visibilidad == 1 ? `/estatus/asignar/${propiedad.IdPropiedad}` : 'javascript:void(0)'%>"><h1><%= propiedad.Visibilidad == 1 ? 'Iniciar Proceso' : 'Cancelar Proceso'%> </h1></a>
+                </div>  
+              <% } %>  
               <div class="card-footer-item has-text-left">
                 <a href="/estatus/<%=propiedad.IdPropiedad%>"><h1>Seguimiento</h1></a>
               </div>
+              <% if(permisos.indexOf('editar_seguimiento') != -1) { %>
               <div class="card-footer-item has-text-left">
-                <a  onclick="eliminar(<%= propiedad.IdPropiedad%>)"><h1>Eliminar</h1></a>
-              </div>                
+                <a href="/expediente/revPropiedad/<%= propiedad.IdPropiedad %>"><h1>Expediente</h1></a>
+              </div>
+              <% } else { %>
+                <div class="card-footer-item has-text-left">
+                  <a href="/expediente/Propiedad/<%= propiedad.IdPropiedad %>"><h1>Expediente</h1></a>
+                </div>
+              <% } %>
+              <% if(permisos.indexOf('editar_propiedad') != -1) { %>
+                <div class="card-footer-item has-text-left">
+                  <a  onclick="eliminar(<%= propiedad.IdPropiedad%>)"><h1>Eliminar</h1></a>
+                </div>
+              <% } %>                
               
             </footer>
             
