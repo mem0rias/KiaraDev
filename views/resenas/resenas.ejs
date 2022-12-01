@@ -14,7 +14,7 @@
         <div class="box has-text-left ">
             <strong class="is-size-4 has-text-grey-dark">Reseñas de nuestros clientes</strong>
         </div>
-        <input type="hidden" id="permisos" value="<%= permisos.indexOf('panel_admin') != -1 %>">
+        <input type="hidden" id="permisos" value="<%= permisos.indexOf('panel_admin') != -1 ? permisos.indexOf('panel_admin') != -1 : 0 %>">
         <div class="box" id="coments">
         </div>
         <% if (logged == true) { %>
