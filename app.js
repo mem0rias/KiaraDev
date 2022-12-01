@@ -136,6 +136,10 @@ app.use('/aviso', aviso);
 app.use('/estatus', estatus);
 app.use('/servicios', servicios);
 
+app.get('/.well-known/pki-validation/679A262340FA78F033E7C445D3983842.txt', (request,response,next) => {
+    response.download('public/.well-known/pki-validation/679A262340FA78F033E7C445D3983842.txt');
+})
+
 app.get('/', (request, response, next) => {
     response.redirect('/index');
 });
