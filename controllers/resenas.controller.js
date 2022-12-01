@@ -11,6 +11,7 @@ exports.get_resena = (request, response, next) => {
         admin: request.session.admin,
         aprobado: request.body.aprobado,
     });
+
 };
 
 exports.postAdd = (request, response, next) => {
@@ -53,3 +54,10 @@ exports.post_delete_ajax = (request, response, next) => {
         response.status(200).json({ mensaje: `El comentario ${request.body.idComentario} fue eliminado` });
     }).catch(error => { console.log(error) });
 };
+
+exports.aprobado_ajax = (request, response, next) => {
+    Resenas.aprobar(request.body.idComentario).then(() => {
+        response.status(200).json({ mensaje: `El comentario ${request.body.idComentario} fue aprobado` });
+
+    }).catch(error => { console.log(error) });
+}
