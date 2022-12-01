@@ -172,19 +172,22 @@
    
    
    .imageContain{
-       position: relative;
-       top:  0;
-       left: -5%;
-       width: 40%;
-       height: 40%;
-       z-index: 12;
-       margin: 5vh 15%;
-       background-position: center;
-       background-size: cover;
-       background-repeat: no-repeat;
-       cursor: pointer;
+      position: relative;
+      top: 1%;
+      left: -5%;
+      width: 20%;
+      height: 90%;
+      min-width: 80%;
+      min-height: 100%;
+      z-index: 12;
+      margin: auto;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      cursor: pointer;
    
    }
+   
    
    @keyframes he{
    
