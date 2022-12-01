@@ -8,11 +8,16 @@
         </div>
     </section>
 
-    <div class="has-background-light box">
 
+    <div class="has-background-light box ">
+
+        <div class="box has-text-left ">
+            <strong class="is-size-4 has-text-grey-dark">Reseñas de nuestros clientes</strong>
+        </div>
+        <input type="hidden" id="permisos" value="<%= permisos.indexOf('panel_admin') != -1 %>">
         <div class="box" id="coments">
         </div>
-        <% if (logged == true && aprobado == 1) { %>
+        <% if (logged == true) { %>
             <div class="box">
                 <form action="/resenas" method="post">
                     <article class="media">
@@ -22,22 +27,34 @@
                                     <input class="input" type="text" id="resena_cont" name="contenido" onkeyup="" maxlength="255" placeholder="Añade un comentario...">
                                 </p>
                             </div>
-                            <div class="field">
-                                <input class="button has-text-centered is-danger" type="submit" id="enviar" name="enviar" value="Publicar">
+                            <div class="box">
+                                <p class="control">
+                                    <input class="button has-text-centered is-danger" type="submit" id="enviar" name="enviar" value="Publicar">
                                 </p>
                             </div>
 
                         </div>
                     </article>
                 </form>
-                <% } %>
+                <% }else { %>
+
+                    <div class="box  has-text-centered ">
+                        <div class="field">
+                            <p class="is-size-4">
+                                <strong>¿Quieres escribir una reseña?. <a href="/login">Inicia Sesión</a> para continuar</strong>
+                            </p>
+                        </div>
+                    </div>
+                    <% } %>
+
             </div>
+
     </div>
 
     <script>
         const desplegar_comentarios = () => {
-
             let html = '';
+            let permiso = document.getElementById('permisos').value != 'true' ? 'is-hidden' : '';
             fetch('/resenas/fetch/', {
                 method: 'GET',
                 headers: {
@@ -45,36 +62,54 @@
                 }
             }).then(result => {
                 return result.json();
-            }).then(data  =>  {
+            }).then(data => {
                 for (element of data) {
+                    html += '  <% if (logged == true ) { %>';
                     html += '<article class="media" id="' + element.idComentario + '">';
                     html += '<div class="media-content">';
                     html += '<strong>' + element.Nombre + ' ' + element.PA + ' ' + element.SA + '</strong>';
                     html += '<br>';
                     html += element.contenido;
                     html += '   </br> ';
-                    html += '  <% if (logged == true ) { %>';
                     html += ' <div class="column is-6 is-offset-11">';
-                    html += '  <button class="button has-text-centered is-danger" onclick="eliminar(' + element.idComentario + ')" value="Eliminar">Eliminar</button>';
+                    html += '  <button class="button has-text-centered is-danger ' + permiso + '" onclick="eliminar(' + element.idComentario + ')" value="Eliminar">Eliminar</button>';
                     html += '  </div>';
-                    html += ' <div class="column is-6 is-offset-11">';
-                    html += '  <button class="button has-text-centered is-success" onclick="aprobar(' + element.idComentario + ')" value="Aprobar">Aprobar</button>';
-                    html += '  </div>';
-                    html += ' <% } %>';
+                    if (element.aprobado == 0) {
+                        html += ' <div class="column is-6 is-offset-11">';
+                        html += '  <button class="button has-text-centered is-success ' + permiso + '" onclick="aprobar(' + element.idComentario + ')" value="Aprobar">Aprobar</button>';
+                        html += '  </div>';
+                    }
                     html += ' <div class="column is-4">';
                     html += ' <small class ="has-text-grey-light">' + element.fecha + '</small> ';
                     html += '  </div>';
                     html += '</div> ';
                     html += '</article> ';
+                    html += ' <% } else {%>';
+                    if (element.aprobado == 1) {
+                        html += '<article class="media" id="' + element.idComentario + '">';
+                        html += '<div class="media-content">';
+                        html += '<strong>' + element.Nombre + ' ' + element.PA + ' ' + element.SA + '</strong>';
+                        html += '<br>';
+                        html += element.contenido;
+                        html += '   </br> ';
+                        html += ' <div class="column is-4">';
+                        html += ' <small class ="has-text-grey-light">' + element.fecha + '</small> ';
+                        html += '  </div>';
+                        html += '</div> ';
+                    }
+
+                    html += '</article> ';
+                    html += ' <% } %>';
                 }
                 document.getElementById('coments').innerHTML = html;
             }).catch(err => {
                 console.log(err);
             });
-
         }
-
         window.onload = desplegar_comentarios;
+        window.onload = desplegar_comentarios;
+
+
 
         const eliminar = (id) => {
             fetch('/resenas/delete', {
@@ -90,28 +125,26 @@
                 return result.json();
             }).then(data  =>  {
                 document.getElementById(id).innerHTML = "";
+                desplegar_comentarios();
             }).catch(err => {
                 console.log(err);
             });
         }
 
         const aprobar = (id) => {
-            console.log('Esto es un id', id);
-            console.log('Enter');
             fetch('/resenas/aprobado', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-
                 },
                 body: JSON.stringify({
                     idComentario: id,
-                    aprobado: "1",
                 }),
             }).then(result => {
                 return result.json();
             }).then(data  =>  {
-                document.getElementById(id).innerHTML = "";
+                console.log('Se aprobó el comentario');
+                desplegar_comentarios();
             }).catch(err => {
                 console.log(err);
             });
