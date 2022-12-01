@@ -13,6 +13,7 @@ router.get('/usuarios', isAuth, dashboardController.get_userlist);
 
 
 router.get('/asignado', isAuth,dashboardController.get_propiedadesAsignadas);
+router.get('/MisPropiedades', isAuth, dashboardController.getPropiedades_Propias);
 
 router.get('/info', isAuth,dashboardController.get_Info);
 router.post('/info/actualizar', isAuth,dashboardController.post_Info);

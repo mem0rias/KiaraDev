@@ -34,6 +34,10 @@ const fileStorage = multer.diskStorage({
             }else if(file.fieldname === 'imagen'){
                 newpath = 'public/uploads';
                 fs.mkdirSync(newpath, { recursive: true })
+            }else if(file.fieldname === 'archivoProp'){
+                let IdProp = request.body.user;
+                newpath = `./Expedientes/Propiedades/${IdProp}`;
+                fs.mkdirSync(newpath, { recursive: true })
             }
             callback(null, newpath);
         //}
@@ -50,7 +54,7 @@ const fileStorage = multer.diskStorage({
 
 const fileFilter = (request, file, callback) => {
 
-    if(file.fieldname == 'archivo2'){
+    if(file.fieldname == 'archivo2' | file.fieldname == 'archivoProp'){
         if (file.mimetype == 'application/pdf') {
             callback(null, true);
         } else {
@@ -68,7 +72,7 @@ const fileFilter = (request, file, callback) => {
 
 
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20*1024*1024}}).fields([{name: 'archivo2'},{name: 'imagen'}]));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20*1024*1024}}).fields([{name: 'archivo2'},{name: 'imagen'},{name: 'archivoProp'}]));
 
 
 

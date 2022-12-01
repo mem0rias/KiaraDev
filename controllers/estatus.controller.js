@@ -7,31 +7,41 @@ const listEstatus = require('../models/estatus.model');
 
 exports.get_EstatusP = (request, response, next) => {
     let userid = request.session.IdUser;
+    
     Dashboard.fetchUser(userid).then( ([usuarioData, fieldData]) => {
-        listEstatus.fetchPropertiesC(userid)
-        .then( ([rows, fieldData]) => {
-            console.log(rows);
-            listEstatus.fetchPropertiesR(userid)
-                .then( ([rows2, fieldData2]) => {
-                    console.log(rows2);
-                    response.render(path.join('dashboard', 'dashboard.Seguimiento.ejs'), {
-                        PropertiesC: rows,
-                        PropertiesR: rows2,
-                        usuario :usuarioData,
-                        nombre      : response.locals.NombreUser    ,
-                        telefono    : response.locals.Telefono  ,
-                        email       : response.locals.Email     ,
-                        sesionId: response.locals.IdRol, 
-                        sesionUser: response.locals.IdUser,
-                        permisos: request.session.permisos,
-                    });
-                }).catch( (error) => {
-                    console.log(error);
-                }); 
-
-        }).catch( (error) => {
-            console.log(error);
-        }); 
+        
+        Dashboard.fetchPropiedadesPropias(userid).then(([userProps, fieldData]) => {
+            console.log(userProps);
+            let hasprop = userProps.length > 0 ? true : false;
+            listEstatus.fetchPropertiesC(userid)
+            .then( ([rows, fieldData]) => {
+                console.log(rows);
+                listEstatus.fetchPropertiesR(userid)
+                    .then( ([rows2, fieldData2]) => {
+                        console.log(rows2);
+                        response.render(path.join('dashboard', 'dashboard.Seguimiento.ejs'), {
+                            PropertiesC: rows,
+                            PropertiesR: rows2,
+                            usuario :usuarioData,
+                            nombre      : response.locals.NombreUser    ,
+                            telefono    : response.locals.Telefono  ,
+                            email       : response.locals.Email     ,
+                            sesionId: response.locals.IdRol, 
+                            sesionUser: response.locals.IdUser,
+                            permisos: request.session.permisos,
+                            HasProp : hasprop,
+                        });
+                    }).catch( (error) => {
+                        console.log(error);
+                    }); 
+    
+            }).catch( (error) => {
+                console.log(error);
+            });
+        }).catch(err => {
+            console.log(err);
+        })
+         
         
 
     }).catch( (error) => {
