@@ -69,4 +69,8 @@ module.exports = class expediente{
     static fetchRequirementsProp(exp ,IdProp) {
         return db.execute('select tip.tipo_doc, tip.descripcion, user.URL, user.Comentarios, user.estatus from (select ex.tipo_doc, ex.URL, ex.Comentarios, ex.estatus from exp_tipo_doc_prop ex where ex.IdPropiedad = ? and ex.Tipo_Exp = ?) user right join (select r.tipo_doc, tp.tipo_doc as "tipo_documento", tp.descripcion from requisitos_prop r, tipo_doc_prop tp where r.tipo_doc = tp.tipo_doc and r.Tipo_Exp = ?) tip on user.tipo_doc = tip.tipo_doc;', [IdProp,exp,exp]);
     }
+
+    static fetchAsignados(IdPropiedad){
+        return db.execute('SELECT u.nombre, u.PA, u.SA, u.Telefono, u.email from usuario u, asignacion a where u.IdUsuario = a.IdUsuario and IdPropiedad = ?', [IdPropiedad]);
+    }
 }

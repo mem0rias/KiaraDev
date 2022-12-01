@@ -1,13 +1,28 @@
 <%- include('../includes/head.ejs') %>
     <div class="container">
         <h1 class="title is-large"> Avance del proceso</h1>
-        <div class="box">
-            <p> Propietario: <%= Asignados[1].nombre + Asigna </p>
-                <p> Correo: </p>
-                <p> Telefono: </p>
-            <p> Interesado: </p>
-                <p> Correo: </p>
-                <p> Telefono: </p>
+        <div class="box content">
+        <% if(permisos.indexOf('panel_agente') == -1 & permisos.indexOf('panel_admin') == -1) {%>
+            <p> Agente Inmobiliario: <%= Asignados[0].nombre + ' ' + Asignados[0].PA + ' ' + Asignados[0].SA %> </p>
+                <ul>
+                    <li> <p> Correo: <%= Asignados[0].email %></p> </li>
+                    <li> <p> Telefono: <%= Asignados[0].Telefono %> </p> </li>
+                </ul>
+        <% } %>
+        <% if(permisos.indexOf('panel_admin') != -1 | permisos.indexOf('panel_agente') != -1) { %>
+            <p> Propietario: <%= Asignados[1].nombre + ' ' + Asignados[1].PA + ' ' + Asignados[1].SA %> </p>
+                <ul>
+                    <li> <p> Correo: <%= Asignados[1].email %></p> </li>
+                    <li> <p> Telefono: <%= Asignados[1].Telefono %> </p> </li>
+                </ul>
+                
+                
+            <p> Interesado:  <%= Asignados[2].nombre + ' ' + Asignados[2].PA + ' ' + Asignados[2].SA %></p>
+                <ul>
+                    <li> <p> Correo: <%= Asignados[2].email %></p> </li>
+                    <li> <p> Telefono: <%= Asignados[2].Telefono %> </p> </li>
+                </ul>
+        <% } %>
         </div>
         <div class="level">
             <div class="level-item has ">
