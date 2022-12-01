@@ -216,8 +216,6 @@ module.exports = class Propiedad {
         return db.execute('CALL updateHeader(?)', [URL]);
     }
 
-
-
     static fetchImages(id){
         return db.execute('SELECT Imagen FROM Imagenes WHERE IdPropiedad = ?', [id]);
     }
