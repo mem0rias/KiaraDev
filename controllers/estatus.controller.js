@@ -81,7 +81,7 @@ exports.get_AvanceP = (request, response, next) => {
                         console.log('entra a error');
                         request.session.info = 'La propiedad no cuenta con seguimiento activo';
 
-                        return response.render(path.join('Dashboard', 'dashboard.noDisponible.ejs'), {
+                        return response.render(path.join('Dashboard', 'noDisponible.ejs'), {
                             permisos: request.session.permisos,
                             nombre      : response.locals.NombreUser    ,
                             telefono    : response.locals.Telefono  ,
