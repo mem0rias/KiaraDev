@@ -6,11 +6,15 @@ const User = require('../models/dashboard.model');
 exports.get_dashboard = (request, response, next) => {
     let sesionID = response.locals.IdUser;
     Dashboard.fetchUser(sesionID).then( ([usuarioData, fieldData]) => {
-            console.log(sesionID);
-             console.log(usuarioData);
-            console.log('Infor del usuario');
-            console.log(usuarioData);
-            console.log(response.locals.Email);
+        
+        Dashboard.fetchPropiedadesPropias(sesionID).then(([userProps, fieldData]) => {
+            console.log(userProps);
+            let hasprop = userProps.length > 0 ? true : false;
+            //console.log(sesionID);
+            //console.log(usuarioData);
+           // console.log('Infor del usuario');
+            //console.log(usuarioData);
+            //console.log(response.locals.Email);
             response.render(path.join('dashboard', 'dashboard.ejs'), {
                 usuario: usuarioData[0],
                 sesionId    : response.locals.IdRol     , 
@@ -18,6 +22,7 @@ exports.get_dashboard = (request, response, next) => {
                 nombre      : response.locals.NombreUser    ,
                 telefono    : response.locals.Telefono  ,
                 email       : response.locals.Email     ,
+                HasProp     : hasprop,
                 
                 
                 permisos: request.session.permisos,
@@ -27,6 +32,10 @@ exports.get_dashboard = (request, response, next) => {
         }).catch( (error) => {
             console.log(error);
         });    
+    }).catch( (err) => {
+        console.log(err);
+    })
+            
 };
 
 exports.get_Info =  (request, response, next) => {
@@ -70,7 +79,6 @@ exports.get_propiedadesAsignadas = (request, response, next) => {
     Dashboard.fetchAsigando(id)
         .then( ([propiedadesAsignadas, fieldData]) => {
             Dashboard.fetchUser(id).then( ([usuarioData, fieldData]) => {
-
                     console.log(usuarioData);
                     console.log(propiedadesAsignadas);
                     console.log(id);
@@ -101,6 +109,40 @@ exports.get_propiedadesAsignadas = (request, response, next) => {
 
 };
 
+exports.getPropiedades_Propias = (request, response, next) => {
+    let sesionID = response.locals.IdUser;
+    Dashboard.fetchUser(sesionID).then( ([usuarioData, fieldData]) => {
+        
+        Dashboard.fetchPropiedadesPropias(sesionID).then(([userProps, fieldData]) => {
+            console.log(userProps);
+            let hasprop = userProps.length > 0 ? true : false;
+            let cantidad = userProps.length;
+            //console.log(sesionID);
+            //console.log(usuarioData);
+           // console.log('Infor del usuario');
+            //console.log(usuarioData);
+            //console.log(response.locals.Email);
+            response.render(path.join('dashboard', 'dashboard.propiedadAsignada.ejs'), {
+                usuario: usuarioData[0],
+                sesionId    : response.locals.IdRol     , 
+                sesionUser  : response.locals.IdUser    ,
+                nombre      : response.locals.NombreUser    ,
+                telefono    : response.locals.Telefono  ,
+                email       : response.locals.Email     ,
+                HasProp     : hasprop,
+                propiedad   : userProps     ,
+                cantidad    : cantidad,
+                permisos: request.session.permisos,
+            }); 
+            
+
+        }).catch( (error) => {
+            console.log(error);
+        });    
+    }).catch( (err) => {
+        console.log(err);
+    })
+}
 
 exports.get_userlist = (request, response, next) =>{
     response.render(path.join('dashboard', 'dashboard.listaUsuarios.ejs'),{

@@ -294,3 +294,43 @@ const delfiles = (r) => {
         fs.unlinkSync('.\\' + elements.path);
     }
 }
+
+exports.ExpProp = (request, response, next) => {
+    let IdPropiedad = request.params.IdProp;
+    console.log(IdPropiedad);
+    let exp_types = new Map();
+    expediente.fetchExpTypesProperty(IdPropiedad).then(([rows, fieldData]) => {
+    // Inicializacion del mapa con los valores de la consulta
+        for(elements of rows){
+            exp_types.set(elements.Tipo_Exp, elements.descripion);
+        }
+        let initquery = 0;
+        let msgpos = '';
+        let msg = '';
+        // Render de la consulta con los valores del mapa, mensajes, etc.
+        return request.session.save(err => {
+            response.render('./Expediente/expedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
+        });
+    }).catch( err =>{
+        console.log(err);
+    });
+}
+
+exports.getPropExp = (request, response, next) => {
+    // Obtencion de manera asincrona de los archivos que ya tiene el usuario y los pendientes 
+    // para el tipo de expediente dado
+    let query = request.params.tipo;
+    let idProp = request.params.IdProp;
+    console.log(query +  ' ' +  idProp);
+    expediente.fetchRequirementsProp(query,idProp).then(([rows, fieldData]) =>{
+        console.log(rows);
+        response.status(200).json(rows);
+    }).catch(err =>{
+        response.status(503).json('fail');
+        console.log(err);
+    });
+}
+
+exports.subirArchProp = (request, response, next) => {
+    
+}
