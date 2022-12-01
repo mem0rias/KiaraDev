@@ -432,28 +432,33 @@ exports.RevExpProp = (request, response, next) => {
     request.session.info = '';
     console.log(request.params.idProp);
     let exp_types = new Map();
-    expediente.fetchExpTypesProperty(request.params.idProp).then(([rows, fieldData]) => {
-        Dashboard.fetchPropName(request.params.idProp).then(([propname, fieldData2]) =>{
-            for(elements of rows){
-                exp_types.set(elements.Tipo_Exp, elements.descripion);
-            }
-    
-            // Render de la consulta con los valores del mapa, mensajes, etc.
-            return request.session.save(err => {
-                response.render('./Expediente/expedienteRevProp', {map: exp_types, propname: propname[0],IdProp: request.params.idProp, info: msg, infopositiva: msgpos});
-            });
-        }).catch(err =>{
-            console.log(err);
-        });
-        // Inicializacion del mapa con los valores de la consulta
+    expediente.fetchAsignados(request.params.idProp).then(([asignames, fieldData]) => {
+        expediente.fetchExpTypesProperty(request.params.idProp).then(([rows, fieldData]) => {
+            Dashboard.fetchPropName(request.params.idProp).then(([propname, fieldData2]) =>{
+                for(elements of rows){
+                    exp_types.set(elements.Tipo_Exp, elements.descripion);
+                }
         
-    }).catch(err=>{
-        msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
-        msgpos = '';
-        return request.session.save(err => {
-            response.render('./Expediente/expedienteRevProp', {map: exp_types,propname: propname[0] ,IdProp: request.params.idProp, info: msg, infopositiva: msgpos});
+                // Render de la consulta con los valores del mapa, mensajes, etc.
+                return request.session.save(err => {
+                    response.render('./Expediente/expedienteRevProp', {map: exp_types, Asignados: asignames, propname: propname[0],IdProp: request.params.idProp, info: msg, infopositiva: msgpos});
+                });
+            }).catch(err =>{
+                console.log(err);
+            });
+            // Inicializacion del mapa con los valores de la consulta
+            
+        }).catch(err=>{
+            msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
+            msgpos = '';
+            return request.session.save(err => {
+                response.render('./Expediente/expedienteRevProp', {map: exp_types,propname: propname[0] ,IdProp: request.params.idProp, info: msg, infopositiva: msgpos});
+            });
         });
-    });
+    }).catch(err =>{
+        console.log(err);
+    })
+    
 }
 
 exports.ActualizarProp = (request, response, next) => {
