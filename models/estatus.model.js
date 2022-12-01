@@ -59,4 +59,8 @@ module.exports = class listEstatus{
     static IniciarRenta(ListPasos, NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC){
         return db.execute('CALL `IniciarRenta`( ?, ?, ?, ?, ?, ?, ?)',[ListPasos,NPasos,Propietario,Cliente,Propiedad,U_CasadoP,U_CasadoC]);
     }
+
+    static FetchAsignados(IdPropiedad){
+        return db.execute('SELECT u.nombre, u.PA, u.SA, u.Telefono, u.email from usuario u, asignacion a where u.IdUsuario = a.IdUsuario and IdPropiedad = ?', [IdPropiedad]);
+    }
 }
