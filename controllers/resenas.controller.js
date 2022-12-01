@@ -10,6 +10,7 @@ exports.get_resena = (request, response, next) => {
         logged: request.session.isLoggedIn,
         admin: request.session.admin,
         aprobado: request.body.aprobado,
+        permisos: request.session.permisos ? request.session.permisos : new Array(),
     });
 
 };

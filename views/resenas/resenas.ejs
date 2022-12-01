@@ -14,7 +14,7 @@
         <div class="box has-text-left ">
             <strong class="is-size-4 has-text-grey-dark">Reseñas de nuestros clientes</strong>
         </div>
-
+        <input type="hidden" id="permisos" value="<%= permisos.indexOf('panel_admin') != -1 %>">
         <div class="box" id="coments">
         </div>
         <% if (logged == true) { %>
@@ -54,6 +54,7 @@
     <script>
         const desplegar_comentarios = () => {
             let html = '';
+            let permiso = document.getElementById('permisos').value != 'true' ? 'is-hidden' : '';
             fetch('/resenas/fetch/', {
                 method: 'GET',
                 headers: {
@@ -63,27 +64,42 @@
                 return result.json();
             }).then(data => {
                 for (element of data) {
+                    html += '  <% if (logged == true ) { %>';
                     html += '<article class="media" id="' + element.idComentario + '">';
                     html += '<div class="media-content">';
                     html += '<strong>' + element.Nombre + ' ' + element.PA + ' ' + element.SA + '</strong>';
                     html += '<br>';
                     html += element.contenido;
                     html += '   </br> ';
-                    html += '  <% if (logged == true ) { %>';
                     html += ' <div class="column is-6 is-offset-11">';
-                    html += '  <button class="button has-text-centered is-danger" onclick="eliminar(' + element.idComentario + ')" value="Eliminar">Eliminar</button>';
+                    html += '  <button class="button has-text-centered is-danger ' + permiso + '" onclick="eliminar(' + element.idComentario + ')" value="Eliminar">Eliminar</button>';
                     html += '  </div>';
                     if (element.aprobado == 0) {
                         html += ' <div class="column is-6 is-offset-11">';
-                        html += '  <button class="button has-text-centered is-success" onclick="aprobar(' + element.idComentario + ')" value="Aprobar">Aprobar</button>';
+                        html += '  <button class="button has-text-centered is-success ' + permiso + '" onclick="aprobar(' + element.idComentario + ')" value="Aprobar">Aprobar</button>';
                         html += '  </div>';
                     }
-                    html += ' <% } %>';
                     html += ' <div class="column is-4">';
                     html += ' <small class ="has-text-grey-light">' + element.fecha + '</small> ';
                     html += '  </div>';
                     html += '</div> ';
                     html += '</article> ';
+                    html += ' <% } else {%>';
+                    if (element.aprobado == 1) {
+                        html += '<article class="media" id="' + element.idComentario + '">';
+                        html += '<div class="media-content">';
+                        html += '<strong>' + element.Nombre + ' ' + element.PA + ' ' + element.SA + '</strong>';
+                        html += '<br>';
+                        html += element.contenido;
+                        html += '   </br> ';
+                        html += ' <div class="column is-4">';
+                        html += ' <small class ="has-text-grey-light">' + element.fecha + '</small> ';
+                        html += '  </div>';
+                        html += '</div> ';
+                    }
+
+                    html += '</article> ';
+                    html += ' <% } %>';
                 }
                 document.getElementById('coments').innerHTML = html;
             }).catch(err => {
@@ -109,6 +125,7 @@
                 return result.json();
             }).then(data  =>  {
                 document.getElementById(id).innerHTML = "";
+                desplegar_comentarios();
             }).catch(err => {
                 console.log(err);
             });
@@ -127,6 +144,7 @@
                 return result.json();
             }).then(data  =>  {
                 console.log('Se aprobó el comentario');
+                desplegar_comentarios();
             }).catch(err => {
                 console.log(err);
             });
