@@ -86,7 +86,7 @@ const cargarexp = (elemento) =>{
                             <div class="column is-narrow" style="width: 200px;">
                                 <div class="file is-small is-boxed has-name is-danger ">
                                     <label class="file-label ">
-                                        <input class="file-input"  accept=".pdf" type="file" name="archivo2" id="boton-${elements.tipo_doc}" onchange="clickArchivo(this)">
+                                        <input class="file-input"  accept=".pdf" type="file" name="archivoProp" id="boton-${elements.tipo_doc}" onchange="clickArchivo(this)">
                                         <span class="file-cta">
                                         
                                             <span class="file-label">
@@ -106,7 +106,7 @@ const cargarexp = (elemento) =>{
                                                     <i class="tiny material-icons"> clear </i>  
                                                 </span>
                                             
-                                                <a href="/expediente/download/${elements.tipo_doc}/${Tipo_exp}" id="download-${elements.tipo_doc}" class="level-right button is-boxed is-danger ${hidden}" style="margin-left: 10px">
+                                                <a href="/expediente/downloadProp/${idProp}/${elements.tipo_doc}/${Tipo_exp}" id="download-${elements.tipo_doc}" class="level-right button is-boxed is-danger ${hidden}" style="margin-left: 10px">
                                                     <i class="tiny material-icons"> download </i>  
                                                 </a>
                                         </table>

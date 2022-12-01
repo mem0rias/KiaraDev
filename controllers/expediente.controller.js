@@ -299,6 +299,16 @@ const delfiles = (r) => {
 }
 
 exports.ExpProp = (request, response, next) => {
+    // Mensajes que se desplegaran si se guardan los cambios, o hay errores ,etc...
+    let msgpos = request.session.infopositiva ? request.session.infopositiva : '';
+    request.session.infopositiva = ''; 
+    let msg = request.session.info ? request.session.info : '';
+    request.session.info = '';
+    let userid = request.session.IdUser;
+    // init query nos permite hacer que despues de guardar un archivo se mantenga la seleccion de expediente al recargar la pagina.
+    let initquery = request.session.initquery ? request.session.initquery : 0;
+    request.session.initquery = '';
+    // Este mapa almacena los tipos de expediente que tiene ligado el usuario
     let IdPropiedad = request.params.IdProp;
     console.log(IdPropiedad);
     let exp_types = new Map();
@@ -307,15 +317,17 @@ exports.ExpProp = (request, response, next) => {
         for(elements of rows){
             exp_types.set(elements.Tipo_Exp, elements.descripion);
         }
-        let initquery = 0;
-        let msgpos = '';
-        let msg = '';
+        
         // Render de la consulta con los valores del mapa, mensajes, etc.
         return request.session.save(err => {
             response.render('./Expediente/expedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
         });
     }).catch( err =>{
-        console.log(err);
+        msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
+        msgpos = '';
+        return request.session.save(err => {
+            response.render('./Expediente/expedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
+        });
     });
 }
 
@@ -336,4 +348,170 @@ exports.getPropExp = (request, response, next) => {
 
 exports.subirArchProp = (request, response, next) => {
     
+    // Esta funcion se encarga de cargar y eliminar archivos si es necesario
+    console.log(request.files);
+    console.log(request.body);
+    
+    
+    let filepaths = '';
+    /* Esta variable contiene la lista de archivos que se modificaran en la BD
+        Se crea en base a 2 listas.
+            1. - Archivos que se añadieron unicamente
+            2. - Archivos que se eliminaran del registro del usuario
+            Si se estan tanto añadiendo como eliminando archivos se insertan primero los archivos a añadir seguido de los que se borraran.
+
+    */
+    let lenghtarchivo2 = request.files.archivoProp ? request.files.archivoProp.length : 0;
+    let tiposArchivos = lenghtarchivo2 > 0 ? request.body.SelFiles + ',' + request.body.RMFiles : request.body.RMFiles ;
+    let IdProp = request.body.user;
+    let totalfiles = lenghtarchivo2 + parseInt(request.body.NRMFiles);
+    let estatuslist = '';
+    let Tipo_Exp = request.body.Tipo_Exp;
+    let initquery = request.body.Tipo_Exp;
+    //Se genera un string con los paths de los nuevos archivos
+    // De igual manera se crea la lista de estatus con 1s para simbolizar que ese archivo esta pendiente a ser revisado
+    if(lenghtarchivo2 > 0){
+        for(elements of request.files.archivoProp){
+            filepaths += elements.path + ',';
+            estatuslist += '1,';
+        }
+    }
+
+    // Si hay archivos que se eliminaran se pone el path vacio y en la lista del estatus se pone un 0 que equivale a faltante
+    for(let i = 0; i < request.body.NRMFiles; i++){
+        filepaths += ',';
+        estatuslist += '0,';
+    }
+    console.log(filepaths);
+    console.log(tiposArchivos);
+    console.log(totalfiles);
+    // Stored procedure que recibe los strings que generamos y los aplica en la BD
+    expediente.UploadFileProp(tiposArchivos,totalfiles,IdProp,filepaths, estatuslist, Tipo_Exp).then(() =>{
+        // Se revisa si hay archivos que remover de la carpeta del usuario
+        if(request.body.removepaths != ''){
+            let removepaths = request.body.removepaths.split(',');
+            
+                for(elements of removepaths){
+                    // Chequeo de seguridad, el usuario solo puede borrar archivos dentro de su directorio.
+                    if(elements.split('\\')[1] == IdProp.toString(10))
+                        fs.unlinkSync('.\\' + elements);
+                    else
+                        console.log('Illegal path');
+                
+                }
+            
+            
+        }   
+        // Respuesta positiva.
+        request.session.infopositiva = 'Archivos guardados Exitosamente';
+        request.session.initquery = initquery;
+        return request.session.save(err => {
+            response.redirect('/Expediente/Propiedad/' + IdProp);
+        });
+        
+    }).catch(err =>{
+        // Si hay un error no se hace ningun cambio y se le informa al usuario.
+        console.log(err);
+        request.session.info = 'Error al subir los archivos';
+        request.session.initquery = initquery;
+        // Se borran los archivos que se pretendian añadir a la BD.
+        if(lenghtarchivo2 > 0)
+            delfiles(request.files.archivoProp);
+        return request.session.save(err => {
+            response.redirect('/Expediente/Propiedad/' + idProp);
+        });
+
+    });
+    
 }
+
+exports.RevExpProp = (request, response, next) => {
+    let msgpos = request.session.infopositiva ? request.session.infopositiva : '';
+    request.session.infopositiva = ''; 
+    let msg = request.session.info ? request.session.info : '';
+    request.session.info = '';
+    console.log(request.params.idProp);
+    let exp_types = new Map();
+    expediente.fetchExpTypesProperty(request.params.idProp).then(([rows, fieldData]) => {
+        Dashboard.fetchPropName(request.params.idProp).then(([propname, fieldData2]) =>{
+            for(elements of rows){
+                exp_types.set(elements.Tipo_Exp, elements.descripion);
+            }
+    
+            // Render de la consulta con los valores del mapa, mensajes, etc.
+            return request.session.save(err => {
+                response.render('./Expediente/expedienteRevProp', {map: exp_types, propname: propname[0],IdProp: request.params.idProp, info: msg, infopositiva: msgpos});
+            });
+        }).catch(err =>{
+            console.log(err);
+        });
+        // Inicializacion del mapa con los valores de la consulta
+        
+    }).catch(err=>{
+        msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
+        msgpos = '';
+        return request.session.save(err => {
+            response.render('./Expediente/expedienteRevProp', {map: exp_types,propname: propname[0] ,IdProp: request.params.idProp, info: msg, infopositiva: msgpos});
+        });
+    });
+}
+
+exports.ActualizarProp = (request, response, next) => {
+    console.log(request.body);
+    let body = request.body;
+    let nupdates = body.estatus.length;
+    let Comments = "";
+    let Estatus = "";
+    let Tipo_Doc = "";
+    let IdUsuario = body.IdPropiedad;
+    let Tipo_Exp = body.Tipo_Exp;
+    //Concatenacion de datos en strings separados por comas, la BD los decodifica despues
+    for(let i = 0; i < nupdates; i++){
+        Comments += body.Comments[i];
+        Estatus += body.estatus[i];
+        Tipo_Doc += body.Tipo_Doc[i];
+        if(i != nupdates-1){
+            Comments += ',';
+            Estatus += ',';
+            Tipo_Doc += ',';
+        }
+    }
+    console.log(Comments);
+    console.log(Estatus);
+    console.log(Tipo_Doc);
+    console.log(IdUsuario)
+    console.log(nupdates);
+    console.log(Tipo_Exp);
+    
+    expediente.UpdateRequirementsProp(Comments,Estatus,IdUsuario,Tipo_Doc,nupdates, Tipo_Exp).then(()=>{
+        response.status(200).json('OK');
+    }).catch(err =>{
+        console.log(err);
+        response.status(503).json('FAIL');
+    });
+
+}
+
+exports.descargarArchivoPropAgente = (request, response, next) => {
+    console.log(request.params);
+    let IdProp = request.params.IdProp;
+    let Tipo_Doc = request.params.Tipo_Doc;
+    let Tipo_Exp = request.params.Tipo_Exp;
+    
+    expediente.DownloadFileProp(Tipo_Doc, Tipo_Exp, IdProp).then(([rows, fieldData]) =>{
+        console.log(rows);
+        //response.redirect('/expediente/revisar/' + userid);
+        response.download(rows[0].URL);
+    }).catch( err =>{
+        console.log(err);
+        request.session.msg = "No se puede descargar el archivo";
+        request.session.exito = 0;
+        return request.session.save(err => {
+            console.log(request.session.msg);
+            //response.redirect('/inicio');
+            response.redirect('/expediente/RevPropiedad'+IdProp);
+        });
+        
+    });
+}
+

@@ -14,6 +14,10 @@ module.exports = class expediente{
         return db.execute('CALL `ActualizarExp`(?, ?, ?, ?, ?, ?)', [N_docs,IdUsuario,Comments,estatus,Tipo_Doc, Tipo_Exp]);
     }
 
+    static UpdateRequirementsProp(Comments, estatus, IdPropiedad, Tipo_Doc, N_docs, Tipo_Exp){
+        return db.execute('CALL `ActualizarExpProp`(?, ?, ?, ?, ?, ?)', [N_docs,IdPropiedad,Comments,estatus,Tipo_Doc, Tipo_Exp]);
+    }
+
     static fetchExpTypes(IdUsuario){
         return db.execute('SELECT exp.Tipo_Exp, descripion FROM exp_tipo_doc exp, tipo_exp tip where tip.Tipo_Exp = exp.Tipo_Exp and Tipo_Doc = 0 and Idcliente = ?', [IdUsuario]);
     }
@@ -45,8 +49,17 @@ module.exports = class expediente{
 
     }
 
+    static DownloadFileProp(fileType, ExpType, IdPropiedad){
+        return db.execute("select URL from exp_tipo_doc_prop where IdPropiedad = ? and Tipo_Exp = ? and Tipo_Doc = ?", [IdPropiedad, ExpType, fileType]);
+
+    }
+
     static UploadFile(docList, N_docs, IdUsuario, URLs, estatuslist, Tipo_Exp){
         return db.execute('CALL `UploadFiles`(?,?,?,?,?,?)', [URLs, docList, IdUsuario, N_docs, estatuslist, Tipo_Exp]);
+    }
+
+    static UploadFileProp(docList, N_docs, IdProp, URLs, estatuslist, Tipo_Exp){
+        return db.execute('CALL `UploadFilesProp`(?,?,?,?,?,?)', [URLs, docList, IdProp, N_docs, estatuslist, Tipo_Exp]);
     }
 
     static fetchExpTypesProperty(IdProp) {

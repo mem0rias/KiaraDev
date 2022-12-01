@@ -40,9 +40,15 @@
               <div class="card-footer-item has-text-left">
                 <a href="/estatus/<%=propiedad.IdPropiedad%>"><h1>Seguimiento</h1></a>
               </div>
+              <% if(permisos.indexOf('editar_seguimiento') != -1) { %>
               <div class="card-footer-item has-text-left">
-                <a href="/expediente/Propiedad/<%=propiedad.IdPropiedad%>"><h1>Expediente</h1></a>
+                <a href="/expediente/revPropiedad/<%= propiedad.IdPropiedad %>"><h1>Expediente</h1></a>
               </div>
+              <% } else { %>
+                <div class="card-footer-item has-text-left">
+                  <a href="/expediente/Propiedad/<%= propiedad.IdPropiedad %>"><h1>Expediente</h1></a>
+                </div>
+              <% } %>
               <% if(permisos.indexOf('editar_propiedad') != -1) { %>
                 <div class="card-footer-item has-text-left">
                   <a  onclick="eliminar(<%= propiedad.IdPropiedad%>)"><h1>Eliminar</h1></a>
