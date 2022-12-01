@@ -174,11 +174,11 @@
    .imageContain{
        position: relative;
        top:  0;
-       left: -10%;
+       left: -5%;
        width: 40%;
-       height: 90vh;
+       height: 40%;
        z-index: 12;
-       margin: 5vh 35%;
+       margin: 5vh 15%;
        background-position: center;
        background-size: cover;
        background-repeat: no-repeat;
