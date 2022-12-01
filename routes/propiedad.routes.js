@@ -5,6 +5,8 @@ const isAuth= require('../util/is-auth.js');
 const router = express.Router();
 
 //Rutas para agregar propiedades
+router.get('/imagenes/:valor_busqueda', propiedadController.get_Imagenes);
+
 router.get('/registrar', isAuth, propiedadController.get_new);
 router.post('/registrar', isAuth, propiedadController.post_new);
 

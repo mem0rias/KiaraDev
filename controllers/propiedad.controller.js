@@ -411,3 +411,23 @@ exports.get_buscarAsigandos =  (request, response, next) => {
         });
 
 };
+
+exports.get_Imagenes =  (request, response, next) => {
+
+    console.log(request.params.valor_busqueda)
+    Propiedad.fetchImages(request.params.valor_busqueda).then( ([imagenes, fieldData]) => {
+        console.log(imagenes);
+    
+            const imagenesLista = [];
+            for(p of imagenes){
+                imagenesLista.push(p.Imagen.split('/')[2]); 
+            }
+            response.status(200).json(imagenesLista);
+            console.log(imagenesLista)
+
+            ;
+        }).catch( (error) => {
+            console.log(error);
+        });
+};
+
