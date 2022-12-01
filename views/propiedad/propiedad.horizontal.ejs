@@ -12,19 +12,26 @@
        
             <div class="card-stacked">
               <a href="/propiedades/<%=propiedad.IdPropiedad%>">  
-            <div class="card-content">
-              <div class="media-content">
-                <p class="title is-4"><%=propiedad.Titulo%> </p>
-                <p class="subtitle is-6"><span class="icon-text"> 
-                    <span class="icon">
-                        <i class="mdi mdi-map-marker"></i>
-                    </span>
-                    <span><%=propiedad.Estado %>, <%=propiedad.Municipio%>, <%=propiedad.Colonia%></span>
-                  </span></p>
-              </div>
+              <div class="card-content">
+                <div class="media-content">
+                  <p class="title is-4"><%=propiedad.Titulo%> </p>
+                  <p class="subtitle is-6"><span class="icon-text"> 
+                      <span class="icon">
+                          <i class="mdi mdi-map-marker"></i>
+                      </span>
+                      <span><%=propiedad.Estado %>, <%=propiedad.Municipio%>, <%=propiedad.Colonia%></span>
+                    </span></p>
+                </div>
+                
               </a>
-            </div>
-          
+              </div>
+              <% if(permisos.indexOf('panel_admin') != -1 | permisos.indexOf('panel_agente') != -1) { %>
+              <div>
+                <p> Propietario: </p>
+
+                <p> Interesado:</p>
+              </div>
+              <% } %>
             
             <footer class="card-footer">
               <% if(permisos.indexOf('editar_propiedad') != -1) { %>

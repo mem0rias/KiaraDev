@@ -52,14 +52,15 @@ exports.get_EstatusP = (request, response, next) => {
 
 exports.get_AvanceP = (request, response, next) => {
     let properid = request.params.idPropiedad;
-    listEstatus.fetchAvanceC(properid)
+    listEstatus.FetchAsignados(properid).then(([nombreAsignaciones, fieldData]) =>{
+        listEstatus.fetchAvanceC(properid)
         .then( ([rows, fieldData]) => {
             if(rows.length > 0 ){
                 console.log('entra a vistas');
                 return response.render(path.join('Estatus', 'estatus.ejs'), {
                     listEstatus: rows,
                     dummyval    : 'compra',
-                    
+                    Asignados   : nombreAsignaciones,
                     permisos: request.session.permisos,
                 });
             }
@@ -71,7 +72,7 @@ exports.get_AvanceP = (request, response, next) => {
                         return response.render(path.join('Estatus', 'estatus.ejs'), {
                             listEstatus2: rows2,
                             dummyval    : 'renta',
-                            
+                            Asignados   : nombreAsignaciones,
                             permisos: request.session.permisos,
                         });
                     }
@@ -100,6 +101,10 @@ exports.get_AvanceP = (request, response, next) => {
         }).catch( (error) => {
             console.log(error);
         });
+    }).catch(err => {
+        console.log(err);
+    })
+    
 }
 
 exports.post_update =(request, response, next) => {
