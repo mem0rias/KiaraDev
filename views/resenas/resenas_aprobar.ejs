@@ -14,7 +14,8 @@
         </div>
         <% if (logged == true) { %>
             <div class="box">
-                <form action="/resenas" method="post">
+                <form action="/resenas" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                     <article class="media">
                         <div class="media-content">
                             <div class="field">
@@ -35,6 +36,7 @@
     </div>
 
     <script>
+        let csrfToken = document.getElementsByName('_csrf')[0].value;
         const desplegar_comentarios = () => {
 
             let html = '';
@@ -88,6 +90,7 @@
                 },
                 body: JSON.stringify({
                     idComentario: id,
+                    _csrf : csrfToken,
                 }),
             }).then(result => {
                 return result.json();
@@ -106,6 +109,7 @@
                 },
                 body: JSON.stringify({
                     idComentario: id,
+                    _csrf : csrfToken,
                 }),
             }).then(result => {
                 return result.json();

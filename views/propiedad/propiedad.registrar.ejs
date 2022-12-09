@@ -20,7 +20,7 @@
                 
         <% } %>
 
-
+        <input type="hidden" name="_csrf" value="<%=csrfToken%>">
         <div class="columns is-multiline">
             <div class="column is-8">
                 <div class="section px-0 py-5">
@@ -115,8 +115,8 @@
                                 <div class="field">
                                     <label class="label">Descripción</label>
                                     <div class="control">
-                                    <textarea onkeyup="cambiarcolor(this)" class="textarea" id="campo-2" name="descripcion" placeholder="Descripcion" ><%= propiedad.Descripcion ? propiedad.Descripcion : '' %>
-                                    </textarea></div>
+                                        <textarea onkeyup="cambiarcolor(this)" class="textarea" id="campo-2" name="descripcion" placeholder="Descripcion"><%= propiedad.Descripcion ? propiedad.Descripcion : '' %></textarea>
+                                    </div>
                                 </div>
                             </div>
                             <div class="columns">

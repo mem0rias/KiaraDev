@@ -5,6 +5,7 @@
             <div class="columns">
                 <div class="column is-4">
                     <h2 class="label"> Lista de Usuarios</h2>
+                    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
                 </div>
                 
             </div>
@@ -82,6 +83,8 @@
                 })
             }
             const guardarcambios = () => {
+                let csrfToken = document.getElementsByName('_csrf').value;
+                console.log(csrfToken);
                 if(map.length > 0){
                     fetch('/dashboard/usuarios/guardar/', {
                     method: 'POST',
@@ -91,6 +94,7 @@
                     body: JSON.stringify({
                         mapUser: map,
                         mapRol : rolmap,
+                        _csrf :  csrfToken,
                         
                     }),
                     }).then(result => {
@@ -108,7 +112,7 @@
                             busqueda_asinc();
                     }).catch(err =>{
                         console.log(err);
-
+                        bulmaToast.toast({message: 'Error al guardar', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
                     });
                 } else{
                     bulmaToast.toast({message: 'No hay nada que guardar', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
