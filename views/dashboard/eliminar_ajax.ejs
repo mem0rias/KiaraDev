@@ -1,6 +1,7 @@
 
 
 <script>
+    let csrfToken = document.getElementsByName('_csrf')[0].value;
     const eliminar = (id) => {
         console.log(id);
         fetch('/propiedades/borrar/', {
@@ -10,7 +11,7 @@
             },
             body: JSON.stringify({
                 id: id,
-
+                _csrf : csrfToken,
             }),
         }).then(result => {
             return result.json(); 

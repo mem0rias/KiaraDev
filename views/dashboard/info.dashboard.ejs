@@ -1,9 +1,11 @@
 <div class="active-container" id="result">
 <div class="content is-normal" >
     <h1>Información Personal</h1>
+    
 </div>
 
 <div class="card">
+    <input type="hidden" id="_csrf" value="<%= csrfToken %>">
     <div class="card-content">
         <div class="container">
             <div class="is-divider" data-content="OR"> </div>
@@ -64,7 +66,7 @@
 <script>
 
 let usuario = document.getElementById('usuario').value;
-
+let csrfToken = document.getElementById('_csrf').value; 
     const accion_asincrona = () => {
         
         console.log(usuario);
@@ -151,7 +153,9 @@ let usuario = document.getElementById('usuario').value;
     }
 
     const accion_asincrona2 = () => {
-              let nombre = document.getElementById('nombre').value;
+            
+            console.log(csrfToken);
+            let nombre = document.getElementById('nombre').value;
               let pa = document.getElementById('pa').value;
               let sa = document.getElementById('sa').value;
               
@@ -159,7 +163,8 @@ let usuario = document.getElementById('usuario').value;
               let telefono = document.getElementById('telefono').value;
               let ocupacion = document.getElementById('ocupacion').value;
               console.log(usuario);
-              let curp ;
+              let curp;
+              
               if(usuario != 'cliente'){
                 curp = document.getElementById('curpa').value;
               }
@@ -184,7 +189,8 @@ let usuario = document.getElementById('usuario').value;
                     email : email,
                     telefono : telefono,
                     ocupacion : ocupacion,
-                    curp : curp 
+                    curp : curp,
+                    _csrf : csrfToken,
                 }),
                 }).then(result => {
                     return result.json();

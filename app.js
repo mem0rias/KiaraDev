@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
-
+const csrf = require('csurf');
+const csrfProtection = csrf();
 const app = express();
 
 
@@ -111,8 +112,11 @@ app.use(session({
     saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
 }));
 
+app.use(csrfProtection);
+
+
 app.use((request, response, next) => {
-    response.locals.csrfToken = 'dummytoken';
+    response.locals.csrfToken = request.csrfToken();//'dummytoken';
     response.locals.sesion = request.session.user ? request.session.user : '';
     response.locals.IdUser = request.session.IdUser ? request.session.IdUser : '';
     response.locals.IdRol = request.session.IdRol ? request.session.IdRol : '';
