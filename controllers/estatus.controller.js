@@ -7,31 +7,41 @@ const listEstatus = require('../models/estatus.model');
 
 exports.get_EstatusP = (request, response, next) => {
     let userid = request.session.IdUser;
+    
     Dashboard.fetchUser(userid).then( ([usuarioData, fieldData]) => {
-        listEstatus.fetchPropertiesC(userid)
-        .then( ([rows, fieldData]) => {
-            console.log(rows);
-            listEstatus.fetchPropertiesR(userid)
-                .then( ([rows2, fieldData2]) => {
-                    console.log(rows2);
-                    response.render(path.join('dashboard', 'dashboard.Seguimiento.ejs'), {
-                        PropertiesC: rows,
-                        PropertiesR: rows2,
-                        usuario :usuarioData,
-                        nombre      : response.locals.NombreUser    ,
-                        telefono    : response.locals.Telefono  ,
-                        email       : response.locals.Email     ,
-                        sesionId: response.locals.IdRol, 
-                        sesionUser: response.locals.IdUser,
-                        permisos: request.session.permisos,
-                    });
-                }).catch( (error) => {
-                    console.log(error);
-                }); 
-
-        }).catch( (error) => {
-            console.log(error);
-        }); 
+        
+        Dashboard.fetchPropiedadesPropias(userid).then(([userProps, fieldData]) => {
+            console.log(userProps);
+            let hasprop = userProps.length > 0 ? true : false;
+            listEstatus.fetchPropertiesC(userid)
+            .then( ([rows, fieldData]) => {
+                console.log(rows);
+                listEstatus.fetchPropertiesR(userid)
+                    .then( ([rows2, fieldData2]) => {
+                        console.log(rows2);
+                        response.render(path.join('dashboard', 'dashboard.Seguimiento.ejs'), {
+                            PropertiesC: rows,
+                            PropertiesR: rows2,
+                            usuario :usuarioData,
+                            nombre      : response.locals.NombreUser    ,
+                            telefono    : response.locals.Telefono  ,
+                            email       : response.locals.Email     ,
+                            sesionId: response.locals.IdRol, 
+                            sesionUser: response.locals.IdUser,
+                            permisos: request.session.permisos,
+                            HasProp : hasprop,
+                        });
+                    }).catch( (error) => {
+                        console.log(error);
+                    }); 
+    
+            }).catch( (error) => {
+                console.log(error);
+            });
+        }).catch(err => {
+            console.log(err);
+        })
+         
         
 
     }).catch( (error) => {
@@ -42,14 +52,15 @@ exports.get_EstatusP = (request, response, next) => {
 
 exports.get_AvanceP = (request, response, next) => {
     let properid = request.params.idPropiedad;
-    listEstatus.fetchAvanceC(properid)
+    listEstatus.FetchAsignados(properid).then(([nombreAsignaciones, fieldData]) =>{
+        listEstatus.fetchAvanceC(properid)
         .then( ([rows, fieldData]) => {
             if(rows.length > 0 ){
                 console.log('entra a vistas');
                 return response.render(path.join('Estatus', 'estatus.ejs'), {
                     listEstatus: rows,
                     dummyval    : 'compra',
-                    
+                    Asignados   : nombreAsignaciones,
                     permisos: request.session.permisos,
                 });
             }
@@ -61,7 +72,7 @@ exports.get_AvanceP = (request, response, next) => {
                         return response.render(path.join('Estatus', 'estatus.ejs'), {
                             listEstatus2: rows2,
                             dummyval    : 'renta',
-                            
+                            Asignados   : nombreAsignaciones,
                             permisos: request.session.permisos,
                         });
                     }
@@ -70,7 +81,7 @@ exports.get_AvanceP = (request, response, next) => {
                         console.log('entra a error');
                         request.session.info = 'La propiedad no cuenta con seguimiento activo';
 
-                        return response.render(path.join('Dashboard', 'dashboard.noDisponible.ejs'), {
+                        return response.render(path.join('dashboard', 'dashboard.noDisponible.ejs'), {
                             permisos: request.session.permisos,
                             nombre      : response.locals.NombreUser    ,
                             telefono    : response.locals.Telefono  ,
@@ -90,6 +101,10 @@ exports.get_AvanceP = (request, response, next) => {
         }).catch( (error) => {
             console.log(error);
         });
+    }).catch(err => {
+        console.log(err);
+    })
+    
 }
 
 exports.post_update =(request, response, next) => {

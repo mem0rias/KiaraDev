@@ -5,7 +5,7 @@
     <div class="container mt-2 pl-5 pr-5">
 
         <% if (propiedad === '') { %>
-            <form action="/propiedades/registrar" method="POST">
+            <form action="/propiedades/registrar" method="POST" enctype="multipart/form-data" id="formaimgs">
             <input type="hidden" id="id" name="id" value="<%= propiedad.IdPropiedad %>">
             <div class="content mt-5"">
                 <h1>Resgistrar propiedad</h1>
@@ -237,14 +237,6 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="active-container">
-                                <div class="content is-small">  
-                                    <div class="field">
-                                        <label class="label">Imagenes</label>
-                                        <div class="control">
-                                            <input class="input" type="text" maxlength="500" name="imagenes" placeholder="" value="<%= propiedad.Imagenes ? propiedad.Imagenes : '' %>">
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="content is-small">
                                     <div class="field">
                                         <label class="label">Video</label>
@@ -253,6 +245,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>   
                     </div>
@@ -265,13 +258,49 @@
                     </div>
 
                 </div>
-
+                <div class="content is-small">  
+                    <div class="field">
+                        <label class="label">Imagenes</label>
+                        <div class="control">
+                            <div id="bloque_imagenes">
+                                <div class="file is-small is-boxed has-name is-danger ">
+                                    <label class="file-label ">
+                                        <input class="file-input" type="file" name="imagen" accept="image/*" id="boton-0" onchange="clickArchivo(this)">
+                                        <span class="file-cta">
+                                        
+                                            <span class="file-label">
+                                                Seleccionar Archivo
+                                            </span>
+                                        </span>
+                                        
+                                        <span class="file-name is-hidden" id="archivo-0">
+                                            
+                                        </span>
+                                    
+                                    </label>
+                                    <span id="erase-0" class="level-right button is-boxed is-danger is-hidden "onclick="removerArchivo(this)" style="margin-left: 10px; margin-bottom: 10px">
+                                        <i class="tiny material-icons"> clear </i>  
+                                    </span>            
+                                </div>
+                                <br>
+                            </div>
+                            <input class="button" type="button" onclick="addIMG(this)" value="+">
+                        </div>
+                    </div>
+                </div>
                 <div class="content pb-5">
-                    <input class="button is-danger"type="submit" id="enviar" name="enviar" value="Guardar" >
+                    <input type="hidden" value="" id="NPics" name="NPics">
+                    <input class="button is-danger"type="submit" id="enviar" name="enviar" value="Guardar" onclick="subirArch()">
                     <div class="content">
                         <h2 id="mensaje" class="has-text-danger"></h2>
                     </div>
 
+                </div>
+                <div class="columns">
+                    <div class="column is-9"></div>
+                    <div class="column">
+                        <a href="/dashboard/" class="button is-danger"> Regresar </a>
+                    </div>
                 </div>
             </div> 
         </div>  
@@ -284,6 +313,70 @@
 
 </form>
 <script src="../js/validate.js"></script>
+
+<script>
+    let i = 0;
+    let Pics = 0;
+    const addIMG = (element) => {
+        let div = document.getElementById('bloque_imagenes');
+        let html = '';
+        let hidden = '';
+        let lastelement = document.getElementById('boton-'+i);
+        if(lastelement.value != ''){
+            i++;    
+            html += 
+            `
+                <div class="file is-small is-boxed has-name is-danger ">
+                    <label class="file-label ">
+                        <input class="file-input" type="file" name="imagen" accept="image/*" id="boton-${i}" onchange="clickArchivo(this)">
+                        <span class="file-cta">
+                        
+                            <span class="file-label">
+                                Seleccionar Archivo
+                            </span>
+                        </span>
+                        
+                        <span class="file-name is-hidden" id="archivo-${i}">
+                            
+                        </span>
+                    
+                    </label>
+                    <span id="erase-${i}" class="level-right button is-boxed is-danger is-hidden "onclick="removerArchivo(this)" style="margin-left: 10px; margin-bottom: 10px">
+                                                        <i class="tiny material-icons"> clear </i>  
+                                                    </span>            
+                </div>
+                <br>
+            
+            ` 
+            
+            div.insertAdjacentHTML('beforeend',html);
+        }
+        
+    }
+
+    const clickArchivo = (element) => {
+        Pics++;
+        let id = element.id.split('-')[1];
+        let filename = document.getElementById('archivo-'+id);
+        document.getElementById('erase-'+id).classList.remove('is-hidden');
+        filename.classList.remove('is-hidden');
+        filename.innerHTML = element.files[0].name;
+        document.getElementById('NPics').value = Pics;
+        
+    }
+    const removerArchivo = (element) => {
+        Pics--;
+        let id = element.id.split('-')[1];
+        document.getElementById('boton-'+id).value = '';
+        document.getElementById('erase-'+id).classList.add('is-hidden');
+        let filename = document.getElementById('archivo-'+id);
+        filename.classList.add('is-hidden');
+        filename.innerHTML = '';
+        document.getElementById('NPics').value = Pics;
+    }
+
+</script>
+
 <script>
     let residencial = new Object();
     let comercial = new Object();
@@ -313,8 +406,12 @@
         comercial = 0;
 
 
-    <% } %>     
+    <% } %> 
+    
+    
+    
 </script>
+
 
 <%- include('propiedad.registrar.dinamico.ejs', {
     tipoP: tipoP ? tipoP : ''}) %>

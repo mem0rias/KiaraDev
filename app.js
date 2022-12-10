@@ -23,10 +23,26 @@ const fileStorage = multer.diskStorage({
         // Se obtiene el id del usuario y se revisa si hay una carpeta con el ID ya hecha, si no, la crea. 
         //console.log(request.body);
         //console.log(request.files);
-        let user = request.body.user;
-        let newpath = `./Expedientes/${user}`;
-        fs.mkdirSync(newpath, { recursive: true})
-        callback(null, newpath);
+        
+        console.log(file.fieldname);
+        let newpath = '';
+        //if(file.fieldname === 'archivo2'){
+            if(file.fieldname === 'archivo2'){
+                let user = request.body.user;
+                 newpath = `./Expedientes/${user}`;
+                fs.mkdirSync(newpath, { recursive: true })
+            }else if(file.fieldname === 'imagen'){
+                newpath = 'public/uploads';
+                fs.mkdirSync(newpath, { recursive: true })
+            }else if(file.fieldname === 'archivoProp'){
+                let IdProp = request.body.user;
+                newpath = `./Expedientes/Propiedades/${IdProp}`;
+                fs.mkdirSync(newpath, { recursive: true })
+            }
+            callback(null, newpath);
+        //}
+        //else if(file.fieldname === 'imagen')
+            //callback(null, './Expedientes/fotos');
     },
     filename: (request, file, callback) => {
         //aquí configuramos el nombre que queremos que tenga el archivo en el servidor, 
@@ -34,19 +50,31 @@ const fileStorage = multer.diskStorage({
         callback(null, new Date().getSeconds() + '' + new Date().getDay() + '' + new Date().getMonth() + '' + new Date().getYear() + file.originalname);
     },
 });
+
+
 const fileFilter = (request, file, callback) => {
-    
-    
-    if (file.mimetype == 'application/pdf') {
-        callback(null, true);
-    } else {
-        callback(null, false);
+
+    if(file.fieldname == 'archivo2' | file.fieldname == 'archivoProp'){
+        if (file.mimetype == 'application/pdf') {
+            callback(null, true);
+        } else {
+            callback(null, false);
+        }
+    }else if(file.fieldname == 'imagen'){
+        if(file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg" || file.mimetype == "image/webp" ){
+            callback(null, true);
+        }else{
+            callback(null, false);
+        }
     }
+    
 }
 
 
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20*1024*1024}}).any('archivo2'));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSize: 20*1024*1024}}).fields([{name: 'archivo2'},{name: 'imagen'},{name: 'archivoProp'}]));
+
+
 
 
 
@@ -54,13 +82,14 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter, limits : {fileSiz
 // Si hay exception, se limpian las variables que permiten que se suban archivos, por lo que el controlador no hace nada.
 // Y nada explota en consecuencia.
 app.use((err, request, response, next) => {
-    if( err instanceof multer.MulterError){
-        console.log(request.body);
+    if (err instanceof multer.MulterError) {
+        console.log(err);
         request.body.SelFiles = '';
         request.body.NRMFiles = '';
         request.files = ''
     }
-    
+    console.log('MiddleWareeeee');
+    console.log(request.files);
     next();
 });
 //Declarar rutas
@@ -74,6 +103,7 @@ const intro = require('./routes/intro.routes');
 const contacto = require('./routes/contacto.routes');
 const aviso = require('./routes/aviso.routes');
 const estatus = require('./routes/estatus.routes');
+const servicios = require('./routes/servicios.routes')
 
 app.use(session({
     secret: 'aerfgtvythvyugt54cyh4yhyhy6h46yr5ky87br53tgc3g46gg',
@@ -104,6 +134,7 @@ app.use('/intro', intro);
 app.use('/contacto', contacto);
 app.use('/aviso', aviso);
 app.use('/estatus', estatus);
+app.use('/servicios', servicios);
 
 app.get('/', (request, response, next) => {
     response.redirect('/index');

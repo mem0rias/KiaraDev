@@ -7,7 +7,9 @@ module.exports = class Dashboard {
         return db.execute('SELECT IdUsuario, nombre, PA, SA, eciv, ocupacion, Telefono, email, CURP from usuario where IdUsuario = (?)', [n]);
     }
 
-
+    static fetchPropName(n) {
+        return db.execute('select Titulo from propiedades where IdPropiedad = ?',[n]);
+    }
     static fetchAsigando(n){
         return db.execute('SELECT a.IdPropiedad,Visibilidad, Descripcion, Imagenes, Titulo, Colonia, Estado FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
     }
@@ -17,6 +19,9 @@ module.exports = class Dashboard {
         return db.execute('CALL `buscarPropiedadAsignada`(?, ?)', [id,query]);
     }
     
+    static fetchPropiedadesPropias(id){
+        return db.execute('SELECT a.IdPropiedad,Visibilidad, Descripcion, Imagenes, Titulo, Colonia, Estado, RolProp FROM asignacion a, propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = ? and (RolProp = 23 or RolProp = 24)',[id]);
+    }
 
 
     static fetchEmailRol(filtro, sel) {
