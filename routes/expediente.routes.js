@@ -13,12 +13,12 @@ router.use(express.static(path.join(__dirname, '..','public')));
 
 
 router.get('/revisar/:id', isAuth, RevExp, ExpControl.getReqs);
-router.post('/actualizar', isAuth, ExpControl.actualizar); // AJAX
-router.post('/actualizarProp', isAuth, ExpControl.ActualizarProp); // AJAX
+router.post('/actualizar', isAuth, RevExp,ExpControl.actualizar); // AJAX
+router.post('/actualizarProp', isAuth, RevExp,ExpControl.ActualizarProp); // AJAX
 router.post('/miexpediente', isAuth, ExpControl.subirarch);
 router.get('/miexpediente', isAuth, ExpControl.miexp);
-router.get('/fetch/prop/:tipo/:IdProp', ExpControl.getPropExp); // AJAX
-router.get('/fetch/:tipo/:usuario', isAuth, ExpControl.fetchiuserinfo); // AJAX
+router.get('/fetch/prop/:tipo/:IdProp', isAuth, isAssigned, ExpControl.getPropExp); // AJAX
+router.get('/fetch/:tipo/:usuario', isAuth, RevExp, ExpControl.fetchiuserinfo); // AJAX
 router.get('/fetch/:tipo', isAuth,ExpControl.fetchinfo); // AJAX
 
 
@@ -29,7 +29,7 @@ router.get('/revPropiedad/:idProp',isAuth,RevExp,ExpControl.RevExpProp);
 
 
 router.get('/download/:IdUsuario/:Tipo_Doc/:Tipo_Exp', isAuth, RevExp, ExpControl.descargarArchivoAgente);
-router.get('/download/:Tipo_Doc/:Tipo_Exp', isAuth,ExpControl.descargarArchivoUser);
+router.get('/download/:Tipo_Doc/:Tipo_Exp', isAuth, ExpControl.descargarArchivoUser);
 
 router.get('/downloadProp/:IdProp/:Tipo_Doc/:Tipo_Exp', isAuth, canDL, ExpControl.descargarArchivoPropAgente);
 module.exports = router;
