@@ -1,6 +1,8 @@
 module.exports = (request, response, next) => {
     let permisos = request.session.permisos;
-    if (permisos.indexOf('panel_admin') == -1) {
+    if(permisos.indexOf('panel_admin') > -1)
+        next();
+    else if (permisos.indexOf('panel_agente') == -1) {
         return response.redirect('/dashboard');
     }else  
         next();
