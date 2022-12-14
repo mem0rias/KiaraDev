@@ -64,6 +64,7 @@
             }).then(result => {
                 return result.json();
             }).then(data => {
+                console.log(data);
                 for (element of data) {
                     html += '  <% if (logged == true ) { %>';
                     html += '<article class="media" id="' + element.idComentario + '">';
