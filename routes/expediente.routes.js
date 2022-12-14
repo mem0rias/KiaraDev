@@ -13,13 +13,13 @@ router.use(express.static(path.join(__dirname, '..','public')));
 
 
 router.get('/revisar/:id', isAuth, RevExp, ExpControl.getReqs);
-router.post('/actualizar', isAuth, ExpControl.actualizar);
-router.post('/actualizarProp', isAuth, ExpControl.ActualizarProp);
+router.post('/actualizar', isAuth, ExpControl.actualizar); // AJAX
+router.post('/actualizarProp', isAuth, ExpControl.ActualizarProp); // AJAX
 router.post('/miexpediente', isAuth, ExpControl.subirarch);
 router.get('/miexpediente', isAuth, ExpControl.miexp);
-router.get('/fetch/prop/:tipo/:IdProp', ExpControl.getPropExp);
-router.get('/fetch/:tipo/:usuario', isAuth, ExpControl.fetchiuserinfo);
-router.get('/fetch/:tipo', isAuth,ExpControl.fetchinfo);
+router.get('/fetch/prop/:tipo/:IdProp', ExpControl.getPropExp); // AJAX
+router.get('/fetch/:tipo/:usuario', isAuth, ExpControl.fetchiuserinfo); // AJAX
+router.get('/fetch/:tipo', isAuth,ExpControl.fetchinfo); // AJAX
 
 
 router.get('/Propiedad/:IdProp', isAuth, isAssigned,ExpControl.ExpProp);
