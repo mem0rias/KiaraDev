@@ -71,6 +71,6 @@ module.exports = class expediente{
     }
 
     static fetchAsignados(IdPropiedad){
-        return db.execute('SELECT u.nombre, u.PA, u.SA, u.Telefono, u.email from usuario u, asignacion a where u.IdUsuario = a.IdUsuario and IdPropiedad = ?', [IdPropiedad]);
+        return db.execute('SELECT u.nombre, u.IdUsuario, u.PA, u.SA, u.Telefono, u.email from usuario u, asignacion a where u.IdUsuario = a.IdUsuario and IdPropiedad = ?', [IdPropiedad]);
     }
 }
