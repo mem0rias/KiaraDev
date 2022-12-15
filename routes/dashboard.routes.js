@@ -2,9 +2,11 @@ const express = require('express');
 const dashboardController = require('../controllers/dashboard.controller');
 const isAuth = require('../util/is-auth');
 const isAdmin = require('../util/is-Admin');
+const path = require('path');
 
 const router = express.Router();
 
+router.use(express.static(path.join(__dirname, '..','public')));
 
 router.post('/usuarios/guardar/', isAuth, dashboardController.saveRol);
 router.get('/usuarios/buscar/:busc', isAuth, dashboardController.get_search);

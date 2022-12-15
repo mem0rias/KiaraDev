@@ -4,7 +4,9 @@ const estatusController = require('../controllers/estatus.controller');
 const isSeguimiento = require('../util/is-seguimiento.js');
 const isAuth= require('../util/is-auth.js');
 const path = require('path');
+
 router.use(express.static(path.join(__dirname, '..','public')));
+
 router.get('/', isAuth, estatusController.get_EstatusP);
 
 router.post('/update',isAuth, estatusController.post_update);

@@ -1,8 +1,11 @@
 const express = require('express');
 const propiedadController = require('../controllers/propiedad.controller');
 const isAuth= require('../util/is-auth.js');
+const path = require('path');
 
 const router = express.Router();
+
+router.use(express.static(path.join(__dirname, '..','public')));
 
 //Rutas para agregar propiedades
 router.get('/imagenes/:valor_busqueda', propiedadController.get_Imagenes);
