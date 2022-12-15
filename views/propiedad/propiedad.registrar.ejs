@@ -263,10 +263,11 @@
                     <div class="field">
                         <label class="label">Imagenes</label>
                         <div class="control">
+                            <img id="mini" class="image is-64x64" src="">
                             <div id="bloque_imagenes">
                                 <div class="file is-small is-boxed has-name is-danger ">
                                     <label class="file-label ">
-                                        <input class="file-input" type="file" name="imagen" accept="image/*" id="boton-0" onchange="clickArchivo(this)">
+                                        <input class="file-input" type="file" name="imagen" accept="image/*" id="boton-0" onchange="clickArchivo(this)" multiple>
                                         <span class="file-cta">
                                         
                                             <span class="file-label">
@@ -340,7 +341,7 @@
             `
                 <div class="file is-small is-boxed has-name is-danger ">
                     <label class="file-label ">
-                        <input class="file-input" type="file" name="imagen" accept="image/*" id="boton-${i}" onchange="clickArchivo(this)">
+                        <input class="file-input" type="file" name="imagen" accept="image/*" id="boton-${i}" onchange="clickArchivo(this)" multiple>
                         <span class="file-cta">
                         
                             <span class="file-label">
@@ -367,13 +368,32 @@
     }
 
     const clickArchivo = (element) => {
-        Pics++;
+        
+        let div = document.getElementById('bloque_imagenes');
+        let files = element.files
+        let html = '';
+        for(element of files){
+            html += 
+            `
+                <h1> ${element.name} </h1>
+                
+            `
+            let fr = new FileReader();
+            fr.onload = function(){
+                document.getElementById('mini').src = fr.result;
+            }
+            fr.readAsDataURL(element);
+        }
+        div.insertAdjacentHTML('beforeend',html);
+        
+        /*Pics++;
         let id = element.id.split('-')[1];
         let filename = document.getElementById('archivo-'+id);
+        console.log(element.files);
         document.getElementById('erase-'+id).classList.remove('is-hidden');
         filename.classList.remove('is-hidden');
         filename.innerHTML = element.files[0].name;
-        document.getElementById('NPics').value = Pics;
+        document.getElementById('NPics').value = Pics;*/
         
     }
     const removerArchivo = (element) => {
