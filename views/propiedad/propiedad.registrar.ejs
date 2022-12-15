@@ -5,15 +5,16 @@
     <div class="container mt-2 pl-5 pr-5">
 
         <% if (propiedad === '') { %>
-            <form action="/propiedades/registrar" method="POST" enctype="multipart/form-data" id="formaimgs">
+            <form action="/propiedades/registrar" method="POST" enctype="multipart/form-data" id="form">
             <input type="hidden" id="id" name="id" value="<%= propiedad.IdPropiedad %>">
             <div class="content mt-5"">
-                <h1>Resgistrar propiedad</h1>
+                <h1>Registrar propiedad</h1>
             </div>
         <% } else { %>
-            <form action="/propiedades/editar" method="POST">
+            <form action="/propiedades/editar" method="POST" id="form">
             <input type="hidden" id="id" name="id" value="<%= propiedad.IdPropiedad %>">
             <input type="hidden" id="id" name="usodata" value="<%= propiedad.Uso %>">
+            <input type="hidden" id="edit" value="1">
             <div class="content mt-5"">
                 <h1>Editar propiedad</h1>
             </div>
@@ -39,12 +40,12 @@
 
                             <div class="columns">
                              <% if (propiedad === '') { %>
-                                <div class="column is-3">
+                                <div class="column is-4">
                                     <div class="field">
                                         <label class="label">Tipo de propiedad</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
-                                                <select class="select" name="uso" id="tipoPropiedad" onchange="cambiarcolor(this)">
+                                                <select class="select" name="uso" id="campo-11" onchange="cambiarcolor(this)">
                                                     <option value="" disabled selected hidden>Seleccionar tipo</option>
                                                     <option value="1">Residencial</option>
                                                     <option value="2">Comercial</option>
@@ -55,12 +56,12 @@
                                     </div>
                                 </div>
                             <% } else { %>
-                                <div class="column is-3">
+                                <div class="column is-4">
                                     <div class="field">
                                         <label class="label">Visibilidad</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
-                                                <select class="select" name="visibilidad" id="visibilidad">
+                                                <select class="select" name="visibilidad" id="campo-11" onchange="cambiarcolor(this)">
                                                     <option value="" disabled selected hidden>Seleccionar visibilidad</option>
                                                     <% if ( propiedad.Visibilidad === 0){ %>
                                                     <option value="0" selected>Visible</option>
@@ -75,12 +76,12 @@
                                     </div>
                                 </div>
                                 <% } %>
-                                <div class="column is-3">
+                                <div class="column is-4">
                                     <div class="field">
                                         <label class="label">Subtipo</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
-                                                <select class="select" name="tipopropiedad">
+                                                <select class="select" id="campo-12" name="tipopropiedad" onchange="cambiarcolor(this)">
                                                     <option  disabled  <% if ( propiedad === ''){ %> selected <% } %> hidden >        Seleccionar tipo</option>
                                                         <option value="1" <% if ( propiedad.TipoPropiedad === 1){ %>selected <% } %>>   Casa        </option>
                                                         <option value="2" <% if ( propiedad.TipoPropiedad === 2){ %>selected <% } %>>   Departamento</option>
@@ -92,12 +93,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="column is-3">
+                                <div class="column is-4">
                                     <div class="field">
                                         <label class="label">Tipo de venta</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
-                                                <select class="select" name="tipotransaccion" id="tipoVenta">
+                                                <select class="select" name="tipotransaccion" id="campo-13" onchange="cambiarcolor(this)">
                                                     <option  disabled <% if ( propiedad === ''){ %> selected <% } %> hidden > Seleccionar tipo</option>
                                                         <option value="1" <% if ( propiedad.TipoTransaccion === 1){ %>selected <% } %>>   Venta</option>
                                                         <option value="2" <% if ( propiedad.TipoTransaccion === 2){ %>selected <% } %>>   Renta</option>
@@ -241,7 +242,7 @@
                                     <div class="field">
                                         <label class="label">Video</label>
                                         <div class="control">
-                                            <input class="input" type="text" maxlength="500" name="video" placeholder="URL de Youtube" value="<%= propiedad.Video ? propiedad.Video : '' %>">
+                                            <input class="input" id="campo-14"type="text" maxlength="500" name="video" placeholder="URL de Youtube" value="<%= propiedad.Video ? propiedad.Video : '' %>" onkeyup="cambiarcolor(this)">
                                         </div>
                                     </div>
                                 </div>
@@ -290,7 +291,7 @@
                 </div>
                 <div class="content pb-5">
                     <input type="hidden" value="" id="NPics" name="NPics">
-                    <input class="button is-danger"type="submit" id="enviar" name="enviar" value="Guardar" onclick="subirArch()">
+                    <input class="button is-danger" type="button" id="enviar" name="enviar" value="Guardar" onclick="subirArch()">
                     <div class="content">
                         <h2 id="mensaje" class="has-text-danger"></h2>
                     </div>
@@ -313,10 +314,21 @@
 
 </form>
 <script src="../js/validate.js"></script>
+<script src="../js/dist/bulma-toast.min.js"></script>
 
 <script>
     let i = 0;
     let Pics = 0;
+
+    const subirArch = () => {
+        let form = document.getElementById('form');
+        console.log(allowsave);
+        if(allowsave)
+            form.submit();
+        else
+            bulmaToast.toast({ message: 'Llena los campos requeridos para continuar', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+        //form.submit();
+    }
     const addIMG = (element) => {
         let div = document.getElementById('bloque_imagenes');
         let html = '';

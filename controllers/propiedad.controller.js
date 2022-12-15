@@ -174,14 +174,17 @@ exports.post_new = (request, response, next) => {
                         response.redirect('/dashboard/asignado'); 
                     }).catch(err =>{
                         console.log(err);
+                        response.redirect('/dashboard/asignado');
                     });
                             
                 }).catch(err =>{
                     console.log(err);
+                    response.redirect('/dashboard/asignado');
                 });
                 
             }).catch( (error) => {
                 console.log(error);
+                response.redirect('/dashboard/asignado');
         });
     }
 
@@ -221,18 +224,17 @@ exports.post_new = (request, response, next) => {
                         response.redirect('/dashboard/asignado');
                     }).catch(err =>{
                         console.log(err);
+                        response.redirect('/dashboard/asignado');
                     });
                     
                 }).catch( (error) => {
                     console.log(error);
+                    response.redirect('/dashboard/asignado');
+        }).catch(err => {
+            console.log(err);
+            response.redirect('/dashboard/asignado');
         });
     } 
-
-    else {
-
-
-
-    }
 
 };
 

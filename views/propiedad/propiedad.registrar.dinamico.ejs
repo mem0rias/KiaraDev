@@ -7,7 +7,7 @@
         const COMERCIAL = "2";
 
         if(tipoPropiedad === ''){
-            tipoPropiedad = document.getElementById("tipoPropiedad").value;
+            tipoPropiedad = document.getElementById("campo-11").value;
         }
 
         console.log(tipoPropiedad);
@@ -406,7 +406,7 @@
 
 
     if(document.getElementById("tipoID").value === '') {
-         document.getElementById("tipoPropiedad").oninput = forma_dinamica;
+         document.getElementById("campo-11").oninput = forma_dinamica;
          console.log("Trigger cambio de propiedad");
     } else {
         window.onload = forma_dinamica;
