@@ -29,4 +29,9 @@ module.exports = class Resenas {
             'DELETE FROM comentarios WHERE idComentario = ?', [idComentario]
         );
     }
+    static aprobar(idComentario) {
+        return db.execute(
+            'UPDATE comentarios SET aprobado = 1 WHERE idComentario = ? ', [idComentario]
+        );
+    }
 }

@@ -4,14 +4,24 @@ module.exports = class Dashboard {
 
 
     static fetchUser(n){
-        return db.execute('SELECT IdUsuario, nombre, PA, SA, eciv, ocupacion, Telefono, email from usuario where IdUsuario = (?)', [n]);
+        return db.execute('SELECT IdUsuario, nombre, PA, SA, eciv, ocupacion, Telefono, email, CURP from usuario where IdUsuario = (?)', [n]);
     }
 
-
+    static fetchPropName(n) {
+        return db.execute('select Titulo from propiedades where IdPropiedad = ?',[n]);
+    }
     static fetchAsigando(n){
-        return db.execute('SELECT a.IdPropiedad, Descripcion, Imagenes, Titulo, Colonia, Estado FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
+        return db.execute('SELECT a.IdPropiedad,Visibilidad, Descripcion, Imagenes, Titulo, Colonia, Estado FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
+    }
+
+    
+    static fetchAsigandoPropiedades(id,query){
+        return db.execute('CALL `buscarPropiedadAsignada`(?, ?)', [id,query]);
     }
     
+    static fetchPropiedadesPropias(id){
+        return db.execute('SELECT a.IdPropiedad,Visibilidad, Descripcion, Imagenes, Titulo, Colonia, Estado, RolProp FROM asignacion a, propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = ? and (RolProp = 23 or RolProp = 24)',[id]);
+    }
 
 
     static fetchEmailRol(filtro, sel) {
@@ -23,6 +33,16 @@ module.exports = class Dashboard {
 
     static updateRol(umap, urol, l){
         return db.execute('CALL `ActualizarRoles`(?, ?, ?)', [umap,urol,l]);
+
+    }
+
+    static updateInfo(id){
+        return db.execute('CALL `ActualizarRoles`(?, ?, ?)', [umap,urol,l]);
+
+    }
+
+    static updateInfo(nombre,pa,sa,email,telefono,ocupacion,curp,iduser){
+        return db.execute('UPDATE usuario SET Nombre=?,PA=?,SA=?,Email=?,Telefono=?,ocupacion=?,CURP=? WHERE IdUsuario = ?', [nombre,pa,sa,email,telefono,ocupacion,curp,iduser]);
 
     }
 

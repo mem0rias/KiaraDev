@@ -23,7 +23,7 @@
                   <div class="column is-5">
                     <div class="field has-addons">
                       <div class="control">
-                        <input class="input is-expanded" type="text" placeholder="Colonia / Titulo / ID">
+                        <input class="input is-expanded" type="text" placeholder="Colonia / Titulo / ID" id="buscar">
                       </div>
                       <div class="control">
                         <a class="button is-danger">
@@ -36,7 +36,7 @@
               </div>
             </div>  
 
-              <div class="active-container">
+              <div class="active-container" id="resultados">
                 <% if (propiedad.length > 0) { %>
                       <% for (let p of propiedad  ) { %>
                           <%- include('../propiedad/propiedad.horizontal.ejs', {propiedad: p}) %>
@@ -47,4 +47,10 @@
         </div>
     </div>
 </div>  
+
+
+<%- include('eliminar_ajax.ejs') %>
+
+<%- include('search_ajax.ejs') %>
+
 <%- include('../includes/foot.ejs') %>

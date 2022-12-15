@@ -2,12 +2,12 @@
 <div class="card shadow-lg is-cursor-pointer">
     <div class="card-image cover-image is-overflow-hidden">
         <figure class="image is-4by3">
-          <img src="<%=propiedad.Imagenes%>">
+          <img src="../uploads/<%=propiedad.Imagenes%>">
         </figure>
       </div>
     <div class="card-content">
       <p class="subtitle">
-        <%= propiedad.Descripcion %> 
+        <%= propiedad.Titulo %> 
       </p>
       <p class="subtitle">
         <%= propiedad.Colonia %>
@@ -21,7 +21,7 @@
       </p>
       <p class="card-footer-item is-small">
         <span>
-          <%= propiedad.Precio %> 
+          <%= Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(propiedad.Precio) %> 
         </span>
       </p>
     </footer>

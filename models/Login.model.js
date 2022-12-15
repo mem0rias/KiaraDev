@@ -39,7 +39,7 @@ module.exports = class Login {
     }
 
     static fetchmail(u) {
-        return db.execute('SELECT email, password, IdUsuario, IdRol from usuario where email = (?)', [u]);
+        return db.execute('SELECT email, password, IdUsuario, Nombre, PA, SA, Telefono, IdRol from usuario where email = (?)', [u]);
     }
 
     static getPermisos(id) {
@@ -50,5 +50,10 @@ module.exports = class Login {
 
     static updatePassw(){}
     
+    static asignan(){
+        return db.execute(
+            'CALL agregarRol');
+    }
+
     
 }

@@ -44,7 +44,7 @@
                                         <span class="icon">
                                             <i class="mdi mdi-home-variant"></i>
                                         </span>
-                                        <span>Baños <%=residencial.baños%></span>
+                                        <span>Baños <%=residencial.Banos%></span>
                                       </span>
                                 </div>
                                 
@@ -53,27 +53,20 @@
                                         <span class="icon">
                                             <i class="mdi mdi-car"></i>
                                         </span>
-                                        <span>Niveles <%=residencial.Pisos%></span>
+                                        <span>Niveles <%=residencial.Niveles%></span>
                                       </span>
                                 </div>
                             </div>
                         </div>
 
 
-                        <div class="card">
-                            <div class="card-image">
-                              <figure class="image is-4by3">
-                                <img src="https://joomly.net/frontend/web/images/googlemap/map.png" alt="Placeholder image">
-                              </figure>
-                            </div>
-                          </div>
-                    
                 </div>
                 <div class="column is-4">
                     <div class="card ">
                         <div class="card-content">
                           <div class="content">
-                            <p>Contactar asesor</p>
+                            <input type="hidden" id="TelEnc" value="<%=numeroenc  ? numeroenc : ''%>">
+                            <button class="button"  id="contact" onclick="mandarWa()"> Contactar asesor </button>
                           </div>
                         </div>
                       </div>
@@ -81,3 +74,15 @@
             </div>
         </div>
     </div>
+
+    <script>
+        //Funcion que genera un url para enviar un mensaje de WA al asesor inmobiliario asignado a la propiedad.
+        const mandarWa = () => {
+            let telefono = document.getElementById('TelEnc').value;
+            let URL = window.location.href;
+            let mensaje = `¡Hola! Estoy interesado en la propiedad ${URL} , ¿me podrias dar más informes?`
+            if(telefono != '')
+                location.href = `https://wa.me/${telefono}?text=${mensaje}`;
+
+        }
+    </script>

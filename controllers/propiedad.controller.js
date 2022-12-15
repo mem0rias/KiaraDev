@@ -1,5 +1,7 @@
 const path = require('path');
 const Propiedad = require('../models/propiedad.model');
+const Dashboard = require('../models/dashboard.model');
+const expediente = require('../models/expediente.model');
 
 exports.get_propiedades = (request, response, next) => {
 
@@ -17,52 +19,76 @@ exports.get_propiedades = (request, response, next) => {
 };
 
 exports.get_one = (request, response, next) => {
+    let idPropiedad = request.params.id ;
+    console.log(idPropiedad);
     Propiedad.fetchOne(request.params.id).then( ([rows, fieldData]) => {
-            console.log(rows);
-            var monto = rows[0].Precio;
-            precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
-             Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
-                if (res.length > 0){
-                    console.log(res);
-                    
-                    response.render(path.join('propiedad', 'propiedad.vista.residencial.ejs'), {
-                        propiedad: rows[0],
-                        residencial: res[0],
-                        precio: precio,
-                        
-                    }); 
+        Propiedad.fetchImages(request.params.id).then( ([imagenes, fieldData]) => {
+            console.log(imagenes);
+
+                const imagenesLista = [];
+                for(p of imagenes){
+                    imagenesLista.push(p.Imagen.split('/')[2]); 
                 }
-                else {
-                    Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
-                        if (com.length > 0){
-                            console.log(com);
-                            response.render(path.join('propiedad', 'propiedad.vista.comercial.ejs'), {
+
+            Propiedad.getAgenteTel(request.params.id).then(([tel, fieldDataTel]) =>{
+                    console.log('id de propiedad');
+                    console.log(request.params.id);
+                    let precio = 0;
+                    console.log(tel);
+                    let TelAgente = tel.length > 0? tel[0].Telefono : '';
+                    Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
+                        if (res.length > 0){
+                            console.log(res);
+                            response.render(path.join('propiedad', 'propiedad.vista.residencial.ejs'), {
                                 propiedad: rows[0],
-                                comercial: com[0],
-                                precio: precio,
-                            });
+                                ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
+                                residencial: res[0],
+                                precio: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(rows[0].Precio),
+                                numeroenc: TelAgente,
+                                imagenes: imagenesLista,
+                            }); 
                         }
-                        else{
-                            Propiedad.isTerreno(request.params.id).then( ([terr,fieldData]) => {
-                                if (terr.length > 0){
-                                    console.log(terr);
-                                    response.render(path.join('propiedad', 'propiedad.vista.terreno.ejs'), {
+                        else 
+                        {
+                            Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
+                                if (com.length > 0){
+                                    console.log(com);
+                                    response.render(path.join('propiedad', 'propiedad.vista.comercial.ejs'), {
                                         propiedad: rows[0],
-                                        terreno: terr[0],
+                                        comercial: com[0],
                                         precio: precio,
                                     });
                                 }
-                            }).catch((error) => {
-                                console.log(error);
-                            });
+                                else{
+                                    Propiedad.isTerreno(request.params.id).then( ([terr,fieldData]) => {
+                                        if (terr.length > 0){
+                                            console.log(terr);
+                                            response.render(path.join('propiedad', 'propiedad.vista.terreno.ejs'), {
+                                                propiedad: rows[0],
+                                                terreno: terr[0],
+                                                precio: precio,
+                                            });
+                                        }
+                                    }).catch((error) => {
+                                        console.log(error);
+                                    });
+                                }
+                            }).catch();
                         }
                     }).catch();
-                }
-            }).catch();
 
-        }).catch( (error) => {
-            console.log(error);
+                }).catch( (error) => {
+                    console.log(error);
+                });
+            
+            }).catch( err =>{
+                console.log(err);
+            });        
+        
+        }).catch( err =>{
+            console.log(err);
         });
+            
 
 };
 
@@ -79,45 +105,135 @@ exports.get_new = (request, response, next) => {
 };
 
 exports.post_new = (request, response, next) => {
-    
-    console.log(request.body.descripcion);
-    console.log(request.body);
-    let v = request.body;
+            
+    let v                   = request.body;
+    const userId            = parseInt(response.locals.IdUser);
 
-    if(request.body.tipoPropiedad == 'Residencial') {
-        const recamaras = parseInt(request.body.recamaras);
-        const estacionamiento = parseInt(request.body.estacionamiento);
-        const banos = parseInt(request.body.banos);
-        const pisos = parseInt(request.body.pisos);
-        const gas = parseInt(request.body.gas);
-        const cocina = parseInt(request.body.cocina);
-      
-        console.log(recamaras)
-        const propiedad = new Propiedad(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.precio,v.colonia,v.imagenes,v.video);
-        propiedad.saveResidencial(v.titulo,v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,recamaras,estacionamiento,banos,pisos,gas,cocina)
-                .then( () => {
-                        response.redirect('/propiedades');
-                }).catch( (error) => {
-                        console.log(error);
+    console.log(request.files);
+    let stringpath = '';
+    let headerImage = null;
+    let N_Pics = request.body.NPics;
+    let arrayImages = [];
+    if(request.files.imagen){
+
+        headerImage  = request.files.imagen[0].path.split('/')[2];
+        console.log('headerImage');
+        console.log(request.files.imagen[0].path.split('/')[2]);
+        for(elements of request.files.imagen){
+
+            arrayImages.push(elements.path.split('/')[2]);
+            console.log(elements.path.split('/')[2]);
+            stringpath += elements.path + ',';
+
+        }
+        NPics = request.files.imagen.length;
+        console.log(stringpath);
+    }else{
+        NPics = 0;
+    }
+        
+
+    if(v.uso == '1') {
+
+        const recamaras         = parseInt(v.recamaras);
+        const estacionamiento   = parseInt(v.estacionamiento);
+        const banos             = parseInt(v.banos);
+        const pisos             = parseInt(v.pisos);
+        const gas               = parseInt(v.gas);
+        const cocina            = parseInt(v.cocina);
+        const precio            = parseInt(v.precio);
+
+        let d = {
+            titulo          : v.titulo ,
+            descripcion     : v.descripcion,
+            precio          : precio,
+            estado          : v.estado,
+            muncipio        : v.muncipio,
+            colonia         : v.colonia,
+            calle           : v.calle,
+            cp              : v.cp,
+            uso             : v.uso,
+            mterreno        : v.mterreno,
+            mconstruccion   : v.mconstruccion,
+            tipotransaccion : v.tipotransaccion,
+            tipopropiedad   : v.tipopropiedad,
+            imagenes        : v.video,
+            video           : v.video,
+            recamaras       : recamaras,
+            banos           : banos,
+            cocina          : cocina,
+            pisos           : pisos,
+            estacionamiento : estacionamiento,
+            gas             : gas,
+            userid          : userId
+        };
+
+        Propiedad.agregarResidencial(d).then( () => {
+                Propiedad.saveImages(stringpath,N_Pics).then(() =>{     
+                    Propiedad.updateHeader(headerImage).then(() =>{
+                        response.redirect('/dashboard/asignado'); 
+                    }).catch(err =>{
+                        console.log(err);
+                    });
+                            
+                }).catch(err =>{
+                    console.log(err);
+                });
+                
+            }).catch( (error) => {
+                console.log(error);
         });
     }
-    else if(request.body.tipoPropiedad == 'Comercial'){
-        const recamaras = parseInt(request.body.recamaras);
-        const estacionamiento = parseInt(request.body.estacionamiento);
-        const banos = parseInt(request.body.banos);
-        const pisos = parseInt(request.body.pisos);
-        const oficinas = parseInt(request.body.oficinas);
-        const propiedad = new Propiedad(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.cp,v.calle,v.precio,v.colonia,v.imagenes,v.video);
-        propiedad.saveComercial(v.descripcion, v.precio,v.estado,v.muncipio,v.colonia,v.calle,v.cp,v.video,v.video,v.imagenes,estacionamiento,banos,oficinas,pisos)
+
+    else if(v.uso == '2'){
+
+        const estacionamiento   = parseInt(v.estacionamiento);
+        const banos             = parseInt(v.banos);
+        const pisos             = parseInt(v.pisos);
+        const cuartos           = parseInt(v.cuartos);
+
+        let d = {
+            titulo          : v.titulo,
+            descripcion     : v.descripcion,
+            precio          : v.precio,
+            estado          : v.estado,
+            muncipio        : v.muncipio,
+            colonia         : v.colonia,
+            calle           : v.calle,
+            cp              : v.cp,
+            uso             : v.uso,
+            mterreno        : v.mterreno,
+            mconstruccion   : v.mconstruccion,
+            tipotransaccion : v.tipotransaccion,
+            tipopropiedad   : v.tipopropiedad,
+            imagenes        : v.video,
+            video           : v.video,
+            cuartos         : cuartos,
+            banos           : banos,
+            pisos           : pisos,
+            estacionamiento : estacionamiento,
+            userid          : userId
+        };
+
+        Propiedad.agregarComercial(d)
                 .then( () => {
-                        response.redirect('/propiedades');
+                    Propiedad.saveImages(stringpath,N_Pics).then(() =>{
+                        response.redirect('/dashboard/asignado');
+                    }).catch(err =>{
+                        console.log(err);
+                    });
+                    
                 }).catch( (error) => {
-                        console.log(error);
+                    console.log(error);
         });
     } 
-    
 
-    
+    else {
+
+
+
+    }
+
 };
 
 exports.get_edit = (request, response, next) => {
@@ -125,8 +241,10 @@ exports.get_edit = (request, response, next) => {
             console.log(rows);
             var monto = rows[0].Precio;
             let tipoP;
+            let comercial;
             precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
-             Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
+            
+            Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
                 if (res.length > 0){
                     console.log(res);
                     
@@ -136,6 +254,7 @@ exports.get_edit = (request, response, next) => {
                         propiedad: rows[0],
                         residencial: res[0],
                         tipoP: tipoP,
+                        comercial: comercial,
                         
                     }); 
                 }
@@ -147,6 +266,7 @@ exports.get_edit = (request, response, next) => {
                                 propiedad: rows[0],
                                 comercial: com[0],
                                 precio: precio,
+                                tipoP: tipoP,
                             });
                         }
                         else{
@@ -157,6 +277,7 @@ exports.get_edit = (request, response, next) => {
                                         propiedad: rows[0],
                                         terreno: terr[0],
                                         precio: precio,
+                                        tipoP: tipoP,
                                     });
                                 }
                             }).catch((error) => {
@@ -166,7 +287,6 @@ exports.get_edit = (request, response, next) => {
                     }).catch();
                 }
             }).catch();
-
         }).catch( (error) => {
             console.log(error);
         });
@@ -188,17 +308,126 @@ exports.get_buscar =  (request, response, next) => {
 };
 
 exports.post_edit = (request, response, next) => {
-    let v = request.body;
-    console.log(v.id);
-    console.log(v.titulo);
-    console.log(v.recamaras);
-    Propiedad.updateResidencial(v.id, v.titulo,v.recamaras)
-        .then( () => {
-            request.session.info = "La información del robot " + request.body.nombre + " fue actualizada exitosamente";
-            response.redirect('/propiedades');
+
+    let v                   = request.body;
+
+    if(v.usodata == '1') {
+        console.log(request.body);
+        let d = {
+            id              : v.id,
+            titulo          : v.titulo,
+            descripcion     : v.descripcion,
+            precio          : v.precio,
+            estado          : v.estado,
+            muncipio        : v.muncipio,
+            colonia         : v.colonia,
+            calle           : v.calle,
+            cp              : v.cp,
+            mterreno        : v.mterreno,
+            mconstruccion   : v.mconstruccion,
+            tipotransaccion : v.tipotransaccion,
+            tipopropiedad   : v.tipopropiedad,
+            imagenes        : v.tipopropiedad,
+            video           : v.video,
+            visibilidad     : v.visibilidad,
+            recamaras       : v.recamaras,
+            banos           : v.banos,
+            cocina          : v.cocina,
+            pisos           : v.pisos,
+            estacionamiento : v.estacionamiento, 
+            gas             : v.gas
+
+        };
+
+        Propiedad.actulizarResidencial(d)
+            .then( () => {
+                response.redirect('/dashboard/asignado');
+            }).catch( (error) => {
+                console.log(error);
+            });
+    }
+
+    else if(v.usodata == '2') {
+
+        let d = {
+            id              : v.id,
+            titulo          : v.titulo,
+            descripcion     : v.descripcion,
+            precio          : v.precio,
+            estado          : v.estado,
+            muncipio        : v.muncipio,
+            colonia         : v.colonia,
+            calle           : v.calle,
+            cp              : v.cp,
+            uso             : v.uso,
+            mterreno        : v.mterreno,
+            mconstruccion   : v.mconstruccion,
+            tipotransaccion : v.tipotransaccion,
+            tipopropiedad   : v.tipopropiedad,
+            imagenes        : v.video,
+            video           : v.video,
+            cuartos         : v.cuartos,
+            banos           : v.banos,
+            pisos           : v.pisos,
+            estacionamiento : v.estacionamiento,
+        };
+
+        Propiedad.actulizarComercial(d)
+            .then( () => {
+                response.redirect('/dashboard/asignado');
+            }).catch( (error) => {
+                console.log(error);
+            });
+    }  
+};
+
+exports.post_delete = (request, response, next) => {
+    let idUser = response.locals.IdUser;
+    console.log(idUser);
+    Propiedad.delete(request.body.id)
+        .then(()=> {
+            Dashboard.fetchAsigando(idUser).then(([propiedades, fieldData])=>{
+                response.status(200).json({
+                    data: propiedades,
+                });
+            }).catch(error => {console.log(error)});
+        }).catch(error => {console.log(error)});
+    
+};
+
+
+exports.get_buscarAsigandos =  (request, response, next) => {
+    let idUser = response.locals.IdUser;
+    console.log(request.params.valor_busqueda);
+    Dashboard.fetchAsigandoPropiedades(idUser,request.params.valor_busqueda)
+        .then( ([propiedades, fieldData]) => {
+        
+            response.status(200).json(propiedades[0]);
+            console.log(propiedades[0])
+
+            ;
         }).catch( (error) => {
             console.log(error);
         });
+
+};
+
+exports.get_Imagenes =  (request, response, next) => {
+
+    console.log(request.params.valor_busqueda)
+    Propiedad.fetchImages(request.params.valor_busqueda).then( ([imagenes, fieldData]) => {
+        console.log(imagenes);
     
+            const imagenesLista = [];
+            for(p of imagenes){
+                imagenesLista.push(p.Imagen.split('/')[2]); 
+            }
+            response.status(200).json(imagenesLista);
+            console.log(imagenesLista)
+
+            ;
+        }).catch( (error) => {
+            console.log(error);
+        });
 };
 
