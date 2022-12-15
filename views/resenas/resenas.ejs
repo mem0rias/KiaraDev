@@ -14,7 +14,7 @@
         <div class="box has-text-left ">
             <strong class="is-size-4 has-text-grey-dark">Reseñas de nuestros clientes</strong>
         </div>
-        <input type="hidden" id="permisos" value="<%= permisos.indexOf('panel_admin') != -1 ? permisos.indexOf('panel_admin') != -1 : 0 %>">
+        <input type="hidden" id="permisos" value="<%= permisos.indexOf('panel_admin') != -1 ? 1 : 0 %>">
         <div class="box" id="coments">
         </div>
         <% if (logged == true) { %>
@@ -53,9 +53,10 @@
     </div>
 
     <script>
+        
         const desplegar_comentarios = () => {
             let html = '';
-            let permiso = document.getElementById('permisos').value != 'true' ? 'is-hidden' : '';
+            let permiso = document.getElementById('permisos').value != '1' ? 'is-hidden' : '';
             fetch('/resenas/fetch/', {
                 method: 'GET',
                 headers: {
@@ -66,7 +67,7 @@
             }).then(data => {
                 console.log(data);
                 for (element of data) {
-                    html += '  <% if (logged == true ) { %>';
+                    html += '  <% if (permisos.indexOf("panel_admin") != -1) { %>';
                     html += '<article class="media" id="' + element.idComentario + '">';
                     html += '<div class="media-content">';
                     html += '<strong>' + element.Nombre + ' ' + element.PA + ' ' + element.SA + '</strong>';
@@ -114,6 +115,7 @@
 
 
         const eliminar = (id) => {
+            const csrfToken = document.getElementsByName('_csrf')[0].value;
             fetch('/resenas/delete', {
                 method: 'POST',
                 headers: {
@@ -135,6 +137,7 @@
         }
 
         const aprobar = (id) => {
+            const csrfToken = document.getElementsByName('_csrf')[0].value;
             fetch('/resenas/aprobado', {
                 method: 'POST',
                 headers: {
