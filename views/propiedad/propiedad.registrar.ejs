@@ -393,30 +393,18 @@
         }
         
     }
+    let filearray = new Array();
 
     const clickArchivo = (element) => {
-        
-
-        /*let imgtemplate = 
-        `
-            <div class="column">
-                <figure class="image is-128x128 is-hidden "  id="image-${imgid}">
-                    <button class="delete boton"></button>
-                    <img id="minipic-${imgid}" src="">
-                    <p class="title is-6"> ${filename}</p>
-                </figure>
-                
-            </div>
-        `
-        */
         let div = document.getElementById('imagepreview');
         let files = element.files
         let html = '';
         let imgid = 0;
+        
         div.innerHTML = 
         `
-        <div class="column is-12">
-                <h2 class="label"> Vista Previa </h2>
+            <div class="column is-12">
+                    <h2 class="label"> Vista Previa </h2>
             </div>
             <br>
             <br>
@@ -426,9 +414,9 @@
             console.log(imgid);
             html = 
             `
-                <div class="column">
+                <div class="column" id="imgholder-${imgid}">
                     <figure class="image is-128x128"  id="image-${imgid}">
-                        <button class="delete boton"></button>
+                        <button type="button" class="delete boton" id="imgbtn-${imgid}" onclick="removerArchivo(this)"></button>
                         <img id="minipic-${imgid}" src="">
                         <p class="title is-6"></p>
                     </figure>
@@ -438,9 +426,11 @@
            
             div.insertAdjacentHTML('beforeend',html);
             document.getElementById(`minipic-${imgid}`).src = URL.createObjectURL(element);
+            filearray.push(element);
             imgid++;
         }
         document.getElementById('imagebox').classList.remove('is-hidden');
+        console.log(filearray);
         /*Pics++;
         let id = element.id.split('-')[1];
         let filename = document.getElementById('archivo-'+id);
@@ -452,7 +442,19 @@
         
     }
     const removerArchivo = (element) => {
-        Pics--;
+        let id = element.id.split('-')[1];
+        filearray[parseInt(id)] = null;
+        let div = document.getElementById('imgholder-'+id);
+        div.innerHTML = '';
+        let upbt = document.getElementById('boton-0');
+        let filelist = new FileList();
+        for(element in filearray){
+            if(element != null)
+                filelist.push(element);
+        }
+        upbt.files = filelist;
+        console.log(upbt.files);
+                /*Pics--;
         let id = element.id.split('-')[1];
         document.getElementById('boton-'+id).value = '';
         document.getElementById('erase-'+id).classList.add('is-hidden');
@@ -460,6 +462,7 @@
         filename.classList.add('is-hidden');
         filename.innerHTML = '';
         document.getElementById('NPics').value = Pics;
+        */
     }
 
 </script>
