@@ -259,11 +259,38 @@
                     </div>
 
                 </div>
+                <style>
+                   .boton {
+                        position: absolute;
+                        top: 5%;
+                        left: 95%;
+                        transform: translate(-50%, -50%);
+                        -ms-transform: translate(-50%, -50%);
+                        background-color: grey;
+                        
+                    }
+                </style>
+                <div class="section px-0 py-5 is-hidden" id="imagebox" >
+                    <div class="card" >
+                        <div class="card-content columns is-multiline "id="imagepreview" >
+                            <div class="column is-12">
+                                <h2 class="label"> Vista Previa </h2>
+                            </div>
+                            <br>
+                            <br>
+                            
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                
                 <div class="content is-small">  
                     <div class="field">
                         <label class="label">Imagenes</label>
                         <div class="control">
-                            <img id="mini" class="image is-64x64" src="">
+                            
                             <div id="bloque_imagenes">
                                 <div class="file is-small is-boxed has-name is-danger ">
                                     <label class="file-label ">
@@ -369,23 +396,51 @@
 
     const clickArchivo = (element) => {
         
-        let div = document.getElementById('bloque_imagenes');
+
+        /*let imgtemplate = 
+        `
+            <div class="column">
+                <figure class="image is-128x128 is-hidden "  id="image-${imgid}">
+                    <button class="delete boton"></button>
+                    <img id="minipic-${imgid}" src="">
+                    <p class="title is-6"> ${filename}</p>
+                </figure>
+                
+            </div>
+        `
+        */
+        let div = document.getElementById('imagepreview');
         let files = element.files
         let html = '';
+        let imgid = 0;
+        div.innerHTML = 
+        `
+        <div class="column is-12">
+                <h2 class="label"> Vista Previa </h2>
+            </div>
+            <br>
+            <br>
+        `
         for(element of files){
-            html += 
+            console.log(element);
+            console.log(imgid);
+            html = 
             `
-                <h1> ${element.name} </h1>
-                
+                <div class="column">
+                    <figure class="image is-128x128"  id="image-${imgid}">
+                        <button class="delete boton"></button>
+                        <img id="minipic-${imgid}" src="">
+                        <p class="title is-6"></p>
+                    </figure>
+                    
+                </div>
             `
-            let fr = new FileReader();
-            fr.onload = function(){
-                document.getElementById('mini').src = fr.result;
-            }
-            fr.readAsDataURL(element);
+           
+            div.insertAdjacentHTML('beforeend',html);
+            document.getElementById(`minipic-${imgid}`).src = URL.createObjectURL(element);
+            imgid++;
         }
-        div.insertAdjacentHTML('beforeend',html);
-        
+        document.getElementById('imagebox').classList.remove('is-hidden');
         /*Pics++;
         let id = element.id.split('-')[1];
         let filename = document.getElementById('archivo-'+id);
