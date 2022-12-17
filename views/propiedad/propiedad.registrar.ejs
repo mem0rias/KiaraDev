@@ -400,6 +400,8 @@
         }
         document.getElementById('imagebox').classList.remove('is-hidden');
         console.log(filearray);
+        // Se actualiza la lista del DOM.
+        element.files = DT.files;
         // Se revisan las condiciones para habilitar la subida de informacion.
         checkbutton(map);
         
@@ -435,7 +437,7 @@
             filelist = getCurrentFiles(filelist);
             // Se intercambia la lista.
             upbt.files = filelist.files;
-            console.log(filelist.files);
+            console.log(upbt.files);
             // Si se eliminan todos los archivos, se esconde la caja de preview.
             if(upbt.files.length == 0){
                 document.getElementById('imagebox').classList.add('is-hidden');

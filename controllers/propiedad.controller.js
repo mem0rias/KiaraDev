@@ -109,27 +109,29 @@ exports.post_new = (request, response, next) => {
     let v                   = request.body;
     const userId            = parseInt(response.locals.IdUser);
 
+    // Esta variable se cambia con testing y prod, en prod es '/' y en testing '\\'
+    let OSVar = '/'
     console.log(request.files);
     let stringpath = '';
     let headerImage = null;
     let N_Pics = request.body.NPics;
     let arrayImages = [];
     if(request.files.imagen){
-
-        headerImage  = request.files.imagen[0].path.split('/')[2];
+        headerImage  = request.files.imagen[0].path.split(OSVar)[2];
         console.log('headerImage');
-        console.log(request.files.imagen[0].path.split('/')[2]);
+        console.log(request.files.imagen[0].path.split(OSVar)[2]);
         for(elements of request.files.imagen){
 
-            arrayImages.push(elements.path.split('/')[2]);
-            console.log(elements.path.split('/')[2]);
+            arrayImages.push(elements.path.split(OSVar)[2]);
+            console.log(elements.path.split(OSVar)[2]);
             stringpath += elements.path + ',';
 
         }
-        NPics = request.files.imagen.length;
+        N_Pics = request.files.imagen.length;
+        
         console.log(stringpath);
     }else{
-        NPics = 0;
+         N_Pics = 0;
     }
         
 
