@@ -12,12 +12,14 @@ const checkEdit = () => {
 }
 const checkbutton = (map) =>{
     let savebutton = document.getElementById('enviar');
+    let imgfield = document.getElementById('boton-0');
     //let cambio = document.getElementById('campo-11').value;
     //console.log(cambio);
     console.log(allowsave);
     //Si el arreglo tiene un tamaño mayor a 0 significa que hay inputs que no cumplen con la regla y se deshabilita el boton.
     console.log(map);
-    if(map.length > 0){
+    console.log(imgfield.files.length);
+    if(map.length > 0 | imgfield.files.length == 0){
         allowsave = false;
         
     }

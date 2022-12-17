@@ -273,8 +273,11 @@
                 <div class="section px-0 py-5 is-hidden" id="imagebox" >
                     <div class="card" >
                         <div class="card-content columns is-multiline "id="imagepreview" >
-                            <div class="column is-12">
+                            <div class="column is-8">
                                 <h2 class="label"> Vista Previa </h2>
+                            </div>
+                            <div class="column is-4">
+                                <input type="button" class="button is-danger is-fullwidth" onclick="EliminarIMGs()" value="Eliminar Selección">
                             </div>
                             <br>
                             <br>
@@ -313,7 +316,6 @@
                                 </div>
                                 <br>
                             </div>
-                            <input class="button" type="button" onclick="addIMG(this)" value="+">
                         </div>
                     </div>
                 </div>
@@ -345,9 +347,9 @@
 <script src="../js/dist/bulma-toast.min.js"></script>
 
 <script>
-    let i = 0;
-    let Pics = 0;
-
+    // Variable que contiene el valor iniical de la caja de preview, por si se decide eliminar todo de la seleccion.
+    let PrevImgBox = document.getElementById('imagepreview').innerHTML;
+    // Revisa que no haya campos vacios en el registro de la propiedad, si no lanza un mensaje al usuario para que termine de hacer su registro
     const subirArch = () => {
         let form = document.getElementById('form');
         console.log(allowsave);
@@ -355,62 +357,26 @@
             form.submit();
         else
             bulmaToast.toast({ message: 'Llena los campos requeridos para continuar', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
-        //form.submit();
     }
-    const addIMG = (element) => {
-        let div = document.getElementById('bloque_imagenes');
-        let html = '';
-        let hidden = '';
-        let lastelement = document.getElementById('boton-'+i);
-        if(lastelement.value != ''){
-            i++;    
-            html += 
-            `
-                <div class="file is-small is-boxed has-name is-danger ">
-                    <label class="file-label ">
-                        <input class="file-input" type="file" name="imagen" accept="image/*" id="boton-${i}" onchange="clickArchivo(this)" multiple>
-                        <span class="file-cta">
-                        
-                            <span class="file-label">
-                                Seleccionar Archivo
-                            </span>
-                        </span>
-                        
-                        <span class="file-name is-hidden" id="archivo-${i}">
-                            
-                        </span>
-                    
-                    </label>
-                    <span id="erase-${i}" class="level-right button is-boxed is-danger is-hidden "onclick="removerArchivo(this)" style="margin-left: 10px; margin-bottom: 10px">
-                                                        <i class="tiny material-icons"> clear </i>  
-                                                    </span>            
-                </div>
-                <br>
-            
-            ` 
-            
-            div.insertAdjacentHTML('beforeend',html);
-        }
-        
-    }
-    let filearray = new Array();
 
+    let filearray = new Array();
+    let imgid = 0;
+    // Cuando se añade una lista de archivos, se tiene que hacer un super chequeo
     const clickArchivo = (element) => {
+        let DT = new DataTransfer();
         let div = document.getElementById('imagepreview');
         let files = element.files
         let html = '';
-        let imgid = 0;
-        
-        div.innerHTML = 
-        `
-            <div class="column is-12">
-                    <h2 class="label"> Vista Previa </h2>
-            </div>
-            <br>
-            <br>
-        `
-        for(element of files){
-            console.log(element);
+        // Como es incremental nuestra funcionalidad, se debe obtener la lista actual de archivos del arreglo filearray.
+        DT = getCurrentFiles(DT);
+        // Una vez obtenido, se añaden las nuevas inserciones 
+        for(elements of files){
+            DT.items.add(elements);
+        }
+        console.log(DT.files);
+        // Se generan los nuevos bloques que contendran las nuevas imagenes que fueron añadidas con el fin de mostrar un preview
+        for(elements of files){
+            console.log(elements);
             console.log(imgid);
             html = 
             `
@@ -423,47 +389,85 @@
                     
                 </div>
             `
-           
+            // Como puede haber imagenes ya creadas, se añaden las nuevas al final del div.
             div.insertAdjacentHTML('beforeend',html);
-            document.getElementById(`minipic-${imgid}`).src = URL.createObjectURL(element);
-            filearray.push(element);
+            document.getElementById(`minipic-${imgid}`).src = URL.createObjectURL(elements);
+            // El arreglo global de archivos crece con las nuevas imagenes
+            filearray.push(elements);
+            // El id de imagenes igual, este NUNCA se debe resetear, va directamente ligado al filearray y a los divs generados, mantiene
+            // concordancia con lo que se esta seleccionando y lo que se esta visualizando.
             imgid++;
         }
         document.getElementById('imagebox').classList.remove('is-hidden');
         console.log(filearray);
-        /*Pics++;
-        let id = element.id.split('-')[1];
-        let filename = document.getElementById('archivo-'+id);
-        console.log(element.files);
-        document.getElementById('erase-'+id).classList.remove('is-hidden');
-        filename.classList.remove('is-hidden');
-        filename.innerHTML = element.files[0].name;
-        document.getElementById('NPics').value = Pics;*/
+        // Se revisan las condiciones para habilitar la subida de informacion.
+        checkbutton(map);
         
     }
+    // Cuando se quiere eliminar alguna de las imagenes seleccionadas se ejecuta esta funcion
     const removerArchivo = (element) => {
-        let id = element.id.split('-')[1];
-        filearray[parseInt(id)] = null;
-        let div = document.getElementById('imgholder-'+id);
-        div.innerHTML = '';
-        let upbt = document.getElementById('boton-0');
-        let filelist = new FileList();
-        for(element in filearray){
-            if(element != null)
-                filelist.push(element);
-        }
-        upbt.files = filelist;
-        console.log(upbt.files);
-                /*Pics--;
-        let id = element.id.split('-')[1];
-        document.getElementById('boton-'+id).value = '';
-        document.getElementById('erase-'+id).classList.add('is-hidden');
-        let filename = document.getElementById('archivo-'+id);
-        filename.classList.add('is-hidden');
-        filename.innerHTML = '';
-        document.getElementById('NPics').value = Pics;
-        */
+        // Promesa para que se ejecute secuencialmente el chequeo de la validez, ya que se necesita tener imagenes para poder subir una propiedad.
+       reorgFileArray(element).then(()  =>{
+        checkbutton(map);
+       }).catch(err => {
+        console.log(err);
+       })
+        
     }
+
+    // Promesa que ejecuta la eliminacion de la imagen, tanto del preview, como del arreglo global y la info del boton de files.
+    const reorgFileArray = (element) => {
+        return new Promise(resolve => {
+            // Se obtiene el ID de la img que se quiere eliminar
+            let id = element.id.split('-')[1];
+            // Se usa el id para encontrarlo en el arreglo global y marcarlo como nulo
+            filearray[parseInt(id)] = null;
+            // Se obtiene el padre de todas las imagenes
+            let parentDiv = document.getElementById('imagepreview')
+            // Nuevamente el ID se utiliza para encontrar el div que contiene el preview de la imagen que se va a eliminar
+            let div = document.getElementById('imgholder-'+id);
+            // Se destruye el div que contiene la imagen a borrar
+            parentDiv.removeChild(div);
+            // Se obtiene el boton que contiene la lista de archivos a subir
+            let upbt = document.getElementById('boton-0');
+            let filelist = new DataTransfer();
+            // Se obtiene la lista de archivos desde el arreglo global
+            filelist = getCurrentFiles(filelist);
+            // Se intercambia la lista.
+            upbt.files = filelist.files;
+            console.log(filelist.files);
+            // Si se eliminan todos los archivos, se esconde la caja de preview.
+            if(upbt.files.length == 0){
+                document.getElementById('imagebox').classList.add('is-hidden');
+            }
+            resolve();
+        })
+    }
+    // Funcio que elimina TODAS las imagenes de la lista
+    const EliminarIMGs = () => {
+        // Limpieza del arreglo global
+        filearray = [];
+        let upbt = document.getElementById('boton-0');
+        let filelist = new DataTransfer();
+        filelist.clearData();
+        // Limpieza de la lista del DOM
+        upbt.files = filelist.files;
+        console.log(upbt.files);
+        // Se restaura a la version inicial del preview para cuando se agreguen mas imagenes.
+        document.getElementById('imagepreview').innerHTML = PrevImgBox;
+        // Se esconde el preview al ultimo
+        document.getElementById('imagebox').classList.add('is-hidden');
+    }
+    const getCurrentFiles = (filelist) => {
+        // Se checa el arreglo global y se omiten todas las entradas nulas cuando se genera la nueva lista.
+        for(element of filearray){
+                console.log(element);
+                if(element != null)
+                    filelist.items.add(element);
+            }
+        return filelist;
+    }
+
 
 </script>
 
