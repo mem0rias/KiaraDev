@@ -273,12 +273,20 @@
                 <div class="section px-0 py-5 <% fotos != '' ? '': 'is-hidden'%>" id="imagebox" >
                     <div class="card" >
                         <div class="card-content columns is-multiline "id="imagepreview" >
-                            <div class="column is-8">
+                            <div class="column is-6">
                                 <h2 class="label"> Vista Previa </h2>
                             </div>
-                            <div class="column is-4">
-                                <input type="button" class="button is-danger is-fullwidth" onclick="EliminarIMGs()" value="Eliminar Selección">
+                            <div class="column is-6">
+                                <div class="columns">
+                                    <div class="column is-6 is-hidden" id="clearselbutton">
+                                        <input type="button" class="button is-danger is-fullwidth" onclick="EliminarIMGs()" value="Eliminar Selección">
+                                    </div>
+                                    <div class="column is-6 is-hidden" id="revertbutton">
+                                        <input type="button" class="button is-danger is-fullwidth" onclick="RevertirEdit()" value="Revertir cambios">
+                                    </div>
+                                </div>
                             </div>
+                            
                             <% if(fotos != '') { %>
                                 <% for (elements of fotos) { %>
                                     <div class="column" id="editimgholder-<%= elements.IdImagen %>">
@@ -365,12 +373,23 @@
     // Revisa que no haya campos vacios en el registro de la propiedad, si no lanza un mensaje al usuario para que termine de hacer su registro
     const subirArch = () => {
         let form = document.getElementById('form');
+        let div = document.getElementById('imagepreview');
+        let paths = getStringedPaths();
+        let html = 
+            `
+                <input type="hidden" name="removePaths" value="${paths.stringedPaths}">
+                <input type="hidden" name="removePaths" value="${paths.stringedIds}">
+                <input type="hidden" name="nPaths" value="${paths.nPaths}">
+            `
+        div.insertAdjacentHTML('beforeend',html);
         console.log(allowsave);
-        if(allowsave)
+        console.log(paths);
+        /*if(allowsave)
             form.submit();
         else
             bulmaToast.toast({ message: 'Llena los campos requeridos para continuar', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
-    }
+    */
+        }
 
     let filearray = new Array();
     let removePaths = new Map();
@@ -413,6 +432,7 @@
             imgid++;
         }
         document.getElementById('imagebox').classList.remove('is-hidden');
+        document.getElementById('clearselbutton').classList.remove('is-hidden');
         console.log(filearray);
         // Se actualiza la lista del DOM.
         element.files = DT.files;
@@ -455,6 +475,7 @@
             // Si se eliminan todos los archivos, se esconde la caja de preview.
             if(upbt.files.length == 0){
                 document.getElementById('imagebox').classList.add('is-hidden');
+                document.getElementById('clearselbutton').classList.add('is-hidden');
             }
             resolve();
         })
@@ -473,6 +494,7 @@
         document.getElementById('imagepreview').innerHTML = PrevImgBox;
         // Se esconde el preview al ultimo
         document.getElementById('imagebox').classList.add('is-hidden');
+        document.getElementById('clearselbutton').classList.add('is-hidden');
     }
     const getCurrentFiles = (filelist) => {
         // Se checa el arreglo global y se omiten todas las entradas nulas cuando se genera la nueva lista.
@@ -487,13 +509,39 @@
     const removerArchivoEdit = (element) => {
         let id = element.id.split('-')[1];
         let fullPath = document.getElementById('fullPath-'+id).value;
-        let parentDiv = document.getElementById('imagepreview');
         let child = document.getElementById('editimgholder-'+id);
+        document.getElementById('revertbutton').classList.remove('is-hidden');
         child.classList.add('is-hidden');
-        //parentDiv.removeChild(child);
+        
 
-        removePaths[id] = fullPath;
+        removePaths.set(id,fullPath);
         console.log(removePaths);
+
+
+    }
+
+    // Funcion que limpia el mapa de archivos a borrar. 
+    const RevertirEdit = () => {
+        
+        for(const [key, value] of removePaths) {
+            document.getElementById('editimgholder-'+key).classList.remove('is-hidden');
+            
+        }
+        removePaths.clear();
+        document.getElementById('revertbutton').classList.add('is-hidden');
+        console.log(removePaths);
+    }
+
+    const getStringedPaths = () => {
+        let aux = new Object();
+        aux.stringedPaths = '';
+        aux.stringedIds = '';
+        for(const [key,value] of removePaths) {
+            aux.stringedPaths += value + ','; 
+            aux.stringedIds += key + ',';
+        }
+        aux.nPaths = removePaths.size;
+        return aux;
 
     }
 
