@@ -270,7 +270,7 @@
                         
                     }
                 </style>
-                <div class="section px-0 py-5 is-hidden" id="imagebox" >
+                <div class="section px-0 py-5 <% fotos != '' ? '': 'is-hidden'%>" id="imagebox" >
                     <div class="card" >
                         <div class="card-content columns is-multiline "id="imagepreview" >
                             <div class="column is-8">
@@ -279,6 +279,19 @@
                             <div class="column is-4">
                                 <input type="button" class="button is-danger is-fullwidth" onclick="EliminarIMGs()" value="Eliminar Selección">
                             </div>
+                            <% if(fotos != '') { %>
+                                <% for (elements of fotos) { %>
+                                    <div class="column" id="editimgholder-<%= elements.IdImagen %>">
+                                        <figure class="image is-128x128"  id="Editimage-<%= elements.IdImagen %>">
+                                            <button type="button" class="delete boton" id="Editimgbtn-<%= elements.IdImagen %>" onclick="removerArchivoEdit(this)"></button>
+                                            <img id="Editminipic-<%= elements.IdImagen %>" src="../uploads/<%= elements.Imagen %>">
+                                            <input type="hidden" id="fullPath-<%= elements.IdImagen %>" value="<%= elements.fullPath %>">
+                                            <p class="title is-6"></p>
+                                        </figure>
+                                        
+                                    </div>
+                                <% } %>
+                            <% } %>
                             <br>
                             <br>
                             
@@ -360,6 +373,7 @@
     }
 
     let filearray = new Array();
+    let removePaths = new Map();
     let imgid = 0;
     // Cuando se añade una lista de archivos, se tiene que hacer un super chequeo
     const clickArchivo = (element) => {
@@ -470,6 +484,18 @@
         return filelist;
     }
 
+    const removerArchivoEdit = (element) => {
+        let id = element.id.split('-')[1];
+        let fullPath = document.getElementById('fullPath-'+id).value;
+        let parentDiv = document.getElementById('imagepreview');
+        let child = document.getElementById('editimgholder-'+id);
+        child.classList.add('is-hidden');
+        //parentDiv.removeChild(child);
+
+        removePaths[id] = fullPath;
+        console.log(removePaths);
+
+    }
 
 </script>
 

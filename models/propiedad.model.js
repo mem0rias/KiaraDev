@@ -217,8 +217,9 @@ module.exports = class Propiedad {
     }
 
     static fetchImages(id){
-        return db.execute('SELECT Imagen FROM Imagenes WHERE IdPropiedad = ?', [id]);
+        return db.execute('SELECT Imagen, IdImagen FROM Imagenes WHERE IdPropiedad = ?', [id]);
     }
+
 
     
 }

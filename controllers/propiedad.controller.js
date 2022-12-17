@@ -247,50 +247,69 @@ exports.get_edit = (request, response, next) => {
             let tipoP;
             let comercial;
             precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
-            
-            Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
-                if (res.length > 0){
-                    console.log(res);
-                    
-                    tipoP = 1;
-                    console.log(tipoP);
-                    response.render(path.join('propiedad', 'propiedad.registrar.ejs'), {
-                        propiedad: rows[0],
-                        residencial: res[0],
-                        tipoP: tipoP,
-                        comercial: comercial,
+            Propiedad.fetchImages(request.params.id).then(([photos, fieldData]) => {
+                console.log(photos);
+                // Obtenemos las fotos de la BD y las adecuados al formato que se utiliza en la vista.
+                let convertedphotos = new Array();
+                let OSVar = '\\';
+                for(element of photos){
+                    let aux = new Object();
+                    aux.IdImagen = element.IdImagen;
+                    aux.Imagen = element.Imagen.split(OSVar)[2];
+                    aux.fullPath = element.Imagen;
+                    convertedphotos.push(aux);
+                }
+                console.log(convertedphotos);
+                Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
+                    if (res.length > 0){
+                        console.log(res);
                         
-                    }); 
-                }
-                else {
-                    Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
-                        if (com.length > 0){
-                            console.log(com);
-                            response.render(path.join('propiedad', 'propiedad.registrar.ejs'), {
-                                propiedad: rows[0],
-                                comercial: com[0],
-                                precio: precio,
-                                tipoP: tipoP,
-                            });
-                        }
-                        else{
-                            Propiedad.isTerreno(request.params.id).then( ([terr,fieldData]) => {
-                                if (terr.length > 0){
-                                    console.log(terr);
-                                    response.render(path.join('propiedad', 'propiedad.registrar.ejs'), {
-                                        propiedad: rows[0],
-                                        terreno: terr[0],
-                                        precio: precio,
-                                        tipoP: tipoP,
-                                    });
-                                }
-                            }).catch((error) => {
-                                console.log(error);
-                            });
-                        }
-                    }).catch();
-                }
-            }).catch();
+                        tipoP = 1;
+                        console.log(tipoP);
+                        response.render(path.join('propiedad', 'propiedad.registrar.ejs'), {
+                            propiedad: rows[0],
+                            residencial: res[0],
+                            tipoP: tipoP,
+                            comercial: comercial,
+                            fotos : convertedphotos,
+                            
+                        }); 
+                    }
+                    else {
+                        Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
+                            if (com.length > 0){
+                                console.log(com);
+                                response.render(path.join('propiedad', 'propiedad.registrar.ejs'), {
+                                    propiedad: rows[0],
+                                    comercial: com[0],
+                                    precio: precio,
+                                    tipoP: tipoP,
+                                    fotos : convertedphotos,
+                                });
+                            }
+                            else{
+                                Propiedad.isTerreno(request.params.id).then( ([terr,fieldData]) => {
+                                    if (terr.length > 0){
+                                        console.log(terr);
+                                        response.render(path.join('propiedad', 'propiedad.registrar.ejs'), {
+                                            propiedad: rows[0],
+                                            terreno: terr[0],
+                                            precio: precio,
+                                            tipoP: tipoP,
+                                            fotos : convertedphotos,
+                                        });
+                                    }
+                                }).catch((error) => {
+                                    console.log(error);
+                                });
+                            }
+                        }).catch();
+                    }
+                }).catch();
+            }).catch(err =>{
+                console.log(err);
+            });
+            
         }).catch( (error) => {
             console.log(error);
         });
