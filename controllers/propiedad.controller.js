@@ -4,6 +4,8 @@ const Dashboard = require('../models/dashboard.model');
 const expediente = require('../models/expediente.model');
 const fs = require('fs');
 
+// Esta variable nos ayuda en el manejo de varios archivos.
+let OSVar = '/';
 exports.get_propiedades = (request, response, next) => {
 
     Propiedad.fetchAll()
@@ -112,7 +114,7 @@ exports.post_new = (request, response, next) => {
     const userId            = parseInt(response.locals.IdUser);
 
     // Esta variable se cambia con testing y prod, en prod es '/' y en testing '\\'
-    let OSVar = '\\'
+    //let OSVar = '\\'
     console.log(request.files);
     let stringpath = '';
     let headerImage = null;
@@ -253,7 +255,7 @@ exports.get_edit = (request, response, next) => {
                 console.log(photos);
                 // Obtenemos las fotos de la BD y las adecuados al formato que se utiliza en la vista.
                 let convertedphotos = new Array();
-                let OSVar = '\\';
+                //let OSVar = '\\';
                 for(element of photos){
                     let aux = new Object();
                     aux.IdImagen = element.IdImagen;
@@ -336,7 +338,7 @@ exports.post_edit = (request, response, next) => {
 
     let v                   = request.body;
 
-    let OSVar = '\\'
+    //let OSVar = '\\'
     console.log(request.files);
     let stringpath = '';
     let headerImage = null;
