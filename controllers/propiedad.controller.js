@@ -74,8 +74,10 @@ exports.get_one = (request, response, next) => {
                                     console.log(com);
                                     response.render(path.join('propiedad', 'propiedad.vista.comercial.ejs'), {
                                         propiedad: rows[0],
+                                        ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
                                         comercial: com[0],
-                                        precio: precio,
+                                        precio: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(rows[0].Precio),
+                                        imagenes: imagenesLista,
                                     });
                                 }
                                 else{
@@ -180,7 +182,7 @@ exports.post_new = (request, response, next) => {
             mconstruccion   : v.mconstruccion,
             tipotransaccion : v.tipotransaccion,
             tipopropiedad   : v.tipopropiedad,
-            imagenes        : v.video,
+            imagenes        : headerImage,
             video           : v.video,
             recamaras       : recamaras,
             banos           : banos,
@@ -232,7 +234,7 @@ exports.post_new = (request, response, next) => {
             mconstruccion   : v.mconstruccion,
             tipotransaccion : v.tipotransaccion,
             tipopropiedad   : v.tipopropiedad,
-            imagenes        : v.video,
+            imagenes        : headerImage,
             video           : v.video,
             cuartos         : cuartos,
             banos           : banos,
