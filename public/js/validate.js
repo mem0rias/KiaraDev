@@ -1,14 +1,16 @@
 
 let map = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14'];
 let allowsave = false;
-
+let nPhotos =  0;
 const checkEdit = () => {
     let editing = document.getElementById('edit') ? document.getElementById('edit').value : '0';
+    nPhotos = document.getElementById('nEditPhotos') ?  parseInt(document.getElementById('nEditPhotos').value) : 0;
     if(editing == '1'){
         map = [];
-        allowsave = true;
+        console.log(nPhotos);
+        checkbutton(map);
     }
-        
+      
 }
 const checkbutton = (map) =>{
     let savebutton = document.getElementById('enviar');
@@ -18,8 +20,8 @@ const checkbutton = (map) =>{
     console.log(allowsave);
     //Si el arreglo tiene un tamaño mayor a 0 significa que hay inputs que no cumplen con la regla y se deshabilita el boton.
     console.log(map);
-    console.log(imgfield.files.length);
-    if(map.length > 0 | imgfield.files.length == 0){
+    console.log(imgfield.files.length + nPhotos);
+    if(map.length > 0 | (imgfield.files.length + nPhotos ) < 5){
         allowsave = false;
         
     }

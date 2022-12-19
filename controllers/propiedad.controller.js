@@ -100,6 +100,7 @@ exports.get_new = (request, response, next) => {
         residencial: '',
         comercial: '',
         tipoP: '',
+        fotos: '',
 
     });
     
@@ -111,7 +112,7 @@ exports.post_new = (request, response, next) => {
     const userId            = parseInt(response.locals.IdUser);
 
     // Esta variable se cambia con testing y prod, en prod es '/' y en testing '\\'
-    let OSVar = '/'
+    let OSVar = '\\'
     console.log(request.files);
     let stringpath = '';
     let headerImage = null;
