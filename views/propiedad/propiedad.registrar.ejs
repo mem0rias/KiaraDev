@@ -11,7 +11,7 @@
                 <h1>Registrar propiedad</h1>
             </div>
         <% } else { %>
-            <form action="/propiedades/editar" method="POST" id="form">
+            <form action="/propiedades/editar" enctype="multipart/form-data" method="POST" id="form">
             <input type="hidden" id="id" name="id" value="<%= propiedad.IdPropiedad %>">
             <input type="hidden" id="id" name="usodata" value="<%= propiedad.Uso %>">
             <input type="hidden" id="edit" value="1">
@@ -296,7 +296,6 @@
                                             <input type="hidden" id="fullPath-<%= elements.IdImagen %>" value="<%= elements.fullPath %>">
                                             <p class="title is-6"></p>
                                         </figure>
-                                        
                                     </div>
                                 <% } %>
                             <% } %>
@@ -378,17 +377,17 @@
         let html = 
             `
                 <input type="hidden" name="removePaths" value="${paths.stringedPaths}">
-                <input type="hidden" name="removePaths" value="${paths.stringedIds}">
+                <input type="hidden" name="removePathsId" value="${paths.stringedIds}">
                 <input type="hidden" name="nPaths" value="${paths.nPaths}">
             `
         div.insertAdjacentHTML('beforeend',html);
         console.log(allowsave);
         console.log(paths);
-        /*if(allowsave)
+        if(allowsave)
             form.submit();
         else
             bulmaToast.toast({ message: 'Llena los campos requeridos para continuar', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
-    */
+    
         }
 
     let filearray = new Array();

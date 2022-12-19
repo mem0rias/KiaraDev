@@ -2,6 +2,7 @@ const path = require('path');
 const Propiedad = require('../models/propiedad.model');
 const Dashboard = require('../models/dashboard.model');
 const expediente = require('../models/expediente.model');
+const fs = require('fs');
 
 exports.get_propiedades = (request, response, next) => {
 
@@ -334,74 +335,129 @@ exports.post_edit = (request, response, next) => {
 
     let v                   = request.body;
 
-    if(v.usodata == '1') {
-        console.log(request.body);
-        let d = {
-            id              : v.id,
-            titulo          : v.titulo,
-            descripcion     : v.descripcion,
-            precio          : v.precio,
-            estado          : v.estado,
-            muncipio        : v.muncipio,
-            colonia         : v.colonia,
-            calle           : v.calle,
-            cp              : v.cp,
-            mterreno        : v.mterreno,
-            mconstruccion   : v.mconstruccion,
-            tipotransaccion : v.tipotransaccion,
-            tipopropiedad   : v.tipopropiedad,
-            imagenes        : v.tipopropiedad,
-            video           : v.video,
-            visibilidad     : v.visibilidad,
-            recamaras       : v.recamaras,
-            banos           : v.banos,
-            cocina          : v.cocina,
-            pisos           : v.pisos,
-            estacionamiento : v.estacionamiento, 
-            gas             : v.gas
+    let OSVar = '\\'
+    console.log(request.files);
+    let stringpath = '';
+    let headerImage = null;
+    let N_Pics = 0;
+    let arrayImages = [];
+    let idPropiedad = v.id;
+    let removeList = v.removePathsId;
+    let n_removeList = v.nPaths;
+    let removePaths = v.removePaths;
+    if(request.files.imagen){
+        
+        for(elements of request.files.imagen){
 
-        };
+            arrayImages.push(elements.path.split(OSVar)[2]);
+            console.log(elements.path.split(OSVar)[2]);
+            stringpath += elements.path + ',';
 
-        Propiedad.actulizarResidencial(d)
-            .then( () => {
-                response.redirect('/dashboard/asignado');
-            }).catch( (error) => {
-                console.log(error);
-            });
+        }
+        N_Pics = request.files.imagen.length;
+        
+        console.log(stringpath);
+        console.log(N_Pics);
+    }else{
+         N_Pics = 0;
     }
 
-    else if(v.usodata == '2') {
-
-        let d = {
-            id              : v.id,
-            titulo          : v.titulo,
-            descripcion     : v.descripcion,
-            precio          : v.precio,
-            estado          : v.estado,
-            muncipio        : v.muncipio,
-            colonia         : v.colonia,
-            calle           : v.calle,
-            cp              : v.cp,
-            uso             : v.uso,
-            mterreno        : v.mterreno,
-            mconstruccion   : v.mconstruccion,
-            tipotransaccion : v.tipotransaccion,
-            tipopropiedad   : v.tipopropiedad,
-            imagenes        : v.video,
-            video           : v.video,
-            cuartos         : v.cuartos,
-            banos           : v.banos,
-            pisos           : v.pisos,
-            estacionamiento : v.estacionamiento,
-        };
-
-        Propiedad.actulizarComercial(d)
-            .then( () => {
-                response.redirect('/dashboard/asignado');
-            }).catch( (error) => {
-                console.log(error);
-            });
-    }  
+    Propiedad.saveEditImages(stringpath,N_Pics, idPropiedad).then(() =>{
+        console.log(removeList);
+        console.log(n_removeList);
+        console.log(removePaths);
+        Propiedad.removeImages(removeList,n_removeList,idPropiedad).then(([data,fieldData]) => {
+            console.log(data[0][0].newHead.split(OSVar)[2]);
+            
+            let newHeader = data[0][0].newHead.split(OSVar)[2];
+                if(removePaths != ''){
+                    let delPaths = removePaths.split(',');
+                        for(elements of delPaths){
+                                if(elements != ''){
+                                    let pathDel = '.' + OSVar + elements;
+                                    console.log(pathDel);
+                                    fs.unlinkSync(pathDel);
+                                }
+                                
+                        }
+                }   
+                if(v.usodata == '1') {
+                    console.log(request.body);
+                    let d = {
+                        id              : v.id,
+                        titulo          : v.titulo,
+                        descripcion     : v.descripcion,
+                        precio          : v.precio,
+                        estado          : v.estado,
+                        muncipio        : v.muncipio,
+                        colonia         : v.colonia,
+                        calle           : v.calle,
+                        cp              : v.cp,
+                        mterreno        : v.mterreno,
+                        mconstruccion   : v.mconstruccion,
+                        tipotransaccion : v.tipotransaccion,
+                        tipopropiedad   : v.tipopropiedad,
+                        imagenes        : newHeader,
+                        video           : v.video,
+                        visibilidad     : v.visibilidad,
+                        recamaras       : v.recamaras,
+                        banos           : v.banos,
+                        cocina          : v.cocina,
+                        pisos           : v.pisos,
+                        estacionamiento : v.estacionamiento, 
+                        gas             : v.gas
+            
+                    };
+            
+                    Propiedad.actulizarResidencial(d)
+                        .then( () => {
+                            response.redirect('/dashboard/asignado');
+                        }).catch( (error) => {
+                            console.log(error);
+                        });
+                }
+            
+                else if(v.usodata == '2') {
+            
+                    let d = {
+                        id              : v.id,
+                        titulo          : v.titulo,
+                        descripcion     : v.descripcion,
+                        precio          : v.precio,
+                        estado          : v.estado,
+                        muncipio        : v.muncipio,
+                        colonia         : v.colonia,
+                        calle           : v.calle,
+                        cp              : v.cp,
+                        uso             : v.uso,
+                        mterreno        : v.mterreno,
+                        mconstruccion   : v.mconstruccion,
+                        tipotransaccion : v.tipotransaccion,
+                        tipopropiedad   : v.tipopropiedad,
+                        imagenes        : newHeader,
+                        video           : v.video,
+                        cuartos         : v.cuartos,
+                        banos           : v.banos,
+                        pisos           : v.pisos,
+                        estacionamiento : v.estacionamiento,
+                    };
+            
+                    Propiedad.actulizarComercial(d)
+                        .then( () => {
+                            response.redirect('/dashboard/asignado');
+                        }).catch( (error) => {
+                            console.log(error);
+                        });
+                }  
+            
+            
+        }).catch(err =>{
+            console.log(err);
+        })
+    }).catch(err => {
+        console.log(err);
+    })
+    
 };
 
 exports.post_delete = (request, response, next) => {
