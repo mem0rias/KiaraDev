@@ -59,10 +59,7 @@ exports.get_one = (request, response, next) => {
                                     response.render(path.join('propiedad', 'propiedad.vista.comercial.ejs'), {
                                         propiedad: rows[0],
                                         comercial: com[0],
-                                        ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
-                                        precio: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(rows[0].Precio),
-                                        numeroenc: TelAgente,
-                                        imagenes: imagenesLista,
+                                        precio: precio,
                                     });
                                 }
                                 else{
@@ -72,10 +69,7 @@ exports.get_one = (request, response, next) => {
                                             response.render(path.join('propiedad', 'propiedad.vista.terreno.ejs'), {
                                                 propiedad: rows[0],
                                                 terreno: terr[0],
-                                                ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
-                                                precio: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(rows[0].Precio),
-                                                numeroenc: TelAgente,
-                                                imagenes: imagenesLista,
+                                                precio: precio,
                                             });
                                         }
                                     }).catch((error) => {
