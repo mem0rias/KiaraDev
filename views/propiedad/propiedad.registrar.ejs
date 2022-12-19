@@ -482,7 +482,7 @@
             upbt.files = filelist.files;
             console.log(upbt.files);
             // Si se eliminan todos los archivos, se esconde la caja de preview.
-            if(upbt.files.length == 0){
+            if(upbt.files.length == 0 && editing == 0){
                 document.getElementById('imagebox').classList.add('is-hidden');
                 document.getElementById('clearselbutton').classList.add('is-hidden');
             }

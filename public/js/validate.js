@@ -1,9 +1,10 @@
 
 let map = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14'];
+let editing = document.getElementById('edit') ? document.getElementById('edit').value : '0';
 let allowsave = false;
 let nPhotos =  0;
 const checkEdit = () => {
-    let editing = document.getElementById('edit') ? document.getElementById('edit').value : '0';
+    
     nPhotos = document.getElementById('nEditPhotos') ?  parseInt(document.getElementById('nEditPhotos').value) : 0;
     if(editing == '1'){
         map = [];
