@@ -4,7 +4,7 @@ const Dashboard = require('../models/dashboard.model');
 const expediente = require('../models/expediente.model');
 const fs = require('fs');
 
-// Esta variable nos ayuda en el manejo de varios archivos.
+// Esta variable nos ayuda en el manejo de varios archivos. Si estamos trabajando en windows utiliza '\\' si es en linux o el server (lo mismo) usa '/'
 let OSVar = '/';
 exports.get_propiedades = (request, response, next) => {
 
@@ -113,13 +113,14 @@ exports.post_new = (request, response, next) => {
     let v                   = request.body;
     const userId            = parseInt(response.locals.IdUser);
 
-    // Esta variable se cambia con testing y prod, en prod es '/' y en testing '\\'
-    //let OSVar = '\\'
     console.log(request.files);
     let stringpath = '';
     let headerImage = null;
     let N_Pics = request.body.NPics;
     let arrayImages = [];
+    // Se generan los paths para la BD y se define la header image, es la primera que se selecciona desde el front end.
+
+    // La OSVar nos ayuda para hacer los splits con los paths resultantes.
     if(request.files.imagen){
         headerImage  = request.files.imagen[0].path.split(OSVar)[2];
         console.log('headerImage');
@@ -255,7 +256,6 @@ exports.get_edit = (request, response, next) => {
                 console.log(photos);
                 // Obtenemos las fotos de la BD y las adecuados al formato que se utiliza en la vista.
                 let convertedphotos = new Array();
-                //let OSVar = '\\';
                 for(element of photos){
                     let aux = new Object();
                     aux.IdImagen = element.IdImagen;
@@ -338,16 +338,18 @@ exports.post_edit = (request, response, next) => {
 
     let v                   = request.body;
 
-    //let OSVar = '\\'
     console.log(request.files);
     let stringpath = '';
-    let headerImage = null;
     let N_Pics = 0;
     let arrayImages = [];
     let idPropiedad = v.id;
+    // Para borrar imagenes
     let removeList = v.removePathsId;
     let n_removeList = v.nPaths;
     let removePaths = v.removePaths;
+    // Para definir la nueva imagen principal.
+    let newHeader = '';
+    // Si hay nuevas imagenes que se subieron al servidor, se hace el index.
     if(request.files.imagen){
         
         for(elements of request.files.imagen){
@@ -364,18 +366,21 @@ exports.post_edit = (request, response, next) => {
     }else{
          N_Pics = 0;
     }
-
+    // Iniciamos guardando las nuevas imagenes en la BD
     Propiedad.saveEditImages(stringpath,N_Pics, idPropiedad).then(() =>{
         console.log(removeList);
         console.log(n_removeList);
         console.log(removePaths);
+        // Despues borramos las que se eligieron
         Propiedad.removeImages(removeList,n_removeList,idPropiedad).then(([data,fieldData]) => {
             console.log(data[0][0].newHead.split(OSVar)[2]);
-            
-            let newHeader = data[0][0].newHead.split(OSVar)[2];
+            // El nuevo header siempre se llena con la IdImagen mas pequeña de la propiedad. Vaya la foto mas vieja en la BD, si se borra cambia y se actualiza.
+            newHeader = data[0][0].newHead.split(OSVar)[2];
+                // Si se borraron imagenes, se borran del servidor de igual manera.
                 if(removePaths != ''){
                     let delPaths = removePaths.split(',');
                         for(elements of delPaths){
+                                //si ha una coma sola, puede hacer un super bug asi que esto evita que destruyamos cosas.
                                 if(elements != ''){
                                     let pathDel = '.' + OSVar + elements;
                                     console.log(pathDel);
@@ -384,6 +389,7 @@ exports.post_edit = (request, response, next) => {
                                 
                         }
                 }   
+                // Los datos que obtenemos para actualizar aqui van
                 if(v.usodata == '1') {
                     console.log(request.body);
                     let d = {

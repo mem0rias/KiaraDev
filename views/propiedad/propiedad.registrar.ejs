@@ -376,11 +376,13 @@
         let form = document.getElementById('form');
         let imgfield = document.getElementById('boton-0');
         let div = document.getElementById('imagepreview');
+        // Se obtienen los strings de los Ids y los paths a quitar, si es que hay.
         let paths = getStringedPaths();
         
         console.log(allowsave);
         console.log(paths);
         checkbutton(map);
+        // Si todas las condiciones para guardar se cumplen (5 o mas fotos, y que todos los campos esten llenos) envia la info al backend.
         if(allowsave){
             let html = 
             `
@@ -518,8 +520,10 @@
             }
         return filelist;
     }
-
+    
+    // Funcion que elimina las fotos que ya se encontraban dentro de la base de datos al editar la propiedad
     const removerArchivoEdit = (element) => {
+        // ID de la imagen en la bd
         let id = element.id.split('-')[1];
         let imgfield = document.getElementById('boton-0');
         let fullPath = document.getElementById('fullPath-'+id).value;
@@ -528,8 +532,10 @@
         child.classList.add('is-hidden');
         nPhotos--;
 
+        //Mapa que contiene el ID de la imagen y la direccion para poderlos borrar una vez que se guarden los cambios.
         removePaths.set(id,fullPath);
         console.log(removePaths);
+        // Verifica que las condiciones para guardar los cambios se mantengan.
         checkbutton(map);
 
         
@@ -539,18 +545,25 @@
 
     // Funcion que limpia el mapa de archivos a borrar. 
     const RevertirEdit = () => {
+        // Se recarga el numero de fotos que ya estban guardadas en la BD
         nPhotos = document.getElementById('nEditPhotos').value;
         for(const [key, value] of removePaths) {
+            // Se vuelven a mostrar nuevamente los registros que se planeaban remover
             document.getElementById('editimgholder-'+key).classList.remove('is-hidden');
             
         }
+        // Se limpia el mapa, ya que no se va a borrar nada mas.
         removePaths.clear();
+
+        // Esconde los botones
         document.getElementById('revertbutton').classList.add('is-hidden');
         document.getElementById('imagebox').classList.remove('is-hidden');
         console.log(removePaths);
+        // Nuevamente se checan las condiciones para guardar las propiedades.
         checkbutton(map);
     }
 
+    // Funcion que obtiene los paths y los ids para borrar y los convierte en un string para enviar al backend
     const getStringedPaths = () => {
         let aux = new Object();
         aux.stringedPaths = '';
