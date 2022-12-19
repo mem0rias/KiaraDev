@@ -491,9 +491,7 @@ exports.get_buscarAsigandos =  (request, response, next) => {
         .then( ([propiedades, fieldData]) => {
         
             response.status(200).json(propiedades[0]);
-            console.log(propiedades[0])
-
-            ;
+            console.log(propiedades[0]);
         }).catch( (error) => {
             console.log(error);
         });
