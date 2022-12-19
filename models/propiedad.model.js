@@ -212,13 +212,28 @@ module.exports = class Propiedad {
         return db.execute('CALL SubirImagen(?,?)', [ImgList,N_Pics]);
     }
 
+    static saveEditImages(ImgList, N_Pics, id){
+        return db.execute('CALL SubirImagenEdit(?,?,?)', [ImgList,N_Pics, id]);
+    }
+
     static updateHeader(URL){
         return db.execute('CALL updateHeader(?)', [URL]);
     }
 
     static fetchImages(id){
-        return db.execute('SELECT Imagen FROM Imagenes WHERE IdPropiedad = ?', [id]);
+        return db.execute('SELECT Imagen, IdImagen FROM Imagenes WHERE IdPropiedad = ?', [id]);
     }
 
+    static getHeaderImage(id){
+        return db.execute('select * from Imagenes where IdImagen = (select min(IdImagen) from Imagenes where  IdPropiedad = ?)', [id]);
+    }
+
+    static removeImages(ImgList, N_Pics, id){
+        return db.execute('CALL  borraImagenes(?,?,?)', [ImgList,N_Pics,id]);
+    }
+
+    static setHeaderImage(Img, id){
+        return db.execute('UPDATE propiedades set Imagenes = ? where IdPropiedad = ?', [Img,id]);
+    }
     
 }

@@ -17,8 +17,8 @@ router.post('/registrar', isAuth, isAgente, propiedadController.post_new);
 router.get('/', propiedadController.get_propiedades);
 router.get('/:id', propiedadController.get_one);
 
-router.get('/editar/:id', isAuth, isAgente, propiedadController.get_edit);
-router.post('/editar',  isAuth, isAgente, propiedadController.post_edit);
+router.get('/editar/:id', isAuth, isAgente ,propiedadController.get_edit); //isAuth, isAgente
+router.post('/editar', isAuth, isAgente ,propiedadController.post_edit); //isAuth, isAgente
 
 router.get('/buscar/:valor_busqueda', propiedadController.get_buscar);
 router.get('/buscarAsigandos/:valor_busqueda', propiedadController.get_buscarAsigandos);
