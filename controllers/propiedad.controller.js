@@ -9,11 +9,27 @@ let OSVar = '/';
 exports.get_propiedades = (request, response, next) => {
 
     Propiedad.fetchAll()
-        .then( ([rows, fieldData]) => {
+        .then( ([propiedades, fieldData]) => {
 
-            response.render(path.join('propiedad', 'propiedad.vista.global.ejs'), {
-                propiedad: rows,
-            }); 
+            Propiedad.fetchAllResidencial()
+            .then( ([residencial, fieldData]) => {
+
+                Propiedad.fetchAllComercial()
+                .then( ([comercial, fieldData]) => {
+                    console.log(comercial);
+                    response.render(path.join('propiedad', 'propiedad.vista.global.ejs'), {
+                        propiedad: propiedades,
+                        residencial: residencial,
+                        comercial: comercial,
+                    }); 
+    
+                }).catch( (error) => {
+                    console.log(error);
+                });
+
+            }).catch( (error) => {
+                console.log(error);
+            });
 
         }).catch( (error) => {
             console.log(error);

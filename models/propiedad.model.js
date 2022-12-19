@@ -180,6 +180,14 @@ module.exports = class Propiedad {
         return db.execute('SELECT * FROM propiedades');
     }
 
+    static fetchAllResidencial() {
+        return db.execute('SELECT * FROM residencial');
+    }
+
+    static fetchAllComercial() {
+        return db.execute('SELECT * FROM comercial');
+    }
+
     static fetchOne(id) {
         return db.execute('SELECT * FROM propiedades WHERE IdPropiedad = ?', [id]);
     }
