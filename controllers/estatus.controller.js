@@ -59,6 +59,7 @@ exports.get_AvanceP = (request, response, next) => {
                 console.log('entra a vistas');
                 return response.render(path.join('Estatus', 'estatus.ejs'), {
                     listEstatus: rows,
+                    listEstatus2: '',
                     dummyval    : 'compra',
                     Asignados   : nombreAsignaciones,
                     permisos: request.session.permisos,
@@ -70,6 +71,7 @@ exports.get_AvanceP = (request, response, next) => {
                     if( rows2.length > 0){
                         console.log('entra a vistas');
                         return response.render(path.join('Estatus', 'estatus.ejs'), {
+                            listEstatus: '',
                             listEstatus2: rows2,
                             dummyval    : 'renta',
                             Asignados   : nombreAsignaciones,
