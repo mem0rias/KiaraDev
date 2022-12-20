@@ -140,6 +140,10 @@ app.use('/aviso', aviso);
 app.use('/estatus', estatus);
 app.use('/servicios', servicios);
 
+app.use('/.well-known/pki-validation/597B668977DF77B917BF99166B2B1EDB.txt', (request, response, next) => {
+    response.download('./public/ssl/597B668977DF77B917BF99166B2B1EDB.txt');
+})
+
 app.get('/', (request, response, next) => {
     response.redirect('/index');
 });
