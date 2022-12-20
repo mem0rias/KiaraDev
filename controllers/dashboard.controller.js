@@ -175,7 +175,8 @@ exports.get_search = (request, response, next) => {
 
     let selector = (request.params.busc == ',1');
     User.fetchEmailRol(request.params.busc, selector).then(([rows, FieldData]) =>{
-        console.log(rows);
+        //console.log(' -------------- ROWS BUSQUEDA -----------');
+        //console.log(rows);
         response.status(200).json(rows);
     }).catch(err =>{
         console.log(err);

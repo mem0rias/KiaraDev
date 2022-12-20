@@ -3,13 +3,26 @@
         <% if (propiedad.length > 0) { %>
         <div class="columns is-multiline">
             <% for (let p of propiedad  ) { %>
-            <div class="column is-3">
-                <%- include('propiedad.ejs', {propiedad: p}) %>
-            </div>
+                <% if (residencial.length > 0) { %>
+                    <% for (let r of residencial ) { %>
+                        <% if (r.IdPropiedad === p.IdPropiedad) { %>
+                        <div class="column is-3">
+                            <%- include('propiedad.ejs', {propiedad: p, residencial: r}) %>
+                        </div>
+                        <% } %>
+                    <% } %>
+                <% } if (comercial.length > 0){%>
+                    <% for (let c of comercial ) { %>
+                        <% if (c.IdPropiedad === p.IdPropiedad) { %>
+                        <div class="column is-3">
+                            <%- include('propiedad.comercial.ejs', {propiedad: p, comercial: c}) %>
+                        </div>
+                        <% } %>
+                    <% } %>
+                <% } %>
             <% } %>
         </div>
         <% }  %>
     </div>
 </div>
     
-

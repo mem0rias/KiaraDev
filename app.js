@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
-
+const csrf = require('csurf');
+const csrfProtection = csrf();
 const app = express();
 
 
@@ -111,8 +112,11 @@ app.use(session({
     saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
 }));
 
+app.use(csrfProtection);
+
+
 app.use((request, response, next) => {
-    response.locals.csrfToken = 'dummytoken';
+    response.locals.csrfToken = request.csrfToken();//'dummytoken';
     response.locals.sesion = request.session.user ? request.session.user : '';
     response.locals.IdUser = request.session.IdUser ? request.session.IdUser : '';
     response.locals.IdRol = request.session.IdRol ? request.session.IdRol : '';
@@ -135,6 +139,16 @@ app.use('/contacto', contacto);
 app.use('/aviso', aviso);
 app.use('/estatus', estatus);
 app.use('/servicios', servicios);
+
+app.use('/.well-known/pki-validation/597B668977DF77B917BF99166B2B1EDB.txt', (request, response, next) => {
+    response.download('./public/ssl/597B668977DF77B917BF99166B2B1EDB.txt');
+})
+
+app.use('/.well-known/pki-validation/1DD50C3E2D349399187E410A8E901B6E.txt', (request, response, next) => {
+    response.download('./public/ssl/1DD50C3E2D349399187E410A8E901B6E.txt');
+})
+
+
 
 app.get('/', (request, response, next) => {
     response.redirect('/index');

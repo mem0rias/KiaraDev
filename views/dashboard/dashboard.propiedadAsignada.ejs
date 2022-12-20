@@ -37,6 +37,7 @@
             </div>  
 
               <div class="active-container" id="resultados">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                 <% if (propiedad.length > 0) { %>
                       <% for (let p of propiedad  ) { %>
                           <%- include('../propiedad/propiedad.horizontal.ejs', {propiedad: p}) %>

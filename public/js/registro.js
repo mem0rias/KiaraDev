@@ -4,6 +4,7 @@ let map = ['1','2','3','4','5','6','7'];
 let valid_mail = false;
 let valid_pass = false;
 let valid_phone = false;
+let csrfToken = document.getElementsByName('_csrf')[0].value;
 const checkbutton = (map) =>{
     let savebutton = document.getElementById('enviar');
     //Si el arreglo tiene un tamaño mayor a 0 significa que hay inputs que no cumplen con la regla y se deshabilita el boton.
@@ -59,7 +60,7 @@ const correovalido = (id) => {
         },
         body: JSON.stringify({
             email : document.getElementById('campo-4').value,
-            
+            _csrf : csrfToken,
         }),
         }).then(result => {
             return result.json();
@@ -102,7 +103,7 @@ const contravalido = (id) => {
         },
         body: JSON.stringify({
             pass : document.getElementById('campo-7').value,
-            
+            _csrf : csrfToken,
         }),
         }).then(result => {
             return result.json();

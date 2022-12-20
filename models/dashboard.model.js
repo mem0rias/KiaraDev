@@ -26,9 +26,12 @@ module.exports = class Dashboard {
 
     static fetchEmailRol(filtro, sel) {
         if(sel == false)
-            return db.execute('SELECT IdUsuario, nombre, PA, SA, email, IdRol from usuario WHERE nombre LIKE ? OR email LIKE ? order by IdRol DESC ', ['%'+filtro+'%', '%'+filtro+'%']);
+        //CONSULTA PARA BUSQUEDA
+            return db.execute('SELECT u.IdUsuario, u.Nombre, u.PA, u.SA, u.Email, u.Telefono, a.idRol FROM usuario u, asignan a where u.IdUsuario = a.idUsuario and (u.Nombre LIKE ? OR u.email LIKE ?) order by a.idRol DESC', ['%'+filtro+'%', '%'+filtro+'%']);
+           
         else
-            return db.execute('SELECT IdUsuario, nombre, PA, SA, email, IdRol from usuario order by IdRol DESC');
+        //CONSULTA PARA SOLO DESPLIEGUE DE USUARIOS
+            return db.execute('SELECT u.IdUsuario, u.Nombre, u.PA, u.SA, u.Email, u.Telefono, a.idRol FROM usuario u, asignan a where u.IdUsuario = a.idUsuario order by a.IdRol DESC');
     }
 
     static updateRol(umap, urol, l){
