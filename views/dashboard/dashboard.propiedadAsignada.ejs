@@ -163,13 +163,14 @@
         }).then(result => {
             return result.json(); //Regresa otra promesa
         }).then(data => {
-          if(data.mensaje > 0){
-            bulmaToast.toast({ message: data.mensaje, type: 'is-success', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
+          console.log(data);
+          if(data.length > 0){
+            bulmaToast.toast({ message: data, type: 'is-success', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
             location.reload();
           }
           else
             bulmaToast.toast({ message: 'Hubo un error en la operacion', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }})
-            console.log(data.mensaje);
+            
         }).catch(err => {
             console.log(err);
         });

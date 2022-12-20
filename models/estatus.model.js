@@ -34,7 +34,7 @@ module.exports = class listEstatus{
     }
 
     static cancelProceso(idpro){
-        return db.execute('UPDATE `asignacion` SET `VisibleProceso`=0 WHERE `IdPropiedad`=?', [idpro]);
+        return db.execute('CALL cancelarProceso(?)', [idpro]);
     }
 
     static fetchTransactionType(IdPropiedad) {
@@ -61,6 +61,6 @@ module.exports = class listEstatus{
     }
 
     static FetchAsignados(IdPropiedad){
-        return db.execute('SELECT u.nombre, u.PA, u.SA, u.Telefono, u.IdUsuario, u.email from usuario u, asignacion a where u.IdUsuario = a.IdUsuario and IdPropiedad = ?', [IdPropiedad]);
+        return db.execute('SELECT u.nombre, u.PA, u.SA, u.Telefono, u.IdUsuario, u.email from usuario u, asignacion a where u.IdUsuario = a.IdUsuario and IdPropiedad = ? order by RolProp ASC', [IdPropiedad]);
     }
 }
