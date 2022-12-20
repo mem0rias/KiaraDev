@@ -1,7 +1,7 @@
 module.exports = (request, response, next) => {
-    if (request.session.IdRol == '3') {
-        request.session.info = 'No tienes los permisos para entrar aqui';
+    let permisos = request.session.permisos;
+    if (permisos.indexOf('panel_admin') == -1) {
         return response.redirect('/dashboard');
-    }
-    next();
+    }else  
+        next();
 }

@@ -37,8 +37,8 @@
                 }
                 
                 
-                console.log(map);
-                console.log(rolmap);
+                //console.log(map);
+               // console.log(rolmap);
             }
             const busqueda_asinc = () => {
                 let conss = document.getElementById('busquedausuarios').value;
@@ -55,15 +55,16 @@
                 }).then(result => {
                     return result.json();
                 }).then(data => {
-                    console.log(data);
+                    //console.log(' -------------- DATA -----------');
+                    //console.log(data);
                     let html = '';
                     if(data != 'noconn' & data.length != 0){
                         for(let elements of data){
                             let Rol = ['Usuario', 'Cliente', 'Agente', 'Administrador'];
                             html += '<div class="box">';
-                            html += '<h2 class="label">' + elements.nombre + ' ' + elements.PA + ' ' + elements.SA + '</h2>';
+                            html += '<h2 class="label">' + elements.Nombre + ' ' + elements.PA + ' ' + elements.SA + '</h2>';
                             html += '<div class="columns">';
-                            html += '<div class="column is-8"> <h2 class="label">E-mail: ' + elements.email + ' </h2></div>';
+                            html += '<div class="column is-8"> <h2 class="label">E-mail: ' + elements.Email + ' </h2> <h2 class="label">Teléfono: ' + elements.Telefono + ' </h2> </div>';
                             html += '<div class="column"> <div class="field"> <div class="control"> <a href="/expediente/revisar/'+elements.IdUsuario+'"><button class="button is-danger is-fullwidth ">Ver expediente</button></a>'; 
                             html += '</select></div></div></div>';
                             html += '</div>'

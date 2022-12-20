@@ -9,21 +9,47 @@
       <p class="subtitle">
         <%= propiedad.Titulo %> 
       </p>
-      <p class="subtitle">
-        <%= propiedad.Colonia %>
+      <p class="is-size-6	">
+          <span class="is-size-6	"><%=propiedad.Municipio%>, <%=propiedad.Colonia%></span>
       </p>
+
+      <%= Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(propiedad.Precio) %> 
     </div>
     <footer class="card-footer">
-      <p class="card-footer-item">
-        <span>
-          Habitaciones <%= propiedad.Habitaciones %> 
-        </span>
-      </p>
-      <p class="card-footer-item is-small">
-        <span>
-          <%= Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(propiedad.Precio) %> 
-        </span>
-      </p>
+
+        <p class="card-footer-item">
+          <span>
+            <span class="icon-text">
+              <span class="icon">
+                  <i class="fas fa-bed fa-xs"></i>
+              </span>
+              <span><%=residencial.Recamaras%></span>
+            </span>
+          </span>
+        </p>
+        <p class="card-footer-item is-small"> 
+          <span>
+            <span class="icon-text">
+              <span class="icon">
+                <i class="fas fa-shower fa-xs"></i>
+              </span>
+              <span><%=residencial.Banos%></span>
+            </span>
+          </span>
+        </p>
+        <p class="card-footer-item is-small">
+          <span>
+            <span class="icon-text">
+              <span class="icon">
+                <i class="mdi mdi-floor-plan"></i>
+              </span>
+              <span><%=propiedad.MConstruccion%></span>
+            </span>
+          </span>
+        </p>
+
+
+
     </footer>
   </div>
 </a>
