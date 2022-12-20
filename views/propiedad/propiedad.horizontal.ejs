@@ -41,7 +41,11 @@
               <% } %> 
               <% if(permisos.indexOf('cancelar_proc') != -1) { %>
                 <div class="card-footer-item has-text-left">
-                  <a href="<%= propiedad.Visibilidad == 1 ? `/estatus/asignar/${propiedad.IdPropiedad}` : 'javascript:void(0)'%>"><h1><%= propiedad.Visibilidad == 1 ? 'Iniciar Proceso' : 'Cancelar Proceso'%> </h1></a>
+                  <% if(propiedad.Visibilidad == 1) { %>
+                    <a href="<%=`/estatus/asignar/${propiedad.IdPropiedad}`%>"><h1>Iniciar Proceso </h1></a>
+                  <% } else {%>
+                    <a class="js-modal-trigger" data-target="modal_cerrar" id="botonCancelar-<%=propiedad.IdPropiedad%>" onclick="setPropiedadCancelar(this)"><h1>Cancelar Proceso </h1></a>
+                  <% } %>
                 </div>  
               <% } %>  
               <div class="card-footer-item has-text-left">
@@ -58,7 +62,7 @@
               <% } %>
               <% if(permisos.indexOf('editar_propiedad') != -1) { %>
                 <div class="card-footer-item has-text-left">
-                  <a  onclick="eliminar(<%= propiedad.IdPropiedad%>)"><h1>Eliminar</h1></a>
+                  <a  class="js-modal-trigger" data-target="modal_borrar"  id="botonEl-<%=propiedad.IdPropiedad%>" onclick="setPropiedadBorrar(this)"><h1>Eliminar</h1></a>
                 </div>
               <% } %>                
               
