@@ -68,7 +68,7 @@ const cargarexp = (elemento) =>{
                 
                 // Se define si ciertos parametros se deben esconder dependiento del estado del elemento.
                 let hidden = (elements.URL != undefined && elements.URL != '') ? '' : 'is-hidden';
-                let fileName = (elements.URL == undefined | elements.URL == '') ? '' : (elements.URL.split('\\')).pop();
+                let fileName = (elements.URL == undefined | elements.URL == '') ? '' : (elements.URL.split('/')).pop();
                 // Define si ya habia un tipo de archivo registrado en la BD.
                 let preloaded = hidden != 'is-hidden' ? 1 : 0;
                 //let msgbutton = (fileName != '') ? 'Descargar Archivo' : 'Selecciona Archivo';
