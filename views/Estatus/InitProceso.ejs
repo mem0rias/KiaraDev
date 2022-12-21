@@ -7,9 +7,10 @@
         
         <form action="/estatus/iniciar" method="POST" id="forma_inicio">
             <input type="hidden" name="_csrf" value="<%=csrfToken%>">
-            <input type="hidden" name="Tipo_Transaccion" value="<%=TipoTransaccion%>">
+            <input type="hidden" id="Tipo_Transaccion" name="Tipo_Transaccion" value="<%=TipoTransaccion%>">
             <input type="hidden" name="IdPropiedad" value="<%=IdPropiedad%>">
-            <h1 class="title"> Selecciona usuarios para Iniciar el proceso </h2>
+            <% Titulo = ['','de VENTA', 'de RENTA', '']; %>
+            <h1 class="title"> Selecciona usuarios para Iniciar el proceso <%= Titulo[TipoTransaccion] %></h2>
                 <input type="hidden" name="Propietario" id="Prop" value="">
                 <input type="hidden" name="Interesado" id="Inter" value="">
                 <h2 class="title is-size-5"> Propietario </h2>
@@ -43,25 +44,32 @@
                         <% i++; %>
                     <%}%>
                 </datalist>
-                <br>
-                <br>
-                <label class="checkbox">
-                    <input type="checkbox" class="is-size-2" name="ClienteC">
-                        Bienes Mancomunados
-                </label>
-                <br>
-                <br>
+               
+                        <br>
+                        <br>
+                    <div id="checkInteresado" class="is-hidden">
+                        
+                        <label class="checkbox">
+                            <input type="checkbox" class="is-size-2" name="ClienteC">
+                                Bienes Mancomunados
+                        </label>
+                        <br>
+                        <br>
+                    </div>
+                    
+               
+                
                 <% if(TipoTransaccion === '3'){ %>
                     <h4 class="title is-size-5"> Tipo de tramite </h4>
-                    <select class="input" name="Tipo_Tramite">
-                        <option value="2"> Renta</option>
+                    <select class="input" name="Tipo_Tramite" onchange="moverTipoTransaccion(this)">
                         <option value="1"> Venta</option>
+                        <option value="2"> Renta</option>
                     </select>
                 <%}%>
     
                 <br>
                 <br>
-                <input type="button" class="button is-danger is-fullwidth" value="Iniciar Tramite" id="boton_inicio" onclick="verificacion()"> 
+                <input type="button" class="button is-danger is-fullwidth" value="Iniciar Tramite" id="boton_inicio" onclick="verificacion(this)"> 
         </form>
         
     </div>
@@ -95,6 +103,24 @@
         }
 
     }
+
+    const mostrarCheckInteresado = () => {
+        let TipoTransaccion = document.getElementById('Tipo_Transaccion').value;
+        let checkInt = document.getElementById('checkInteresado');
+        if(TipoTransaccion == '1' | TipoTransaccion == '3')
+            checkInt.classList.remove('is-hidden');
+        else if(TipoTransaccion == '2')
+            checkInt.classList.add('is-hidden');
+        
+    }
+
+    const moverTipoTransaccion = (element) => {
+        let TipoTransaccion = document.getElementById('Tipo_Transaccion');
+        TipoTransaccion.value = element.value;
+        mostrarCheckInteresado();
+    }
+
+    window.onload = mostrarCheckInteresado;
 </script>
 
 <script src="../js/dist/bulma-toast.min.js"></script>
