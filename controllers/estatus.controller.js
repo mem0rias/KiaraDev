@@ -59,6 +59,7 @@ exports.get_AvanceP = (request, response, next) => {
                 console.log('entra a vistas');
                 return response.render(path.join('Estatus', 'estatus.ejs'), {
                     listEstatus: rows,
+                    listEstatus2: '',
                     dummyval    : 'compra',
                     Asignados   : nombreAsignaciones,
                     permisos: request.session.permisos,
@@ -70,6 +71,7 @@ exports.get_AvanceP = (request, response, next) => {
                     if( rows2.length > 0){
                         console.log('entra a vistas');
                         return response.render(path.join('Estatus', 'estatus.ejs'), {
+                            listEstatus : '',
                             listEstatus2: rows2,
                             dummyval    : 'renta',
                             Asignados   : nombreAsignaciones,
@@ -147,9 +149,8 @@ exports.post_update =(request, response, next) => {
 exports.post_cancelProcedimiento = (request, response, next) => {
     listEstatus.cancelProceso(request.body.idpro)
         .then(([rows2, fieldData2])=> {
-            response.status(200).json({
-                mensaje: "El avance de proceso fue cancelado ",   
-            }); 
+            response.status(200).json('El avance de proceso fue cancelado');
+            console.log('cancel');
         }).catch(error => {console.log(error)});
 }
 
