@@ -98,7 +98,7 @@
                                         <label class="label">Tipo de venta</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
-                                                <select class="select" name="tipotransaccion" id="campo-13" onchange="cambiarcolor(this)">
+                                                <select class="select" name="tipotransaccion" id="campo-13" onchange="cambiarcolor(this)" <%= propiedad != '' ? 'disabled' : '' %>>
                                                     <option  disabled <% if ( propiedad === ''){ %> selected <% } %> hidden > Seleccionar tipo</option>
                                                         <option value="1" <% if ( propiedad.TipoTransaccion === 1){ %>selected <% } %>>   Venta</option>
                                                         <option value="2" <% if ( propiedad.TipoTransaccion === 2){ %>selected <% } %>>   Renta</option>
