@@ -187,13 +187,32 @@ exports.get_search = (request, response, next) => {
 
 }
 
+exports.delete_user = (request, response, next) => {
+
+    //console.log(request.body);
+    let selector = (request.params.busc == ',1');
+    Dashboard.deleteUser(request.body.id_user).then(() =>{
+        User.fetchEmailRol('', selector).then(([rows, FieldData]) =>{
+            response.status(200).json(rows);
+        }).catch(err =>{
+            console.log(err);
+            response.status(200).json('noconn');
+        })
+    }).catch(err => {
+        console.log(err);
+        response.status(200).json("mori");
+    });
+}
+
 exports.saveRol = (request, response, next) => {
+    //console.log('-----MAPA DE USUARIO----');
     //console.log(request.body.mapUser);
     //console.log(request.body.mapRol);
     let mapRol =request.body.mapRol;
     let mapUser = request.body.mapUser;
     let mapString = '';
     let rolmapString = '';
+    
     for(let i = 0; i < mapRol.length; i++){
         mapString += mapUser[i];
         rolmapString += mapRol[i];
@@ -203,6 +222,7 @@ exports.saveRol = (request, response, next) => {
             
         }
     }
+    
     User.updateRol(mapString,rolmapString,mapRol.length).then(() =>{
         console.log("Se logro");
         response.status(200).json("hola");
@@ -211,8 +231,8 @@ exports.saveRol = (request, response, next) => {
         response.status(200).json("mori");
 
     });
-    console.log(mapString);
-    console.log(rolmapString);
+    //console.log(mapString);
+    //console.log(rolmapString);
     
 }
 

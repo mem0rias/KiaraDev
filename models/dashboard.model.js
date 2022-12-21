@@ -50,5 +50,9 @@ module.exports = class Dashboard {
 
     }
 
+    static deleteUser(id_user){
+        return db.execute('DELETE FROM usuario WHERE usuario.IdUsuario = ?', [id_user]);
+    }
+
 
 }
