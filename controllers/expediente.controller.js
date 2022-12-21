@@ -313,23 +313,32 @@ exports.ExpProp = (request, response, next) => {
     let IdPropiedad = request.params.IdProp;
     console.log(IdPropiedad);
     let exp_types = new Map();
-    expediente.fetchExpTypesProperty(IdPropiedad).then(([rows, fieldData]) => {
-    // Inicializacion del mapa con los valores de la consulta
-        for(elements of rows){
-            exp_types.set(elements.Tipo_Exp, elements.descripion);
-        }
-        
-        // Render de la consulta con los valores del mapa, mensajes, etc.
-        return request.session.save(err => {
-            response.render('./Expediente/ExpedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
-        });
-    }).catch( err =>{
+    Dashboard.fetchPropName(IdPropiedad).then(([prop,fieldData2]) => {
+        expediente.fetchExpTypesProperty(IdPropiedad).then(([rows, fieldData]) => {
+            // Inicializacion del mapa con los valores de la consulta
+                for(elements of rows){
+                    exp_types.set(elements.Tipo_Exp, elements.descripion);
+                }
+                
+                // Render de la consulta con los valores del mapa, mensajes, etc.
+                return request.session.save(err => {
+                    response.render('./Expediente/ExpedienteProp', {propname: prop[0], map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
+                });
+            }).catch( err =>{
+                msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
+                msgpos = '';
+                return request.session.save(err => {
+                    response.render('./Expediente/ExpedienteProp', {propname: prop[0], map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
+                });
+            });
+    }).catch(err =>{
         msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
         msgpos = '';
         return request.session.save(err => {
-            response.render('./Expediente/ExpedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
-        });
-    });
+            response.render('./Expediente/ExpedienteProp', {propname: prop[0], map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
+        }); 
+    })
+   
 }
 
 exports.getPropExp = (request, response, next) => {
