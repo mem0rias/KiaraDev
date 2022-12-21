@@ -5,7 +5,15 @@
         
         <div class="container is-max-widescreen">
             <div class="box ">
-                <h1 class="label is-size-2"> Mi Expediente:  </h1>
+                <h1 class="label is-size-2"> Propiedad: <%= propname.Titulo %> </h1>
+                
+                <div class="box content">
+                    <p> Agente Inmobiliario: <%= Asignados[0].nombre + ' ' + Asignados[0].PA + ' ' + Asignados[0].SA %> </p>
+                    <ul>
+                        <li> <p> Correo: <%= Asignados[0].email %></p> </li>
+                        <li> <p> Telefono: <%= Asignados[0].Telefono %> </p> </li>
+                    </ul>
+                </div>
                 <div class="columns  is-multiline">
                     <%if(map.size != 0){ %>
                         <% for(const [key, value] of map) { %>
