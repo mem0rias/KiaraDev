@@ -321,13 +321,13 @@ exports.ExpProp = (request, response, next) => {
         
         // Render de la consulta con los valores del mapa, mensajes, etc.
         return request.session.save(err => {
-            response.render('./Expediente/expedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
+            response.render('./Expediente/ExpedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
         });
     }).catch( err =>{
         msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
         msgpos = '';
         return request.session.save(err => {
-            response.render('./Expediente/expedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
+            response.render('./Expediente/ExpedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
         });
     });
 }
