@@ -7,7 +7,8 @@ const fs = require('fs');
 exports.rev = (request, response, next) =>{
     response.render('./Expediente/expediente');
 }
-
+// variable que define paths de archivos, para windows es '\\' en linux es '/'
+let OSVar = '/';
 exports.getReqs = (request, response, next) => {
     let msgpos = request.session.infopositiva ? request.session.infopositiva : '';
     request.session.infopositiva = ''; 
@@ -259,8 +260,8 @@ exports.subirarch = (request, response, next) => {
             
                 for(elements of removepaths){
                     // Chequeo de seguridad, el usuario solo puede borrar archivos dentro de su directorio.
-                    if(elements.split('\\')[1] == user.toString(10))
-                        fs.unlinkSync('.\\' + elements);
+                    if(elements.split(OSVar)[1] == user.toString(10))
+                        fs.unlinkSync('.' +OSVar+ elements);
                     else
                         console.log('Illegal path');
                 
@@ -294,7 +295,7 @@ exports.subirarch = (request, response, next) => {
 // Funcion para eliminar archivos en caso de error al actualizar la BD
 const delfiles = (r) => {
     for(elements of r){
-        fs.unlinkSync('.\\' + elements.path);
+        fs.unlinkSync('.'+OSVar + elements.path);
     }
 }
 
@@ -320,13 +321,13 @@ exports.ExpProp = (request, response, next) => {
         
         // Render de la consulta con los valores del mapa, mensajes, etc.
         return request.session.save(err => {
-            response.render('./Expediente/expedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
+            response.render('./Expediente/ExpedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
         });
     }).catch( err =>{
         msg = 'Hay un problema con el servidor. Intentalo de nuevo mas tarde';
         msgpos = '';
         return request.session.save(err => {
-            response.render('./Expediente/expedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
+            response.render('./Expediente/ExpedienteProp', {map: exp_types, user: IdPropiedad, init: initquery, info: msg, infopositiva: msgpos});
         });
     });
 }
@@ -393,8 +394,8 @@ exports.subirArchProp = (request, response, next) => {
             
                 for(elements of removepaths){
                     // Chequeo de seguridad, el usuario solo puede borrar archivos dentro de su directorio.
-                    if(elements.split('\\')[1] == IdProp.toString(10))
-                        fs.unlinkSync('.\\' + elements);
+                    if(elements.split(OSVar)[1] == IdProp.toString(10))
+                        fs.unlinkSync('.'+OSVar + elements);
                     else
                         console.log('Illegal path');
                 

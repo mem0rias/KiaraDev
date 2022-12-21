@@ -43,7 +43,7 @@
 
                 <div class="navbar-start">
                     <a href="/intro" class="navbar-item">
-                        <h2 class="label is-size-5"> ¿Quienes somos? </h2>
+                        <h2 class="label is-size-5"> ¿Quiénes somos? </h2>
                     </a>
 
                     <a href="/propiedades" class="navbar-item">
@@ -69,7 +69,7 @@
                                 <a class="button is-danger" href="/dashboard"> <strong> Mi Perfil</strong></a>
 
                                 <% } %>
-                                    <% if(sesion != '') { logbot = 'Cerrar Sesion'; logpath = '/login/logout'} else {logbot = 'Iniciar Sesion'; logpath = '/login'} %>
+                                    <% if(sesion != '') { logbot = 'Cerrar Sesion'; logpath = '/login/logout'} else {logbot = 'Iniciar Sesión'; logpath = '/login'} %>
                                         <a class="button is-danger" href="<%= logpath %>">
                                             <%= logbot %>
                                         </a>
