@@ -10,8 +10,9 @@ module.exports = class Dashboard {
     static fetchPropName(n) {
         return db.execute('select Titulo from propiedades where IdPropiedad = ?',[n]);
     }
-    static fetchAsigando(n){
-        return db.execute('SELECT a.IdPropiedad,Visibilidad, Descripcion, Imagenes, Titulo, Colonia, Estado FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
+    static fetchAsigando(id_asesor){
+        return db.execute('CALL get_propiedades_asignadas(?)', [id_asesor]);
+       // return db.execute('SELECT a.IdPropiedad,Visibilidad, Descripcion, Imagenes, Titulo, Colonia, Estado FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
     }
 
     

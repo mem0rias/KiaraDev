@@ -79,10 +79,11 @@ exports.get_propiedadesAsignadas = (request, response, next) => {
     Dashboard.fetchAsigando(id)
         .then( ([propiedadesAsignadas, fieldData]) => {
             Dashboard.fetchUser(id).then( ([usuarioData, fieldData]) => {
-                    console.log(usuarioData);
-                    console.log(propiedadesAsignadas);
-                    console.log(id);
-                    let cantidad = propiedadesAsignadas.length;
+                    //console.log('-----------------PROPIEDADES ASIGNADAS-------------');
+                    //console.log(propiedadesAsignadas[0]);
+                    //console.log(id);
+                    let cantidad = propiedadesAsignadas[0].length;
+                    console.log(cantidad);
                     response.render(path.join('dashboard', 'dashboard.propiedadAsignada.ejs'), {
                         usuario: usuarioData[0],
 
@@ -93,7 +94,7 @@ exports.get_propiedadesAsignadas = (request, response, next) => {
                         email       : response.locals.Email     ,
 
 
-                        propiedad   : propiedadesAsignadas      ,
+                        propiedad   : propiedadesAsignadas[0]      ,
                         cantidad    : cantidad                  ,
                         permisos    : request.session.permisos  ,
                         info        : request.session.info      ,

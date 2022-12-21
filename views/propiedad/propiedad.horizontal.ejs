@@ -27,9 +27,38 @@
               </div>
               <% if(permisos.indexOf('panel_admin') != -1 | permisos.indexOf('panel_agente') != -1) { %>
               <div>
-                <p> Propietario: </p>
+                <!-- -----PROPIETARIO------ -->
+                <% if(propiedad.Vendedor_ID != 0 ) { %>
+                  <p>  <strong>Propietario:</strong> <%=propiedad.Vendedor_Nombre%> <%=propiedad.Vendedor_PA%> <%=propiedad.Vendedor_SA%></p>
+                  <p>  Telefono: <%=propiedad.Vendedor_Tel%></p>
+                  <p>  Email: <%=propiedad.Vendedor_Email%></p>
 
-                <p> Interesado:</p>
+                  <% } else if (propiedad.Arrendador_ID != 0 ) { %>
+                  <p> <strong>Propietario:</strong> <%=propiedad.Arrendador_Nombre%> <%=propiedad.Arrendador_PA%> <%=propiedad.Arrendador_SA%></p>
+                  <p>  Telefono: <%=propiedad.Arrendador_Tel%></p>
+                  <p>  Email: <%=propiedad.Arrendador_Email%></p>
+
+                <% } else {%>
+                  <p> <strong>Propietario:</strong> No asignado</p>
+                  
+                <% } %>
+                  <br>
+                  <!---INTERERADO--->
+
+                <% if(propiedad.Comprador_ID != 0 ) { %>
+                  <p>  <strong>Interesado:</strong> <%=propiedad.Comprador_Nombre%> <%=propiedad.Comprador_PA%> <%=propiedad.Comprador_SA%></p>
+                  <p>  Telefono: <%=propiedad.Comprador_Tel%></p>
+                  <p>  Email: <%=propiedad.Comprador_Email%></p>
+
+                  <% } else if (propiedad.Arrendatario_ID != 0 ) { %>
+                  <p> <strong>Interesado:</strong> <%=propiedad.Arrendatario_Nombre%> <%=propiedad.Arrendatario_PA%> <%=propiedad.Arrendatario_SA%></p>
+                  <p>  Telefono: <%=propiedad.Arrendatario_Tel%></p>
+                  <p>  Email: <%=propiedad.Arrendatario_Email%></p>
+
+                <% } else {%>
+                  <p> <strong>Interesado:</strong> No asignado</p> 
+                <% } %>
+                <br>
               </div>
               <% } %>
             
