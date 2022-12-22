@@ -15,7 +15,14 @@
 
     
 <%- include('collage.ejs', {propiedad: propiedad}) %>
+
+<% if (residencial != 0) { %>
 <%- include('seccion.residencial.ejs', {propiedad: propiedad, residencial: residencial}) %>
+<% } %> 
+<% if (comercial != 0) { %>
+<%- include('seccion.comercial.ejs', {propiedad: propiedad, comercial: comercial}) %>
+<% } %> 
+
 <body onload="initialize()">
   <div id="map" ></div>
    <div>
@@ -37,7 +44,6 @@
     <section class="imageContain" id="imageContainId" onclick="imageChange(id);"></section>
 
   </section>
-
 
 
   <script>
@@ -139,16 +145,8 @@
       function imageMoveRight(){
 
       imageIndex++
-
-
       document.getElementById('imageContainId').style.backgroundImage = imageUrls[imageIndex]
-
-
-
-
       }
-
-
 
 
       function imagePopNone(){

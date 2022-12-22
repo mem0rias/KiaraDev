@@ -58,10 +58,11 @@ exports.get_one = (request, response, next) => {
                     Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
                         if (res.length > 0){
                             console.log(res);
-                            response.render(path.join('propiedad', 'propiedad.vista.residencial.ejs'), {
+                            response.render(path.join('propiedad', 'propiedad.vista.ejs'), {
                                 propiedad: rows[0],
                                 ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
                                 residencial: res[0],
+                                comercial: 0,
                                 precio: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(rows[0].Precio),
                                 numeroenc: TelAgente,
                                 imagenes: imagenesLista,
@@ -72,10 +73,11 @@ exports.get_one = (request, response, next) => {
                             Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
                                 if (com.length > 0){
                                     console.log(com);
-                                    response.render(path.join('propiedad', 'propiedad.vista.comercial.ejs'), {
+                                    response.render(path.join('propiedad', 'propiedad.vista.ejs'), {
                                         propiedad: rows[0],
                                         ubicacion: rows[0].Calle+','+rows[0].Colonia+','+rows[0].Estado+',Mexico',
                                         comercial: com[0],
+                                        residencial: 0,
                                         precio: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(rows[0].Precio),
                                         imagenes: imagenesLista,
                                     });
