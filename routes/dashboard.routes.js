@@ -10,6 +10,8 @@ const router = express.Router();
 
 router.use(express.static(path.join(__dirname, '..','public')));
 
+router.get('/expedientes/buscar/:busc', isAuth, isAgent, dashboardController.get_search_exp);
+
 router.post('/usuarios/borrar/', isAuth, isAdmin, dashboardController.delete_user);
 
 router.post('/usuarios/guardar/', isAuth, isAdmin, dashboardController.saveRol);
