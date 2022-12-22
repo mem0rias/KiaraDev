@@ -64,11 +64,11 @@
                                                 <select class="select" name="visibilidad" id="campo-11" onchange="cambiarcolor(this)">
                                                     <option value="" disabled selected hidden>Seleccionar visibilidad</option>
                                                     <% if ( propiedad.Visibilidad === 0){ %>
-                                                    <option value="0" selected>Visible</option>
-                                                    <option value="1">No visible</option>
-                                                    <%} else if( propiedad.Visibilidad === 1){ %>  
-                                                    <option value="0">Visible</option>
+                                                    <option value="0" >Visible</option>
                                                     <option value="1" selected>No visible</option>
+                                                    <%} else if( propiedad.Visibilidad === 1){ %>  
+                                                    <option value="0" selected>Visible</option>
+                                                    <option value="1" >No visible</option>
                                                     <% } %>
                                                 </select>
                                             </div>
@@ -99,11 +99,11 @@
                                         <label class="label">Tipo de venta</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
-                                                <select class="select" name="tipotransaccion" id="campo-13" onchange="cambiarcolor(this)" <%= propiedad != '' ? 'disabled' : '' %>>
+                                                <select class="select" name="tipotransaccion" id="campo-13" onchange="cambiarcolor(this)">
                                                     <option  disabled <% if ( propiedad === ''){ %> selected <% } %> hidden > Seleccionar tipo</option>
-                                                        <option value="1" <% if ( propiedad.TipoTransaccion === 1){ %>selected <% } %>>   Venta</option>
-                                                        <option value="2" <% if ( propiedad.TipoTransaccion === 2){ %>selected <% } %>>   Renta</option>
-                                                        <option value="3" <% if ( propiedad.TipoTransaccion === 3){ %>selected <% } %>>   Venta/Renta</option>
+                                                        <option value="1" <% if ( propiedad.TipoTransaccion === '1'){ %>selected <% } %>>   Venta</option>
+                                                        <option value="2" <% if ( propiedad.TipoTransaccion === '2'){ %>selected <% } %>>   Renta</option>
+                                                        <option value="3" <% if ( propiedad.TipoTransaccion === '3'){ %>selected <% } %>>   Venta/Renta</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -601,7 +601,12 @@
          comercial = '';
     <% } else if (comercial) { %>
          residencial = '';
-         comercial = <%= comercial %>;
+         comercial.Estacionamiento = <%= comercial.Estacionamiento %>;
+         comercial.IdPropiedad = <%= comercial.IdPropiedad %>;
+         comercial.Cuartos = <%= comercial.Cuartos %>;
+         comercial.Banos = <%= comercial.Banos %>;
+         comercial.Niveles = <%= comercial.Niveles %>;
+         
     <% } else { %>
 
         residencial.Recamaras  = 0;

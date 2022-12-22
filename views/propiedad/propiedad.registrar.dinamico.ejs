@@ -24,56 +24,8 @@
             html += '        <div class="field">';
             html += '            <label class="label">Habitaciones</label>';
             html += '            <div class="control">';
-            html += '                <div class="select is-expanded is-fullwidth">';
-            html += '                    <select class="select is-fullwidth" name="recamaras" id="recamaras">';
-            html += '                        <option value="" disabled ';
-            if (residencial == null){
-                html += 'selected';     
-            }
-            html += 'hidden>Cantidad</option>';
-
-            html += '                        <option value="1"';
-            if (residencial.Recamaras == 1){
-                html += 'selected';     
-            }
-            html += '>1</option>';
-
-            html += '                        <option value="2"';
-            if (residencial.Recamaras == 2){
-                html += 'selected';     
-            }
-            html += '>2</option>';
-          
-            html += '                        <option value="3"';
-            if (residencial.Recamaras == 3){
-                html += 'selected';     
-            }
-            html += '>3</option>';
-
-            html += '                        <option value="4"';             
-            if (residencial.Recamaras == 4){
-                html += 'selected';     
-            }
-            html += '>4</option>';
-
-            html += '                        <option value="5"';
-            if (residencial.Recamaras == 5){
-                html += 'selected';     
-            }
-            html += '>5</option>';
-
-            html += '                        <option value="6"';  
-            if (residencial.Recamaras == 6){
-                html += 'selected';     
-            }
-            html += '>6</option>';
-            html += '                        <option value="7"';  
-            if (residencial.Recamaras == 7){
-                html += 'selected';     
-            }
-            html += '>7</option>';
-
-            html += '                    </select>';
+            html += '                <div class="is-expanded is-fullwidth">';
+            html += '                    <input type="number" class="input" id="recamaras" name="recamaras" value="' + (residencial.Recamaras != null ? residencial.Recamaras : '0') + '" min="0">';
             html += '               </div>';
             html += '           </div>';
             html += '        </div>';
@@ -82,54 +34,8 @@
             html += '        <div class="field">';
             html += '            <label class="label">Estacionamiento</label>';
             html += '            <div class="control">';
-            html += '                <div class="select is-expanded is-fullwidth">';
-            html += '                    <select class="select is-fullwidth" name="estacionamiento" id="estacionamiento">';
-                html += '                        <option value="" disabled ';
-            if (residencial.Estacionamiento == ''){
-                html += 'selected';     
-            }
-            html += 'hidden>Cantidad</option>';
-            html += '                        <option value="1"';
-            if (residencial.Estacionamiento == 1){
-                html += 'selected';     
-            }
-            html += '>1</option>';
-
-            html += '                        <option value="2"';
-            if (residencial.Estacionamiento == 2){
-                html += 'selected';     
-            }
-            html += '>2</option>';
-          
-            html += '                        <option value="3"';
-            if (residencial.Estacionamiento == 3){
-                html += 'selected';     
-            }
-            html += '>3</option>';
-
-            html += '                        <option value="4"';             
-            if (residencial.Estacionamiento == 4){
-                html += 'selected';     
-            }
-            html += '>4</option>';
-
-            html += '                        <option value="5"';
-            if (residencial.Estacionamiento == 5){
-                html += 'selected';     
-            }
-            html += '>5</option>';
-
-            html += '                        <option value="6"';  
-            if (residencial.Estacionamiento == 6){
-                html += 'selected';     
-            }
-            html += '>6</option>';
-            html += '                        <option value="7"';  
-            if (residencial.Estacionamiento == 7){
-                html += 'selected';     
-            }
-            html += '>7</option>';
-            html += '                    </select>';
+            html += '                <div class="is-expanded is-fullwidth">';
+            html += '                    <input type="number" class="input" id="estacionamiento" name="estacionamiento" value="'+ (residencial.Estacionamiento != null ? residencial.Estacionamiento : '0') +'" min="0">';
             html += '                </div>';
             html += '            </div>';
             html += '        </div>';
@@ -138,54 +44,8 @@
             html += '        <div class="field">';
             html += '            <label class="label">Baños</label>';
             html += '            <div class="control">';
-            html += '                <div class="select is-expanded is-fullwidth">';
-            html += '                    <select class="select" name="banos" id="banos">';
-            html += '                        <option value="" disabled ';
-            if (residencial.Banos == ''){
-                html += 'selected';     
-            }
-            html += 'hidden>Cantidad</option>';
-            html += '                        <option value="1"';
-            if (residencial.Banos == 1){
-                html += 'selected';     
-            }
-            html += '>1</option>';
-
-            html += '                        <option value="2"';
-            if (residencial.Banos == 2){
-                html += 'selected';     
-            }
-            html += '>2</option>';
-          
-            html += '                        <option value="3"';
-            if (residencial.Banos == 3){
-                html += 'selected';     
-            }
-            html += '>3</option>';
-
-            html += '                        <option value="4"';             
-            if (residencial.Banos == 4){
-                html += 'selected';     
-            }
-            html += '>4</option>';
-
-            html += '                        <option value="5"';
-            if (residencial.Banos == 5){
-                html += 'selected';     
-            }
-            html += '>5</option>';
-
-            html += '                        <option value="6"';  
-            if (residencial.Banos == 6){
-                html += 'selected';     
-            }
-            html += '>6</option>';
-            html += '                        <option value="7"';  
-            if (residencial.Banos == 7){
-                html += 'selected';     
-            }
-            html += '>7</option>';
-            html += '                    </select>';
+            html += '                <div class="is-expanded is-fullwidth">';
+            html += '                    <input type="number" class="input" id="banos" name="banos" value="'+ (residencial.Banos != null ? residencial.Banos : '0')+'" min="0">';
             html += '                </div>';
             html += '            </div>';
             html += '        </div>';
@@ -194,54 +54,8 @@
             html += '        <div class="field">';
             html += '            <label class="label">Pisos</label>';
             html += '            <div class="control">';
-            html += '                <div class="select is-expanded is-fullwidth">';
-            html += '                    <select class="select" name="pisos" id="pisos">';
-            html += '                        <option value="" disabled ';
-            if (residencial.Niveles == ''){
-                html += 'selected';     
-            }
-            html += 'hidden>Cantidad</option>';
-            html += '                        <option value="1"';
-            if (residencial.Niveles == 1){
-                html += 'selected';     
-            }
-            html += '>1</option>';
-
-            html += '                        <option value="2"';
-            if (residencial.Niveles == 2){
-                html += 'selected';     
-            }
-            html += '>2</option>';
-          
-            html += '                        <option value="3"';
-            if (residencial.Niveles == 3){
-                html += 'selected';     
-            }
-            html += '>3</option>';
-
-            html += '                        <option value="4"';             
-            if (residencial.Niveles == 4){
-                html += 'selected';     
-            }
-            html += '>4</option>';
-
-            html += '                        <option value="5"';
-            if (residencial.Niveles == 5){
-                html += 'selected';     
-            }
-            html += '>5</option>';
-
-            html += '                        <option value="6"';  
-            if (residencial.Niveles == 6){
-                html += 'selected';     
-            }
-            html += '>6</option>';
-            html += '                        <option value="7"';  
-            if (residencial.Niveles == 7){
-                html += 'selected';     
-            }
-            html += '>7</option>';
-            html += '                    </select>';
+            html += '                <div class=" is-expanded is-fullwidth">';
+            html += '                    <input type="number" class="input" id="pisos" name="pisos" value="'+(residencial.Niveles != null ? residencial.Niveles : '0') +'" min="0">';                       
             html += '                </div>';
             html += '            </div>';
             html += '        </div>';
@@ -323,17 +137,8 @@
                                      <div class="field">
                                          <label class="label">Oficinas</label>
                                          <div class="control">
-                                             <div class="select is-expanded is-fullwidth">
-                                                 <select class="select" name="oficinas" id="oficinas">
-                                                     <option value="" disabled selected hidden>Cantidad</option>
-                                                     <option value="1" selected>1</option>
-                                                     <option value="2">2</option>
-                                                     <option value="3">3</option>
-                                                     <option value="4">4</option>
-                                                     <option value="5">5</option>
-                                                     <option value="6">6</option>
-                                                     <option value="7">7</option>                           
-                                                 </select>
+                                             <div class="is-expanded is-fullwidth">
+                                                 <input type="number" class="input" id="oficinas" name="oficinas" min="0" value="${comercial.Cuartos != null ? comercial.Cuartos : '0'}">
                                             </div>
                                         </div>
                                      </div>
@@ -342,17 +147,9 @@
                                      <div class="field">
                                          <label class="label">Estacionamiento</label>
                                          <div class="control">
-                                             <div class="select is-expanded is-fullwidth">
-                                                 <select class="select" name="estacionamiento" id="estacionamiento">
-                                                     <option value="" disabled selected hidden>Cantidad</option>
-                                                     <option value="1">1</option>
-                                                     <option value="2">2</option>
-                                                     <option value="3">3</option>
-                                                     <option value="4">4</option>
-                                                     <option value="5">5</option>
-                                                     <option value="6">6</option>
-                                                     <option value="7">7</option>
-                                                 </select>
+                                             <div class="is-expanded is-fullwidth">
+                                                <input type="number" class="input" id="estacionamiento" name="estacionamiento" min="0" value="${comercial.Estacionamiento != null ? comercial.Estacionamiento : '0'}">
+                                                 
                                              </div>
                                          </div>
                                      </div>
@@ -361,17 +158,9 @@
                                      <div class="field">
                                          <label class="label">Baños</label>
                                          <div class="control">
-                                             <div class="select is-expanded is-fullwidth">
-                                                 <select class="select" name="banos" id="banos">
-                                                     <option value="" disabled selected hidden>Cantidad</option>
-                                                     <option value="1">1</option>
-                                                     <option value="2">2</option>
-                                                     <option value="3">3</option>
-                                                     <option value="4">4</option>
-                                                     <option value="5">5</option>
-                                                     <option value="6">6</option>
-                                                     <option value="7">7</option>
-                                                 </select>
+                                             <div class="is-expanded is-fullwidth">
+                                                <input type="number" class="input" id="banos" name="banos" min="0" value="${comercial.Banos != null ? comercial.Banos : '0'}">
+                                                
                                              </div>
                                          </div>
                                      </div>
@@ -380,17 +169,8 @@
                                      <div class="field">
                                          <label class="label">Pisos</label>
                                          <div class="control">
-                                             <div class="select is-expanded is-fullwidth">
-                                                 <select class="select" name="pisos" id="pisos">
-                                                     <option value="" disabled selected hidden>Cantidad</option>
-                                                     <option value="1">1</option>
-                                                     <option value="2">2</option>
-                                                     <option value="3">3</option>
-                                                     <option value="4">4</option>
-                                                     <option value="5">5</option>
-                                                     <option value="6">6</option>
-                                                     <option value="7">7</option>
-                                                 </select>
+                                             <div class="is-expanded is-fullwidth">
+                                                <input type="number" class="input" id="pisos" name="pisos" min="0" value="${comercial.Niveles != null ? comercial.Niveles : '0'}">
                                              </div>
                                          </div>
                                      </div>
