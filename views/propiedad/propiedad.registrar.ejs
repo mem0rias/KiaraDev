@@ -62,14 +62,9 @@
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
                                                 <select class="select" name="visibilidad" id="campo-11" onchange="cambiarcolor(this)">
-                                                    <option value="" disabled selected hidden>Seleccionar visibilidad</option>
-                                                    <% if ( propiedad.Visibilidad === 0){ %>
-                                                    <option value="0" >Visible</option>
-                                                    <option value="1" selected>No visible</option>
-                                                    <%} else if( propiedad.Visibilidad === 1){ %>  
-                                                    <option value="0" selected>Visible</option>
-                                                    <option value="1" >No visible</option>
-                                                    <% } %>
+                                                    <option value="0" <% if ( propiedad.Visibilidad == '1'){ %>selected <% } %>>Visible</option>
+                                                    <option value="1" <% if ( propiedad.Visibilidad == '0'){ %>selected <% } %>>No visible</option>
+                                                    
                                                 </select>
                                             </div>
                                         </div>
