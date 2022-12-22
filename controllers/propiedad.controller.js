@@ -448,7 +448,7 @@ exports.post_edit = (request, response, next) => {
                         tipopropiedad   : v.tipopropiedad,
                         imagenes        : newHeader,
                         video           : v.video ? v.video : '',
-                        visibilidad     : v.visibilidad,
+                        visibilidad     : parseInt(v.visibilidad),
                         recamaras       : v.recamaras,
                         banos           : v.banos,
                         cocina          : v.cocina,
@@ -493,7 +493,7 @@ exports.post_edit = (request, response, next) => {
                         banos           : banos,
                         pisos           : pisos,
                         estacionamiento : estacionamiento,
-                        visibilidad     : v.visibilidad,
+                        visibilidad     : parseInt(v.visibilidad),
                         Agente          : parseInt(v.agenteAsig),
                     };
                     console.log(d);
