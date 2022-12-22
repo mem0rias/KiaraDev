@@ -2536,6 +2536,7 @@ div.icon-text {
     display: block;
     height: auto;
     width: 100%;
+    object-fit: contain;
 }
 
 .image img.is-rounded {
