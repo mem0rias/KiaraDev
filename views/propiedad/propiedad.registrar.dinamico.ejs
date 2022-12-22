@@ -35,7 +35,7 @@
             html += '            <label class="label">Estacionamiento</label>';
             html += '            <div class="control">';
             html += '                <div class="is-expanded is-fullwidth">';
-            html += '                    <input type="number" class="input" id="estacionamiento" name="estacionamiento" value="'+ (residencial.estacionamiento != null ? residencial.estacionamiento : '0') +'" min="0">';
+            html += '                    <input type="number" class="input" id="estacionamiento" name="estacionamiento" value="'+ (residencial.Estacionamiento != null ? residencial.Estacionamiento : '0') +'" min="0">';
             html += '                </div>';
             html += '            </div>';
             html += '        </div>';
@@ -137,17 +137,8 @@
                                      <div class="field">
                                          <label class="label">Oficinas</label>
                                          <div class="control">
-                                             <div class="select is-expanded is-fullwidth">
-                                                 <select class="select" name="oficinas" id="oficinas">
-                                                     <option value="" disabled selected hidden>Cantidad</option>
-                                                     <option value="1" selected>1</option>
-                                                     <option value="2">2</option>
-                                                     <option value="3">3</option>
-                                                     <option value="4">4</option>
-                                                     <option value="5">5</option>
-                                                     <option value="6">6</option>
-                                                     <option value="7">7</option>                           
-                                                 </select>
+                                             <div class="is-expanded is-fullwidth">
+                                                 <input type="number" class="input" id="oficinas" name="oficinas" min="0" value="${comercial.Cuartos != null ? comercial.Cuartos : '0'}">
                                             </div>
                                         </div>
                                      </div>
@@ -156,17 +147,9 @@
                                      <div class="field">
                                          <label class="label">Estacionamiento</label>
                                          <div class="control">
-                                             <div class="select is-expanded is-fullwidth">
-                                                 <select class="select" name="estacionamiento" id="estacionamiento">
-                                                     <option value="" disabled selected hidden>Cantidad</option>
-                                                     <option value="1">1</option>
-                                                     <option value="2">2</option>
-                                                     <option value="3">3</option>
-                                                     <option value="4">4</option>
-                                                     <option value="5">5</option>
-                                                     <option value="6">6</option>
-                                                     <option value="7">7</option>
-                                                 </select>
+                                             <div class="is-expanded is-fullwidth">
+                                                <input type="number" class="input" id="estacionamiento" name="estacionamiento" min="0" value="${comercial.Estacionamiento != null ? comercial.Estacionamiento : '0'}">
+                                                 
                                              </div>
                                          </div>
                                      </div>
@@ -175,17 +158,9 @@
                                      <div class="field">
                                          <label class="label">Baños</label>
                                          <div class="control">
-                                             <div class="select is-expanded is-fullwidth">
-                                                 <select class="select" name="banos" id="banos">
-                                                     <option value="" disabled selected hidden>Cantidad</option>
-                                                     <option value="1">1</option>
-                                                     <option value="2">2</option>
-                                                     <option value="3">3</option>
-                                                     <option value="4">4</option>
-                                                     <option value="5">5</option>
-                                                     <option value="6">6</option>
-                                                     <option value="7">7</option>
-                                                 </select>
+                                             <div class="is-expanded is-fullwidth">
+                                                <input type="number" class="input" id="banos" name="banos" min="0" value="${comercial.Banos != null ? comercial.Banos : '0'}">
+                                                
                                              </div>
                                          </div>
                                      </div>
@@ -194,17 +169,8 @@
                                      <div class="field">
                                          <label class="label">Pisos</label>
                                          <div class="control">
-                                             <div class="select is-expanded is-fullwidth">
-                                                 <select class="select" name="pisos" id="pisos">
-                                                     <option value="" disabled selected hidden>Cantidad</option>
-                                                     <option value="1">1</option>
-                                                     <option value="2">2</option>
-                                                     <option value="3">3</option>
-                                                     <option value="4">4</option>
-                                                     <option value="5">5</option>
-                                                     <option value="6">6</option>
-                                                     <option value="7">7</option>
-                                                 </select>
+                                             <div class="is-expanded is-fullwidth">
+                                                <input type="number" class="input" id="pisos" name="pisos" min="0" value="${comercial.Niveles != null ? comercial.Niveles : '0'}">
                                              </div>
                                          </div>
                                      </div>

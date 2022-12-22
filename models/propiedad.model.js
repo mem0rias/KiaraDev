@@ -135,7 +135,7 @@ module.exports = class Propiedad {
     
     static actulizarComercial(d) {
         return db.execute(
-            'CALL actulizarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            'CALL actualizarComercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
             [   d.id             ,
                 d.titulo         , 
                 d.descripcion    , 
@@ -144,14 +144,14 @@ module.exports = class Propiedad {
                 d.muncipio       , 
                 d.colonia        , 
                 d.calle          , 
-                d.cp             , 
-                d.uso            , 
+                d.cp             ,  
                 d.mterreno       , 
                 d.mconstruccion  , 
                 d.tipotransaccion, 
                 d.tipopropiedad  , 
                 d.imagenes       , 
-                d.video          , 
+                d.video          ,
+                d.visibilidad    , 
                 d.cuartos        , 
                 d.banos          ,
                 d.pisos          , 

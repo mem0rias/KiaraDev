@@ -5,7 +5,7 @@ const expediente = require('../models/expediente.model');
 const fs = require('fs');
 
 // Esta variable nos ayuda en el manejo de varios archivos. Si estamos trabajando en windows utiliza '\\' si es en linux o el server (lo mismo) usa '/'
-let OSVar = '/';
+let OSVar = '\\';
 exports.get_propiedades = (request, response, next) => {
 
     Propiedad.fetchAll()
@@ -218,7 +218,7 @@ exports.post_new = (request, response, next) => {
         const estacionamiento   = parseInt(v.estacionamiento);
         const banos             = parseInt(v.banos);
         const pisos             = parseInt(v.pisos);
-        const cuartos           = parseInt(v.cuartos);
+        const cuartos           = parseInt(v.oficinas);
 
         let d = {
             titulo          : v.titulo,
@@ -269,6 +269,7 @@ exports.get_edit = (request, response, next) => {
             var monto = rows[0].Precio;
             let tipoP;
             let comercial;
+            
             precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
             Propiedad.fetchImages(request.params.id).then(([photos, fieldData]) => {
                 console.log(photos);
@@ -300,8 +301,9 @@ exports.get_edit = (request, response, next) => {
                     else {
                         Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
                             if (com.length > 0){
-                                console.log(com);
+                                console.log(com[0]);
                                 response.render(path.join('propiedad', 'propiedad.registrar.ejs'), {
+                                    residencial: '',
                                     propiedad: rows[0],
                                     comercial: com[0],
                                     precio: precio,
@@ -356,7 +358,7 @@ exports.post_edit = (request, response, next) => {
 
     let v                   = request.body;
 
-    console.log(request.files);
+    console.log(v);
     let stringpath = '';
     let N_Pics = 0;
     let arrayImages = [];
@@ -391,7 +393,7 @@ exports.post_edit = (request, response, next) => {
         console.log(removePaths);
         // Despues borramos las que se eligieron
         Propiedad.removeImages(removeList,n_removeList,idPropiedad).then(([data,fieldData]) => {
-            console.log(data[0][0].newHead.split(OSVar)[2]);
+            //console.log(data[0][0].newHead.split(OSVar)[2]);
             // El nuevo header siempre se llena con la IdImagen mas pequeña de la propiedad. Vaya la foto mas vieja en la BD, si se borra cambia y se actualiza.
             newHeader = data[0][0].newHead.split(OSVar)[2];
                 // Si se borraron imagenes, se borran del servidor de igual manera.
@@ -410,6 +412,7 @@ exports.post_edit = (request, response, next) => {
                 // Los datos que obtenemos para actualizar aqui van
                 if(v.usodata == '1') {
                     console.log(request.body);
+                    console.log('residencial');
                     let d = {
                         id              : v.id,
                         titulo          : v.titulo,
@@ -435,7 +438,7 @@ exports.post_edit = (request, response, next) => {
                         gas             : v.gas
             
                     };
-            
+                    console.log(d);
                     Propiedad.actulizarResidencial(d)
                         .then( () => {
                             response.redirect('/dashboard/asignado');
@@ -445,7 +448,11 @@ exports.post_edit = (request, response, next) => {
                 }
             
                 else if(v.usodata == '2') {
-            
+                    console.log('comercial');
+                    const estacionamiento   = parseInt(v.estacionamiento);
+                    const banos             = parseInt(v.banos);
+                    const pisos             = parseInt(v.pisos);
+                    const cuartos           = parseInt(v.oficinas);
                     let d = {
                         id              : v.id,
                         titulo          : v.titulo,
@@ -456,19 +463,19 @@ exports.post_edit = (request, response, next) => {
                         colonia         : v.colonia,
                         calle           : v.calle,
                         cp              : v.cp,
-                        uso             : v.uso,
                         mterreno        : v.mterreno,
                         mconstruccion   : v.mconstruccion,
                         tipotransaccion : v.tipotransaccion,
                         tipopropiedad   : v.tipopropiedad,
                         imagenes        : newHeader,
                         video           : v.video ? v.video : '',
-                        cuartos         : v.cuartos,
-                        banos           : v.banos,
-                        pisos           : v.pisos,
-                        estacionamiento : v.estacionamiento,
+                        cuartos         : cuartos,
+                        banos           : banos,
+                        pisos           : pisos,
+                        estacionamiento : estacionamiento,
+                        visibilidad     : v.visibilidad,
                     };
-            
+                    console.log(d);
                     Propiedad.actulizarComercial(d)
                         .then( () => {
                             response.redirect('/dashboard/asignado');
