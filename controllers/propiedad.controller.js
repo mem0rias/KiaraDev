@@ -520,7 +520,7 @@ exports.post_delete = (request, response, next) => {
     console.log(idUser);
     Propiedad.delete(request.body.id)
         .then(()=> {
-            Dashboard.fetchAsigando(idUser).then(([propiedades, fieldData])=>{
+            Dashboard.fetchAsignadoUser(idUser).then(([propiedades, fieldData])=>{
                 response.status(200).json({
                     data: propiedades,
                 });
