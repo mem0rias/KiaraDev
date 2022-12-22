@@ -72,8 +72,10 @@
                             html += '<div class="box">';
                             html += '<h2 class="label">' + elements.Nombre + ' ' + elements.PA + ' ' + elements.SA + '</h2>';
                             html += '<div class="columns">';
-                            html += '<div class="column is-7"> <h2 class="label">E-mail: ' + elements.Email + ' </h2> <h2 class="label">Teléfono: ' + elements.Telefono + ' </h2> </div>';
-                            html += '<div class="column is-1"> <h2 class="label"> Rol:  </h2></div>';
+                            html += '<div class="column is-6"> <h2 class="label">E-mail: ' + elements.Email + ' </h2> <h2 class="label">Teléfono: ' + elements.Telefono + ' </h2> </div>';
+                            html += '<div class="column"> <div class="field"> <div class="control"> <a href="/expediente/revisar/'+elements.IdUsuario+'"><button class="button is-danger  ">Ver expediente</button></a></div></div></div>'; 
+                            
+                            html += '<div class="column "> <h2 class="label"> Rol:  </h2></div>';
                             html += '<div class="column"> <div class="field"> <div class="control"> <div class="select" id="dropdiv'+elements.IdUsuario+'"> <select name="estatus" id="dropdown-'+elements.IdUsuario+'" onchange="lineup(this)">'; 
                             
                                 for(let i = 1; i < 5; i++){
@@ -171,8 +173,10 @@
                                 html += '<div class="box">';
                                 html += '<h2 class="label">' + elements.Nombre + ' ' + elements.PA + ' ' + elements.SA + '</h2>';
                                 html += '<div class="columns">';
-                                html += '<div class="column is-7"> <h2 class="label">E-mail: ' + elements.Email + ' </h2> <h2 class="label">Teléfono: ' + elements.Telefono + ' </h2> </div>';
-                                html += '<div class="column is-1"> <h2 class="label"> Rol:  </h2></div>';
+                                html += '<div class="column is-6"> <h2 class="label">E-mail: ' + elements.Email + ' </h2> <h2 class="label">Teléfono: ' + elements.Telefono + ' </h2> </div>';
+                                html += '<div class="column"> <div class="field"> <div class="control"> <a href="/expediente/revisar/'+elements.IdUsuario+'"><button class="button is-danger  ">Ver expediente</button></a></div></div></div>'; 
+
+                                html += '<div class="column "> <h2 class="label"> Rol:  </h2></div>';
                                 html += '<div class="column"> <div class="field"> <div class="control"> <div class="select" id="dropdiv'+elements.IdUsuario+'"> <select name="estatus" id="dropdown-'+elements.IdUsuario+'" onchange="lineup(this)">'; 
                                 
                                     for(let i = 1; i < 5; i++){
@@ -182,9 +186,9 @@
                                     html += '<option value="'+i+'"' + selected +' >' + Rol[i] +' </option>';  
                                 }    
                                 html += '</select></div></div></div></div>';
-                                html += '<div class="column"><a id="delete-'+elements.IdUsuario+'"  class="button is-danger" onclick=" delete_user(this)"> <i class="mdi mdi-delete is-danger"></i>  </a></div>';
+                                html += '<div class="column"><a id="delete-'+elements.IdUsuario+'"  class="button is-danger" onclick=" delete_user(this)"> <i class="mdi mdi-delete is-danger"></i>  </a></div>';                                                          
                                 html += '</div>';
-                                html += '</div>';
+                                html += '</div>';                                
                             }
                         }else if(data.length == 0){
                         html = '<h2 class="label"> No hay registros </h2>';
