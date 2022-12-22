@@ -14,11 +14,44 @@
             <form action="/propiedades/editar" enctype="multipart/form-data" method="POST" id="form">
             <input type="hidden" id="id" name="id" value="<%= propiedad.IdPropiedad %>">
             <input type="hidden" id="id" name="usodata" value="<%= propiedad.Uso %>">
+            <input type="hidden" id="agenteAsig" name="agenteAsig" value="<%= agente.IdUsuario %>">
             <input type="hidden" id="edit" value="1">
             <div class="content mt-5"">
-                <h1>Editar propiedad</h1>
+                <h1>Editar propiedad <%= propiedad.Uso == '1' ? 'RESIDENCIAL' : 'COMERCIAL' %> </h1>
             </div>
-                
+            <% if(permisos.indexOf('panel_admin') != -1) { %>
+                <div class="columns">
+                    <div class="column is-8">
+                        <div class="section px-0 py-5 ">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="active-container">
+                                        <div class="content is-small">
+                                            <div class="field">
+                                                <label class="label"> Agente Asignado </label>
+                                                
+                                            </div>
+                                            <div class="control">
+                                                <div class="select is-expanded is-fullwidth">
+                                                    <select class="select" name="consulta" id="consulta" onchange="setNewAgent(this)">
+                                                        <option value="<%= agente.IdUsuario %>" selected> <%= agente.Nombre %> <%= agente.PA %> <%= agente.SA %></option>
+                                                        <% for(elements of agentes) {  %>
+                                                            <option value="<%= elements.IdUsuario %>" > <%= elements.Nombre %> <%= elements.PA %> <%= elements.SA %></option>
+                                                        <%}%>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                                
+                                            
+                                        </div>
+                                    </div>
+                                </div>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
         <% } %>
 
         <input type="hidden" name="_csrf" value="<%=csrfToken%>">
@@ -62,8 +95,8 @@
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
                                                 <select class="select" name="visibilidad" id="campo-11" onchange="cambiarcolor(this)">
-                                                    <option value="0" <% if ( propiedad.Visibilidad == '1'){ %>selected <% } %>>Visible</option>
-                                                    <option value="1" <% if ( propiedad.Visibilidad == '0'){ %>selected <% } %>>No visible</option>
+                                                    <option value="1" <% if ( propiedad.Visibilidad == '1'){ %> selected <% } %>>Visible</option>
+                                                    <option value="0" <% if ( propiedad.Visibilidad == '0'){ %> selected <% } %>>No visible</option>
                                                     
                                                 </select>
                                             </div>
@@ -91,7 +124,7 @@
                                 </div>
                                 <div class="column is-4">
                                     <div class="field">
-                                        <label class="label">Tipo de venta</label>
+                                        <label class="label">Tipo de operación</label>
                                         <div class="control">
                                             <div class="select is-expanded is-fullwidth">
                                                 <select class="select" name="tipotransaccion" id="campo-13" onchange="cambiarcolor(this)">
@@ -570,6 +603,12 @@
         }
         aux.nPaths = removePaths.size;
         return aux;
+
+    }
+    //Funcion que actualiza parametro para definir un nuevo agente encargado
+    const setNewAgent = (element) => {
+        let agentId = element.value;
+        document.getElementById('agenteAsig').value = agentId;
 
     }
 

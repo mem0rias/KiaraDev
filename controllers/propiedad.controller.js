@@ -264,6 +264,7 @@ exports.post_new = (request, response, next) => {
 };
 
 exports.get_edit = (request, response, next) => {
+    let permisos = request.session.permisos;
     Propiedad.fetchOne(request.params.id).then( ([rows, fieldData]) => {
             console.log(rows);
             var monto = rows[0].Precio;
@@ -271,68 +272,86 @@ exports.get_edit = (request, response, next) => {
             let comercial;
             
             precio = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(monto);
-            Propiedad.fetchImages(request.params.id).then(([photos, fieldData]) => {
-                console.log(photos);
-                // Obtenemos las fotos de la BD y las adecuados al formato que se utiliza en la vista.
-                let convertedphotos = new Array();
-                for(element of photos){
-                    let aux = new Object();
-                    aux.IdImagen = element.IdImagen;
-                    aux.Imagen = element.Imagen.split(OSVar)[2];
-                    aux.fullPath = element.Imagen;
-                    convertedphotos.push(aux);
-                }
-                console.log(convertedphotos);
-                Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
-                    if (res.length > 0){
-                        console.log(res);
-                        
-                        tipoP = 1;
-                        console.log(tipoP);
-                        response.render(path.join('propiedad', 'propiedad.registrar.ejs'), {
-                            propiedad: rows[0],
-                            residencial: res[0],
-                            tipoP: tipoP,
-                            comercial: comercial,
-                            fotos : convertedphotos,
-                            
-                        }); 
-                    }
-                    else {
-                        Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
-                            if (com.length > 0){
-                                console.log(com[0]);
+            Propiedad.getAllAgents().then(([agentes,fieldData5])=>{
+                Propiedad.getAsignado(request.params.id).then(([agente, fieldData4]) => {
+                    Propiedad.fetchImages(request.params.id).then(([photos, fieldData]) => {
+                        console.log(photos);
+                        // Obtenemos las fotos de la BD y las adecuados al formato que se utiliza en la vista.
+                        let convertedphotos = new Array();
+                        for(element of photos){
+                            let aux = new Object();
+                            aux.IdImagen = element.IdImagen;
+                            aux.Imagen = element.Imagen.split(OSVar)[2];
+                            aux.fullPath = element.Imagen;
+                            convertedphotos.push(aux);
+                        }
+                        console.log(convertedphotos);
+                        Propiedad.isResidencial(request.params.id).then( ([res,fieldData]) => {
+                            if (res.length > 0){
+                                console.log(res);
+                                
+                                tipoP = 1;
+                                console.log(tipoP);
                                 response.render(path.join('propiedad', 'propiedad.registrar.ejs'), {
-                                    residencial: '',
                                     propiedad: rows[0],
-                                    comercial: com[0],
-                                    precio: precio,
+                                    residencial: res[0],
                                     tipoP: tipoP,
+                                    comercial: comercial,
                                     fotos : convertedphotos,
-                                });
+                                    permisos : permisos,
+                                    agente : agente[0],
+                                    agentes : agentes,
+                                }); 
                             }
-                            else{
-                                Propiedad.isTerreno(request.params.id).then( ([terr,fieldData]) => {
-                                    if (terr.length > 0){
-                                        console.log(terr);
+                            else {
+                                Propiedad.isComercial(request.params.id).then( ([com,fieldData]) => {
+                                    if (com.length > 0){
+                                        console.log(com[0]);
                                         response.render(path.join('propiedad', 'propiedad.registrar.ejs'), {
+                                            residencial: '',
                                             propiedad: rows[0],
-                                            terreno: terr[0],
+                                            comercial: com[0],
                                             precio: precio,
                                             tipoP: tipoP,
                                             fotos : convertedphotos,
+                                            permisos : permisos,
+                                            agente : agente[0],
+                                            agentes : agentes,
                                         });
                                     }
-                                }).catch((error) => {
-                                    console.log(error);
-                                });
+                                    else{
+                                        Propiedad.isTerreno(request.params.id).then( ([terr,fieldData]) => {
+                                            if (terr.length > 0){
+                                                console.log(terr);
+                                                response.render(path.join('propiedad', 'propiedad.registrar.ejs'), {
+                                                    propiedad: rows[0],
+                                                    terreno: terr[0],
+                                                    precio: precio,
+                                                    tipoP: tipoP,
+                                                    fotos : convertedphotos,
+                                                    permisos : permisos,
+                                                    agente : agente[0],
+                                                    agentes : agentes,
+                                                });
+                                            }
+                                        }).catch((error) => {
+                                            console.log(error);
+                                        });
+                                    }
+                                }).catch();
                             }
                         }).catch();
-                    }
-                }).catch();
+                    }).catch(err =>{
+                        console.log(err);
+                    });
+                }).catch(err => {
+                    console.log(err);
+                });
             }).catch(err =>{
                 console.log(err);
             });
+            
+            
             
         }).catch( (error) => {
             console.log(error);
@@ -429,13 +448,14 @@ exports.post_edit = (request, response, next) => {
                         tipopropiedad   : v.tipopropiedad,
                         imagenes        : newHeader,
                         video           : v.video ? v.video : '',
-                        visibilidad     : v.visibilidad,
+                        visibilidad     : parseInt(v.visibilidad),
                         recamaras       : v.recamaras,
                         banos           : v.banos,
                         cocina          : v.cocina,
                         pisos           : v.pisos,
                         estacionamiento : v.estacionamiento, 
-                        gas             : v.gas
+                        gas             : v.gas,
+                        Agente          : parseInt(v.agenteAsig),
             
                     };
                     console.log(d);
@@ -473,7 +493,8 @@ exports.post_edit = (request, response, next) => {
                         banos           : banos,
                         pisos           : pisos,
                         estacionamiento : estacionamiento,
-                        visibilidad     : v.visibilidad,
+                        visibilidad     : parseInt(v.visibilidad),
+                        Agente          : parseInt(v.agenteAsig),
                     };
                     console.log(d);
                     Propiedad.actulizarComercial(d)
@@ -499,7 +520,7 @@ exports.post_delete = (request, response, next) => {
     console.log(idUser);
     Propiedad.delete(request.body.id)
         .then(()=> {
-            Dashboard.fetchAsigando(idUser).then(([propiedades, fieldData])=>{
+            Dashboard.fetchAsignadoUser(idUser).then(([propiedades, fieldData])=>{
                 response.status(200).json({
                     data: propiedades,
                 });

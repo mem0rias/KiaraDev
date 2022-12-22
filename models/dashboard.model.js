@@ -15,6 +15,9 @@ module.exports = class Dashboard {
        // return db.execute('SELECT a.IdPropiedad,Visibilidad, Descripcion, Imagenes, Titulo, Colonia, Estado FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
     }
 
+    static fetchAsignadoUser(n){
+        return db.execute('SELECT a.IdPropiedad,Visibilidad, Descripcion, Imagenes, Titulo, Colonia, Estado FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND IdUsuario = (?)', [n]);
+    }
     
     static fetchAsigandoPropiedades(id,query){
         return db.execute('CALL `buscarPropiedadAsignada`(?, ?)', [id,query]);

@@ -27,6 +27,7 @@
               </div>
               <% if(permisos.indexOf('panel_admin') != -1 | permisos.indexOf('panel_agente') != -1) { %>
               <div>
+                <% var procesoIniciado = 1; %>
                 <!-- -----PROPIETARIO------ -->
                 <% if(propiedad.Vendedor_ID != 0 ) { %>
                   <p>  <strong>Propietario:</strong> <%=propiedad.Vendedor_Nombre%> <%=propiedad.Vendedor_PA%> <%=propiedad.Vendedor_SA%></p>
@@ -56,7 +57,9 @@
                   <p>  Email: <%=propiedad.Arrendatario_Email%></p>
 
                 <% } else {%>
-                  <p> <strong>Interesado:</strong> No asignado</p> 
+                  <p> <strong>Interesado:</strong> No asignado</p>
+                  <% procesoIniciado = 0; %>
+
                 <% } %>
                 <br>
               </div>
@@ -70,7 +73,7 @@
               <% } %> 
               <% if(permisos.indexOf('cancelar_proc') != -1) { %>
                 <div class="card-footer-item has-text-left">
-                  <% if(propiedad.Visibilidad == 1) { %>
+                  <% if(procesoIniciado == '0') { %>
                     <a href="<%=`/estatus/asignar/${propiedad.IdPropiedad}`%>"><h1>Iniciar Proceso </h1></a>
                   <% } else {%>
                     <a class="js-modal-trigger" data-target="modal_cerrar" id="botonCancelar-<%=propiedad.IdPropiedad%>" onclick="setPropiedadCancelar(this)"><h1>Cancelar Proceso </h1></a>
