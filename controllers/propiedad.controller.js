@@ -5,7 +5,7 @@ const expediente = require('../models/expediente.model');
 const fs = require('fs');
 
 // Esta variable nos ayuda en el manejo de varios archivos. Si estamos trabajando en windows utiliza '\\' si es en linux o el server (lo mismo) usa '/'
-let OSVar = '\\';
+let OSVar = '/';
 exports.get_propiedades = (request, response, next) => {
 
     Propiedad.fetchAll()
