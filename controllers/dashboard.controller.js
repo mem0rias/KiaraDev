@@ -183,8 +183,20 @@ exports.get_search = (request, response, next) => {
         console.log(err);
         response.status(200).json('noconn');
     })
-    
+}
 
+exports.get_search_exp = (request, response, next) => {
+    console.log('BUSCAR USUARIOS PARA EXPEDIENTES');
+    let selector = (request.params.busc == ',1');
+    User.fetchUserAsign(request.params.busc, selector,response.locals.IdUser).then(([rows, FieldData]) =>{
+        //console.log(' -------------- ROWS BUSQUEDA -----------');
+        console.log(rows[0]);
+        response.status(200).json(rows[0]);
+    }).catch(err =>{
+        console.log(err);
+        response.status(200).json('noconn');
+    })
+    
 }
 
 exports.delete_user = (request, response, next) => {

@@ -20,7 +20,11 @@
         <div class="box" id="busqueda">
 
         </div>
+
+        <!--
         <button  type="button" class="button is-danger is-fullwidth"  id="botonguardar" name="boton"> Guardar Cambios</button>
+        -->
+        
         <script src="../js/dist/bulma-toast.min.js"></script>
         <script>
             let map = new Array();
@@ -47,7 +51,7 @@
                 else
                     console.log(conss.replace(/[^a-zA-Z ]/g, ""));
                 
-                fetch('/dashboard/usuarios/buscar/' + conss , {
+                fetch('/dashboard/expedientes/buscar/' + conss , {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -60,7 +64,7 @@
                     let html = '';
                     if(data != 'noconn' & data.length != 0){
                         for(let elements of data){
-                            let Rol = ['Usuario', 'Cliente', 'Agente', 'Administrador'];
+                            //let Rol = ['Usuario', 'Cliente', 'Agente', 'Administrador'];
                             html += '<div class="box">';
                             html += '<h2 class="label">' + elements.Nombre + ' ' + elements.PA + ' ' + elements.SA + '</h2>';
                             html += '<div class="columns">';
@@ -121,7 +125,7 @@
                 
             }
             document.getElementById('busquedausuarios').onkeyup = busqueda_asinc;
-            document.getElementById('botonguardar').onclick = guardarcambios;
+            //document.getElementById('botonguardar').onclick = guardarcambios;
             window.onload = busqueda_asinc;
         </script>
     </div>
