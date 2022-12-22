@@ -17,7 +17,7 @@
             <input type="hidden" id="agenteAsig" name="agenteAsig" value="<%= agente.IdUsuario %>">
             <input type="hidden" id="edit" value="1">
             <div class="content mt-5"">
-                <h1>Editar propiedad</h1>
+                <h1>Editar propiedad <%= propiedad.Uso == '1' ? 'RESIDENCIAL' : 'COMERCIAL' %> </h1>
             </div>
             <% if(permisos.indexOf('panel_admin') != -1) { %>
                 <div class="columns">
