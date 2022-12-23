@@ -34,7 +34,7 @@
                                             <div class="control">
                                                 <div class="select is-expanded is-fullwidth">
                                                     <select class="select" name="consulta" id="consulta" onchange="setNewAgent(this)">
-                                                        <option value="<%= agente.IdUsuario %>" selected> <%= agente.Nombre %> <%= agente.PA %> <%= agente.SA %></option>
+                                                        <option value="<%= agente.IdUsuario %>" selected hidden> <%= agente.Nombre %> <%= agente.PA %> <%= agente.SA %></option>
                                                         <% for(elements of agentes) {  %>
                                                             <option value="<%= elements.IdUsuario %>" > <%= elements.Nombre %> <%= elements.PA %> <%= elements.SA %></option>
                                                         <%}%>
