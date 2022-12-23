@@ -411,11 +411,8 @@ exports.subirArchProp = (request, response, next) => {
             let removepaths = request.body.removepaths.split(',');
             
                 for(elements of removepaths){
-                    // Chequeo de seguridad, el usuario solo puede borrar archivos dentro de su directorio.
-                    if(elements.split(OSVar)[1] == IdProp.toString(10))
-                        fs.unlinkSync('.'+OSVar + elements);
-                    else
-                        console.log('Illegal path');
+                    fs.unlinkSync('.'+OSVar + elements);
+                    
                 
                 }
             
