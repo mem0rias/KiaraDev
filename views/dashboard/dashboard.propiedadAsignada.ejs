@@ -295,7 +295,7 @@
                       </div>
                     
                           <div class="card-stacked">
-                            <a href="/propiedades/${propiedad.IdPropiedad}">  
+                            <a href="/propiedades/${propiedad.IdPropiedad}" target="_blank">  
                             <div class="card-content">
                               <div class="media-content">
                                 <p class="title is-4">${propiedad.Titulo}</p>
@@ -327,7 +327,7 @@
                           <footer class="card-footer">
                             
                             <div class="card-footer-item has-text-left">
-                              <a href="/propiedades/editar/${propiedad.IdPropiedad}"><h1>Editar</h1></a>
+                              <a href="/propiedades/editar/${propiedad.IdPropiedad}"target="_blank"><h1>Editar</h1></a>
                             </div>
                             
                             
@@ -338,10 +338,10 @@
                               </div>  
                           
                             <div class="card-footer-item has-text-left">
-                              <a href="/estatus/${propiedad.IdPropiedad}"><h1>Seguimiento</h1></a>
+                              <a href="/estatus/${propiedad.IdPropiedad}" target="_blank"><h1>Seguimiento</h1></a>
                             </div>
                             <div class="card-footer-item has-text-left">
-                              <a href="/expediente/revPropiedad/${ propiedad.IdPropiedad }"><h1>Expediente</h1></a>
+                              <a href="/expediente/revPropiedad/${ propiedad.IdPropiedad }" target="_blank"><h1>Expediente</h1></a>
                             </div>
                             <div class="card-footer-item has-text-left">
                               <a  class="js-modal-trigger" data-target="modal_borrar"  id="botonEl-${propiedad.IdPropiedad}" onclick="setPropiedadBorrar(this); open_br();"><h1>Eliminar</h1></a>
@@ -436,7 +436,7 @@
                     proceso_iniciado = 0;
                   }
 
-                  let procOption = proceso_iniciado == 1 ? `<a class="js-modal-trigger" data-target="modal_cerrar" id="botonCancelar-${propiedad.IdPropiedad}" onclick="setPropiedadCancelar(this); open_canc();"><h1>Cancelar Proceso </h1></a>` : `<a href="/estatus/asignar/${propiedad.IdPropiedad}"><h1>Iniciar Proceso </h1></a>`;
+                  let procOption = proceso_iniciado == 1 ? `<a class="js-modal-trigger" data-target="modal_cerrar" id="botonCancelar-${propiedad.IdPropiedad}" onclick="setPropiedadCancelar(this); open_canc();"><h1>Cancelar Proceso </h1></a>` : `<a href="/estatus/asignar/${propiedad.IdPropiedad}" ><h1>Iniciar Proceso </h1></a>`;
                   html += 
                   `
                   <div class="active-container m-0 pt-5" >
@@ -450,7 +450,7 @@
                         </div>
                       
                             <div class="card-stacked">
-                              <a href="/propiedades/${propiedad.IdPropiedad}">  
+                              <a href="/propiedades/${propiedad.IdPropiedad}" target="_blank">  
                               <div class="card-content">
                                 <div class="media-content">
                                   <p class="title is-4">${propiedad.Titulo}</p>
@@ -482,7 +482,7 @@
                             <footer class="card-footer">
                               
                               <div class="card-footer-item has-text-left">
-                                <a href="/propiedades/editar/${propiedad.IdPropiedad}"><h1>Editar</h1></a>
+                                <a href="/propiedades/editar/${propiedad.IdPropiedad}" target="_blank"><h1>Editar</h1></a>
                               </div>
                               
                               
@@ -493,10 +493,10 @@
                                 </div>  
                             
                               <div class="card-footer-item has-text-left">
-                                <a href="/estatus/${propiedad.IdPropiedad}"><h1>Seguimiento</h1></a>
+                                <a href="/estatus/${propiedad.IdPropiedad}" target="_blank"><h1>Seguimiento</h1></a>
                               </div>
                               <div class="card-footer-item has-text-left">
-                                <a href="/expediente/revPropiedad/${ propiedad.IdPropiedad }"><h1>Expediente</h1></a>
+                                <a href="/expediente/revPropiedad/${ propiedad.IdPropiedad }" target="_blank"><h1>Expediente</h1></a>
                               </div>
                               <div class="card-footer-item has-text-left">
                                 <a  class="js-modal-trigger" data-target="modal_borrar"  id="botonEl-${propiedad.IdPropiedad}" onclick="setPropiedadBorrar(this); open_br();"><h1>Eliminar</h1></a>
