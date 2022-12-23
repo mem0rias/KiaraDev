@@ -1,6 +1,9 @@
+const { response } = require('express');
+const { request } = require('http');
 const path = require('path');
 const Dashboard = require('../models/dashboard.model');
 const User = require('../models/dashboard.model');
+const Propiedad = require('../models/propiedad.model');
 
 //El metodo obtiene las 4 propiedades más recientes
 exports.get_dashboard = (request, response, next) => {
@@ -92,12 +95,14 @@ exports.get_propiedadesAsignadas = (request, response, next) => {
                         nombre      : response.locals.NombreUser    ,
                         telefono    : response.locals.Telefono  ,
                         email       : response.locals.Email     ,
-
+                        
 
                         propiedad   : propiedadesAsignadas[0]      ,
                         cantidad    : cantidad                  ,
                         permisos    : request.session.permisos  ,
                         info        : request.session.info      ,
+                        modo        : ''                   ,
+                        agentes     : ''
                     }); 
                     
         
@@ -134,6 +139,8 @@ exports.getPropiedades_Propias = (request, response, next) => {
                 propiedad   : userProps     ,
                 cantidad    : cantidad,
                 permisos: request.session.permisos,
+                modo        : ''                   ,
+                agentes     : ''
             }); 
             
 
@@ -247,4 +254,79 @@ exports.saveRol = (request, response, next) => {
     //console.log(rolmapString);
     
 }
+
+exports.get_allProps = (request, response, next) => {
+    // Meter el modo en el normal gg si no rip
+    Propiedad.getAllAgents().then(([agents,fieldData]) => {
+        response.render(('dashboard/dashboard.propiedadAsignada.ejs'), {
+            usuario: '',//usuarioData[0],
+            nombre      : response.locals.NombreUser,
+            telefono    : response.locals.Telefono  ,
+            email       : response.locals.Email     ,
+            modo        : 'admin'                   ,
+            agentes     : agents                    ,
+            propiedad   : ''                        ,
+            cantidad    : 0                         ,
+            permisos    : request.session.permisos  ,
+            info        : request.session.info      ,
+    
+        });
+    }).catch(err => {
+        console.log(err);
+    })
+    
+   
+    
+    /*let id = response.locals.IdUser;
+    Dashboard.fetchAsigando(id)
+        .then( ([propiedadesAsignadas, fieldData]) => {
+            Dashboard.fetchUser(id).then( ([usuarioData, fieldData]) => {
+                    //console.log('-----------------PROPIEDADES ASIGNADAS-------------');
+                    //console.log(propiedadesAsignadas[0]);
+                    //console.log(id);
+                    let cantidad = propiedadesAsignadas[0].length;
+                    console.log(cantidad);
+                    response.render(path.join('dashboard', 'dashboard.propiedadAsignada.ejs'), {
+                        usuario: usuarioData[0],
+
+                        sesionId    : response.locals.IdRol     , 
+                        sesionUser  : response.locals.IdUser    ,
+                        nombre      : response.locals.NombreUser    ,
+                        telefono    : response.locals.Telefono  ,
+                        email       : response.locals.Email     ,
+
+
+                        propiedad   : propiedadesAsignadas[0]      ,
+                        cantidad    : cantidad                  ,
+                        permisos    : request.session.permisos  ,
+                        info        : request.session.info      ,
+                    }); 
+                    
+        
+                }).catch( (error) => {
+                    console.log(error);
+                });  
+        }).catch( (error) => {
+            console.log(error);
+        });*/
+}
+
+exports.AllProps = (request, response, next) => {
+    Dashboard.AllPropAdmin().then(([PropData,fieldData]) => {
+        response.status(200).json(PropData);
+    }).catch(err =>{
+        response.status(500).json('FAIL');
+        console.log(err);
+    });
+}
+
+exports.AllAgentProps = (request, response, next) => {
+    Dashboard.AllAgentProps(request.body.idUser).then(([PropData,fieldData]) => {
+        response.status(200).json(PropData);
+    }).catch(err =>{
+        response.status(500).json('FAIL');
+        console.log(err);
+    });
+}
+
 
