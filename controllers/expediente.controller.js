@@ -452,6 +452,7 @@ exports.RevExpProp = (request, response, next) => {
     console.log(request.params.idProp);
     let exp_types = new Map();
     expediente.fetchAsignados(request.params.idProp).then(([asignames, fieldData]) => {
+        console.log(asignames);
         expediente.fetchExpTypesProperty(request.params.idProp).then(([rows, fieldData]) => {
             Dashboard.fetchPropName(request.params.idProp).then(([propname, fieldData2]) =>{
                 for(elements of rows){

@@ -107,7 +107,7 @@ module.exports = class Propiedad {
 
     static actulizarResidencial(d) {
         return db.execute(
-            'CALL actulizarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            'CALL actulizarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
             [   d.id              ,
                 d.titulo          ,
                 d.descripcion     ,
@@ -129,13 +129,14 @@ module.exports = class Propiedad {
                 d.cocina          ,
                 d.pisos           ,
                 d.estacionamiento ,
-                d.gas              
+                d.gas             ,
+                d.Agente        
             ]);    
     }
     
     static actulizarComercial(d) {
         return db.execute(
-            'CALL actulizarResidencial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
+            'CALL actualizarComercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', 
             [   d.id             ,
                 d.titulo         , 
                 d.descripcion    , 
@@ -144,18 +145,19 @@ module.exports = class Propiedad {
                 d.muncipio       , 
                 d.colonia        , 
                 d.calle          , 
-                d.cp             , 
-                d.uso            , 
+                d.cp             ,  
                 d.mterreno       , 
                 d.mconstruccion  , 
                 d.tipotransaccion, 
                 d.tipopropiedad  , 
                 d.imagenes       , 
-                d.video          , 
+                d.video          ,
+                d.visibilidad    , 
                 d.cuartos        , 
                 d.banos          ,
                 d.pisos          , 
-                d.estacionamiento         
+                d.estacionamiento,
+                d.Agente         
             ]);    
     } 
     
@@ -244,4 +246,15 @@ module.exports = class Propiedad {
         return db.execute('UPDATE propiedades set Imagenes = ? where IdPropiedad = ?', [Img,id]);
     }
     
+    static getAsignado(idProp){
+        return db.execute('select a.IdUsuario, u.Nombre, u.PA, u.SA, u.Email, a.IdPropiedad from asignacion a , usuario u where a.IdUsuario = u.IdUsuario and IdPropiedad = ? and RolProp is NULL', [idProp]);
+    }
+
+    static setAsignado(idProp){
+        return db.execute('update asignacion set IdUsuario = ? where IdPropiedad = ? and RolProp is NULL', [IdUsuario,idProp]);
+    }
+
+    static getAllAgents() {
+        return db.execute('select u.IdUsuario, u.Nombre, u.PA, u.SA from usuario u, asignan a where u.IdUsuario = a.IdUsuario and (a.idRol >= 3)');
+    }
 }

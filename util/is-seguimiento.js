@@ -9,9 +9,10 @@ module.exports = (request, response, next) => {
     console.log(a);
     let sesionID = response.locals.IdUser;
     if(permisos.indexOf('editar_seguimiento') == -1 ){
-            Dashboard.fetchAsigando(sesionID)
+            Dashboard.fetchAsignadoUser(sesionID)
             .then( ([propiedadesAsignadas, fieldData]) => {
-                   if(propiedadesAsignadas.length > 0){
+                   console.log(propiedadesAsignadas);
+                    if(propiedadesAsignadas.length > 0){
                         for(let i = 0; i < propiedadesAsignadas.length; i++){
                             if(propiedadesAsignadas[i].IdPropiedad == request.params.idPropiedad){
                                 console.log('Es vvalido');

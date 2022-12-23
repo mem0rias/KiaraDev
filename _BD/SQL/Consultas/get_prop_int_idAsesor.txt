@@ -1,0 +1,35 @@
+SELECT a.IdPropiedad,p.Visibilidad, p.Descripcion, p.Imagenes, p.Titulo, p.Colonia, p.Estado
+-- COMPRADOR
+,SUM(CASE WHEN a.RolProp = 21 THEN a.IdUsuario ELSE 0 END) AS Comprador_ID
+,MAX(CASE WHEN a.RolProp = 21 THEN u.Nombre ELSE 0 END) AS Comprador_Nombre
+,MAX(CASE WHEN a.RolProp = 21 THEN u.PA ELSE 0 END) AS Comprador_PA
+,MAX(CASE WHEN a.RolProp = 21 THEN u.SA ELSE 0 END) AS Comprador_SA
+,MAX(CASE WHEN a.RolProp = 21 THEN u.Email ELSE 0 END) AS Comprador_Email
+,MAX(CASE WHEN a.RolProp = 21 THEN u.Telefono ELSE 0 END) AS Comprador_Tel
+-- ARRENDATARIO
+,SUM(CASE WHEN a.RolProp = 22 THEN a.IdUsuario ELSE 0 END) AS Arrendatario_ID
+,MAX(CASE WHEN a.RolProp = 22 THEN u.Nombre ELSE 0 END) AS Arrendatario_Nombre
+,MAX(CASE WHEN a.RolProp = 22 THEN u.PA ELSE 0 END) AS Arrendatario_PA
+,MAX(CASE WHEN a.RolProp = 22 THEN u.SA ELSE 0 END) AS Arrendatario_SA
+,MAX(CASE WHEN a.RolProp = 22 THEN u.Email ELSE 0 END) AS Arrendatario_Email
+,MAX(CASE WHEN a.RolProp = 22 THEN u.Telefono ELSE 0 END) AS Arrendatario_Tel
+-- VENDEDOR
+,SUM(CASE WHEN a.RolProp = 23 THEN a.IdUsuario ELSE 0 END) AS Vendedor_ID
+,MAX(CASE WHEN a.RolProp = 23 THEN u.Nombre ELSE 0 END) AS Vendedor_Nombre
+,MAX(CASE WHEN a.RolProp = 23 THEN u.PA ELSE 0 END) AS Vendedor_PA
+,MAX(CASE WHEN a.RolProp = 23 THEN u.SA ELSE 0 END) AS Vendedor_SA
+,MAX(CASE WHEN a.RolProp = 23 THEN u.Email ELSE 0 END) AS Vendedor_Email
+,MAX(CASE WHEN a.RolProp = 23 THEN u.Telefono ELSE 0 END) AS Vendedor_Tel
+-- ARRENDADOR
+,SUM(CASE WHEN a.RolProp = 24 THEN a.IdUsuario ELSE 0 END) AS Arrendador_ID
+,MAX(CASE WHEN a.RolProp = 24 THEN u.Nombre ELSE 0 END) AS Arrendadorr_Nombre
+,MAX(CASE WHEN a.RolProp = 24 THEN u.PA ELSE 0 END) AS Arrendador_PA
+,MAX(CASE WHEN a.RolProp = 24 THEN u.SA ELSE 0 END) AS Arrendador_SA
+,MAX(CASE WHEN a.RolProp = 24 THEN u.Email ELSE 0 END) AS Arrendador_Email
+,MAX(CASE WHEN a.RolProp = 24 THEN u.Telefono ELSE 0 END) AS Arrendador_Tel
+-- ADMIN
+,MAX(CASE WHEN a.RolProp IS NULL THEN a.IdUsuario ELSE 0 END) AS Admin_ID
+,MAX(CASE WHEN a.RolProp IS NULL THEN u.Nombre ELSE 0 END) AS Admin_Nombre
+FROM  asignacion a, usuario u, propiedades p
+WHERE a.IdUsuario = u.IdUsuario AND a.IdPropiedad = p.IdPropiedad AND a.IdPropiedad IN(SELECT a.IdPropiedad FROM  asignacion a,  propiedades p WHERE a.IdPropiedad = p.IdPropiedad AND a.IdUsuario = 65)
+GROUP BY a.IdPropiedad;

@@ -1,6 +1,9 @@
+const { response } = require('express');
+const { request } = require('http');
 const path = require('path');
 const Dashboard = require('../models/dashboard.model');
 const User = require('../models/dashboard.model');
+const Propiedad = require('../models/propiedad.model');
 
 //El metodo obtiene las 4 propiedades más recientes
 exports.get_dashboard = (request, response, next) => {
@@ -79,10 +82,11 @@ exports.get_propiedadesAsignadas = (request, response, next) => {
     Dashboard.fetchAsigando(id)
         .then( ([propiedadesAsignadas, fieldData]) => {
             Dashboard.fetchUser(id).then( ([usuarioData, fieldData]) => {
-                    console.log(usuarioData);
-                    console.log(propiedadesAsignadas);
-                    console.log(id);
-                    let cantidad = propiedadesAsignadas.length;
+                    //console.log('-----------------PROPIEDADES ASIGNADAS-------------');
+                    //console.log(propiedadesAsignadas[0]);
+                    //console.log(id);
+                    let cantidad = propiedadesAsignadas[0].length;
+                    console.log(cantidad);
                     response.render(path.join('dashboard', 'dashboard.propiedadAsignada.ejs'), {
                         usuario: usuarioData[0],
 
@@ -91,12 +95,14 @@ exports.get_propiedadesAsignadas = (request, response, next) => {
                         nombre      : response.locals.NombreUser    ,
                         telefono    : response.locals.Telefono  ,
                         email       : response.locals.Email     ,
+                        
 
-
-                        propiedad   : propiedadesAsignadas      ,
+                        propiedad   : propiedadesAsignadas[0]      ,
                         cantidad    : cantidad                  ,
                         permisos    : request.session.permisos  ,
                         info        : request.session.info      ,
+                        modo        : ''                   ,
+                        agentes     : ''
                     }); 
                     
         
@@ -133,6 +139,8 @@ exports.getPropiedades_Propias = (request, response, next) => {
                 propiedad   : userProps     ,
                 cantidad    : cantidad,
                 permisos: request.session.permisos,
+                modo        : ''                   ,
+                agentes     : ''
             }); 
             
 
@@ -182,17 +190,48 @@ exports.get_search = (request, response, next) => {
         console.log(err);
         response.status(200).json('noconn');
     })
-    
+}
 
+exports.get_search_exp = (request, response, next) => {
+    console.log('BUSCAR USUARIOS PARA EXPEDIENTES');
+    let selector = (request.params.busc == ',1');
+    User.fetchUserAsign(request.params.busc, selector,response.locals.IdUser).then(([rows, FieldData]) =>{
+        //console.log(' -------------- ROWS BUSQUEDA -----------');
+        console.log(rows[0]);
+        response.status(200).json(rows[0]);
+    }).catch(err =>{
+        console.log(err);
+        response.status(200).json('noconn');
+    })
+    
+}
+
+exports.delete_user = (request, response, next) => {
+
+    //console.log(request.body);
+    let selector = (request.params.busc == ',1');
+    Dashboard.deleteUser(request.body.id_user).then(() =>{
+        User.fetchEmailRol('', selector).then(([rows, FieldData]) =>{
+            response.status(200).json(rows);
+        }).catch(err =>{
+            console.log(err);
+            response.status(200).json('noconn');
+        })
+    }).catch(err => {
+        console.log(err);
+        response.status(200).json("mori");
+    });
 }
 
 exports.saveRol = (request, response, next) => {
+    //console.log('-----MAPA DE USUARIO----');
     //console.log(request.body.mapUser);
     //console.log(request.body.mapRol);
     let mapRol =request.body.mapRol;
     let mapUser = request.body.mapUser;
     let mapString = '';
     let rolmapString = '';
+    
     for(let i = 0; i < mapRol.length; i++){
         mapString += mapUser[i];
         rolmapString += mapRol[i];
@@ -202,6 +241,7 @@ exports.saveRol = (request, response, next) => {
             
         }
     }
+    
     User.updateRol(mapString,rolmapString,mapRol.length).then(() =>{
         console.log("Se logro");
         response.status(200).json("hola");
@@ -210,8 +250,83 @@ exports.saveRol = (request, response, next) => {
         response.status(200).json("mori");
 
     });
-    console.log(mapString);
-    console.log(rolmapString);
+    //console.log(mapString);
+    //console.log(rolmapString);
     
 }
+
+exports.get_allProps = (request, response, next) => {
+    // Meter el modo en el normal gg si no rip
+    Propiedad.getAllAgents().then(([agents,fieldData]) => {
+        response.render(('dashboard/dashboard.propiedadAsignada.ejs'), {
+            usuario: '',//usuarioData[0],
+            nombre      : response.locals.NombreUser,
+            telefono    : response.locals.Telefono  ,
+            email       : response.locals.Email     ,
+            modo        : 'admin'                   ,
+            agentes     : agents                    ,
+            propiedad   : ''                        ,
+            cantidad    : 0                         ,
+            permisos    : request.session.permisos  ,
+            info        : request.session.info      ,
+    
+        });
+    }).catch(err => {
+        console.log(err);
+    })
+    
+   
+    
+    /*let id = response.locals.IdUser;
+    Dashboard.fetchAsigando(id)
+        .then( ([propiedadesAsignadas, fieldData]) => {
+            Dashboard.fetchUser(id).then( ([usuarioData, fieldData]) => {
+                    //console.log('-----------------PROPIEDADES ASIGNADAS-------------');
+                    //console.log(propiedadesAsignadas[0]);
+                    //console.log(id);
+                    let cantidad = propiedadesAsignadas[0].length;
+                    console.log(cantidad);
+                    response.render(path.join('dashboard', 'dashboard.propiedadAsignada.ejs'), {
+                        usuario: usuarioData[0],
+
+                        sesionId    : response.locals.IdRol     , 
+                        sesionUser  : response.locals.IdUser    ,
+                        nombre      : response.locals.NombreUser    ,
+                        telefono    : response.locals.Telefono  ,
+                        email       : response.locals.Email     ,
+
+
+                        propiedad   : propiedadesAsignadas[0]      ,
+                        cantidad    : cantidad                  ,
+                        permisos    : request.session.permisos  ,
+                        info        : request.session.info      ,
+                    }); 
+                    
+        
+                }).catch( (error) => {
+                    console.log(error);
+                });  
+        }).catch( (error) => {
+            console.log(error);
+        });*/
+}
+
+exports.AllProps = (request, response, next) => {
+    Dashboard.AllPropAdmin().then(([PropData,fieldData]) => {
+        response.status(200).json(PropData);
+    }).catch(err =>{
+        response.status(500).json('FAIL');
+        console.log(err);
+    });
+}
+
+exports.AllAgentProps = (request, response, next) => {
+    Dashboard.AllAgentProps(request.body.idUser).then(([PropData,fieldData]) => {
+        response.status(200).json(PropData);
+    }).catch(err =>{
+        response.status(500).json('FAIL');
+        console.log(err);
+    });
+}
+
 

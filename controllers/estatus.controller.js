@@ -200,7 +200,7 @@ exports.ProcessInit = (request,response,next) => {
                 stringPasos += pasos.Paso + ',';
             }
             listEstatus.IniciarRenta(stringPasos, rows.length,Propietario,Cliente,IdPropiedad,Prop_C,Cliente_C).then(() =>{
-                response.redirect('/dashboard');
+                response.redirect('/dashboard/asignado');
             }).catch(err =>{
                 console.log(err);
             });
@@ -217,7 +217,7 @@ exports.ProcessInit = (request,response,next) => {
             console.log(stringPasos);
             console.log(rows.length);
             listEstatus.IniciarVenta(stringPasos, rows.length,Propietario,Cliente,IdPropiedad,Prop_C,Cliente_C).then(() =>{
-                response.redirect('/dashboard');
+                response.redirect('/dashboard/asignado');
             }).catch(err =>{
                 console.log(err);
             });

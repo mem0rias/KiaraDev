@@ -28,11 +28,15 @@
         </div>
         <button  type="button" class="button is-danger is-fullwidth"  id="botonguardar" name="boton"> Guardar Cambios</button>
         <script src="../js/dist/bulma-toast.min.js"></script>
+
+
         <script>
             let map = new Array();
             let rolmap = new Array();
             const lineup = (element) =>{
+               //console.log(element);
                 let elementid = (element.id.split('-'))[1];
+                
                 let dropdiv = document.getElementById('dropdiv'+elementid);
                 if(map.indexOf(elementid) == -1){
                     map.push(elementid);
@@ -41,11 +45,9 @@
                 }else{
                     rolmap[map.indexOf(elementid)] = element.value;
                 }
-                
-                
-                //console.log(map);
-                //console.log(rolmap);
             }
+
+           /*-----------------FUNCION DE BUSQUEDA ASINCRONA--------------*/
             const busqueda_asinc = () => {
                 let conss = document.getElementById('busquedausuarios').value;
                 if(conss == '')
@@ -70,17 +72,22 @@
                             html += '<div class="box">';
                             html += '<h2 class="label">' + elements.Nombre + ' ' + elements.PA + ' ' + elements.SA + '</h2>';
                             html += '<div class="columns">';
-                            html += '<div class="column is-8"> <h2 class="label">E-mail: ' + elements.Email + ' </h2> <h2 class="label">Teléfono: ' + elements.Telefono + ' </h2> </div>';
-                            html += '<div class="column is-1"> <h2 class="label"> Rol:  </h2></div>';
+                            html += '<div class="column is-6"> <h2 class="label">E-mail: ' + elements.Email + ' </h2> <h2 class="label">Teléfono: ' + elements.Telefono + ' </h2> </div>';
+                            html += '<div class="column"> <div class="field"> <div class="control"> <a href="/expediente/revisar/'+elements.IdUsuario+'"><button class="button is-danger  ">Ver expediente</button></a></div></div></div>'; 
+                            
+                            html += '<div class="column "> <h2 class="label"> Rol:  </h2></div>';
                             html += '<div class="column"> <div class="field"> <div class="control"> <div class="select" id="dropdiv'+elements.IdUsuario+'"> <select name="estatus" id="dropdown-'+elements.IdUsuario+'" onchange="lineup(this)">'; 
-                            for(let i = 1; i < 5; i++){
+                            
+                                for(let i = 1; i < 5; i++){
                                 let selected ='';
                                 if(Rol[elements.idRol] == Rol[i])
                                     selected = 'selected';
                                 html += '<option value="'+i+'"' + selected +' >' + Rol[i] +' </option>';  
-                            }             
+                            }       
+                                  
                             html += '</select></div></div></div></div>';
-                            html += '</div>'
+                            html += '<div class="column"><a id="delete-'+elements.IdUsuario+'"  class="button is-danger" onclick=" delete_user(this)"> <i class="mdi mdi-delete is-danger"></i>  </a></div>';
+                            html += '</div>';
                             html += '</div>';
                         }
                     }else if(data.length == 0){
@@ -96,9 +103,11 @@
                     console.log('no hay conexion');
                 })
             }
+
+            /*----------------FUNCION GUARDAR CAMBIOS DE ROLES DE USUARIO -----------------*/
             const guardarcambios = () => {
                 let csrfToken = document.getElementsByName('_csrf')[0].value;
-                console.log(csrfToken);
+                //console.log(csrfToken);
                 if(map.length > 0){
                     fetch('/dashboard/usuarios/guardar/', {
                     method: 'POST',
@@ -114,7 +123,7 @@
                         return result.json();
                     }).then(data => {
                         
-                        console.log(data);
+                        //console.log(data);
                         if(data == 'mori'){
                             bulmaToast.toast({message: 'Error al guardar', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
                         }else{
@@ -133,6 +142,78 @@
                 }
                 
             }
+
+            /*---------------- BORRAR USUARIO-----------------*/
+            const delete_user = (element) => {
+                let csrfToken = document.getElementsByName('_csrf')[0].value;
+                //console.log(csrfToken);
+                console.log("DELETE USER");
+                
+
+                if(confirm('¿Desea borrar este usuario?')){
+                    fetch('/dashboard/usuarios/borrar/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id_user : (element.id.split('-'))[1],
+                       
+                        _csrf  : csrfToken,
+                    }),
+                    }).then(result => {
+                        return result.json();
+                    }).then(data => {
+                        console.log(' -------------- DATA -----------');
+                        console.log(data);
+                        let html = '';
+                        if(data != 'noconn' & data.length != 0){
+                            for(let elements of data){
+                                let Rol = ['','Usuario', 'Cliente', 'Agente', 'Administrador'];
+                                html += '<div class="box">';
+                                html += '<h2 class="label">' + elements.Nombre + ' ' + elements.PA + ' ' + elements.SA + '</h2>';
+                                html += '<div class="columns">';
+                                html += '<div class="column is-6"> <h2 class="label">E-mail: ' + elements.Email + ' </h2> <h2 class="label">Teléfono: ' + elements.Telefono + ' </h2> </div>';
+                                html += '<div class="column"> <div class="field"> <div class="control"> <a href="/expediente/revisar/'+elements.IdUsuario+'"><button class="button is-danger  ">Ver expediente</button></a></div></div></div>'; 
+
+                                html += '<div class="column "> <h2 class="label"> Rol:  </h2></div>';
+                                html += '<div class="column"> <div class="field"> <div class="control"> <div class="select" id="dropdiv'+elements.IdUsuario+'"> <select name="estatus" id="dropdown-'+elements.IdUsuario+'" onchange="lineup(this)">'; 
+                                
+                                    for(let i = 1; i < 5; i++){
+                                    let selected ='';
+                                    if(Rol[elements.idRol] == Rol[i])
+                                        selected = 'selected';
+                                    html += '<option value="'+i+'"' + selected +' >' + Rol[i] +' </option>';  
+                                }    
+                                html += '</select></div></div></div></div>';
+                                html += '<div class="column"><a id="delete-'+elements.IdUsuario+'"  class="button is-danger" onclick=" delete_user(this)"> <i class="mdi mdi-delete is-danger"></i>  </a></div>';                                                          
+                                html += '</div>';
+                                html += '</div>';                                
+                            }
+                        }else if(data.length == 0){
+                        html = '<h2 class="label"> No hay registros </h2>';
+                        } else{
+                        html = '<h2 class="label"> No hay conexion a Base de datos </h2>';
+                        }
+                    
+                        document.getElementById('busqueda').innerHTML = html;
+
+                      
+                    }).catch(err =>{
+                        console.log(err);
+                        bulmaToast.toast({message: 'Error al Borrar', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+
+                    });
+                }else{
+                    bulmaToast.toast({message: 'No se borro el usuario'+nombre_user, type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+                }
+                
+                    
+               
+                
+            }
+
+
             document.getElementById('busquedausuarios').onkeyup = busqueda_asinc;
             document.getElementById('botonguardar').onclick = guardarcambios;
             window.onload = busqueda_asinc;
