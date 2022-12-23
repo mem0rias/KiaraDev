@@ -69,5 +69,11 @@ module.exports = class Dashboard {
         return db.execute('DELETE FROM usuario WHERE usuario.IdUsuario = ?', [id_user]);
     }
 
+    static AllPropAdmin() {
+        return db.execute('CALL get_propiedades_PI()');
+    }
 
+    static AllAgentProps(id) {
+        return db.execute('CALL get_propiedades_asignadas(?)', [id]);
+    }
 }

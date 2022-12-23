@@ -32,4 +32,10 @@ router.get('/info', isAuth,dashboardController.get_Info);
 
 router.post('/info/actualizar', isAuth,dashboardController.post_Info);
 
+router.post('/AllAgentProps', isAuth,isAdmin, dashboardController.AllAgentProps);
+
+router.post('/AllProps', isAuth,isAdmin, dashboardController.AllProps); 
+
+router.get('/Propiedades', isAuth, isAdmin, dashboardController.get_allProps);
+
 module.exports = router;
