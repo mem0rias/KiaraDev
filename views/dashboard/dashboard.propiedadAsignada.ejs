@@ -247,7 +247,10 @@
         }).then(data => {
             console.log(data);
             let html = '';
-            for(propiedad of data[0]) {
+            if(data == 'FAIL')
+              bulmaToast.toast({ message: 'Hubo un error en la pagina', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+            else{
+              for(propiedad of data[0]) {
                 let propietario = new Object();
                 let interesado = new Object();
                 let proceso_iniciado = 1;
@@ -360,6 +363,8 @@
             document.getElementById('resultados').innerHTML = html;
             document.getElementById('cantProp').innerHTML =`Se encontraron ${data[0].length} propiedades`;
 
+          }
+            
         }).catch(err => {
             console.log(err);
         });
@@ -402,7 +407,10 @@
               console.log(data);
               let html = '';
               
-              for(propiedad of data[0]) {
+              if(data == 'FAIL')
+                bulmaToast.toast({ message: 'Hubo un error en la pagina', type: 'is-danger', position: 'bottom-right', animate: { in: 'fadeIn', out: 'fadeOut' }});
+              else{
+                for(propiedad of data[0]) {
                   let propietario = new Object();
                   let interesado = new Object();
                   let proceso_iniciado = 1;
@@ -436,7 +444,7 @@
                     proceso_iniciado = 0;
                   }
 
-                  let procOption = proceso_iniciado == 1 ? `<a class="js-modal-trigger" data-target="modal_cerrar" id="botonCancelar-${propiedad.IdPropiedad}" onclick="setPropiedadCancelar(this); open_canc();"><h1>Cancelar Proceso </h1></a>` : `<a href="/estatus/asignar/${propiedad.IdPropiedad}" ><h1>Iniciar Proceso </h1></a>`;
+                  let procOption = proceso_iniciado == 1 ? `<a class="js-modal-trigger" data-target="modal_cerrar" id="botonCancelar-${propiedad.IdPropiedad}" onclick="setPropiedadCancelar(this); open_canc();"><h1>Cancelar Proceso </h1></a>` : `<a href="/estatus/asignar/${propiedad.IdPropiedad}"><h1>Iniciar Proceso </h1></a>`;
                   html += 
                   `
                   <div class="active-container m-0 pt-5" >
@@ -482,7 +490,7 @@
                             <footer class="card-footer">
                               
                               <div class="card-footer-item has-text-left">
-                                <a href="/propiedades/editar/${propiedad.IdPropiedad}" target="_blank"><h1>Editar</h1></a>
+                                <a href="/propiedades/editar/${propiedad.IdPropiedad}"target="_blank"><h1>Editar</h1></a>
                               </div>
                               
                               
@@ -514,6 +522,8 @@
               }
               document.getElementById('resultados').innerHTML = html;
               document.getElementById('cantProp').innerHTML =`Se encontraron ${data[0].length} propiedades`;
+
+            }
           }).catch(err => {
               console.log(err);
           });
