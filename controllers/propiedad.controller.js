@@ -79,6 +79,7 @@ exports.get_one = (request, response, next) => {
                                         comercial: com[0],
                                         residencial: 0,
                                         precio: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(rows[0].Precio),
+                                        numeroenc: TelAgente,
                                         imagenes: imagenesLista,
                                     });
                                 }
@@ -89,7 +90,9 @@ exports.get_one = (request, response, next) => {
                                             response.render(path.join('propiedad', 'propiedad.vista.terreno.ejs'), {
                                                 propiedad: rows[0],
                                                 terreno: terr[0],
-                                                precio: precio,
+                                                precio: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:0,maximumFractionDigits:0}).format(rows[0].Precio),
+                                                numeroenc: TelAgente,
+                                                imagenes: imagenesLista,
                                             });
                                         }
                                     }).catch((error) => {
@@ -368,6 +371,7 @@ exports.get_buscar =  (request, response, next) => {
         .then( ([rows, fieldData]) => {
 
             response.status(200).json(rows);
+            console.log('GET BUSCAR');
             console.log(rows)
         }).catch( (error) => {
             console.log(error);
