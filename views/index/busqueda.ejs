@@ -1,3 +1,5 @@
+<form action="/login/registrarse" method="POST">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 <section class="hero is-medium banner">
     <div class="hero-body">
         <div class="container py-20 pr-20">
@@ -5,13 +7,7 @@
 
                 <p class="control">
                     <a class="button is-medium is-danger not-round ">
-                      Renta
-                    </a>
-                </p>
-
-                <p class="control">
-                    <a class="button is-medium is-danger not-round ">
-                      Venta
+                      Busca una propiedad que te interese
                     </a>
                 </p>
     
@@ -19,8 +15,17 @@
            
         <div class="field has-addons has-addons-centered pt-0 m-0 ">
             <p class="control is-expanded not-round-search">
-              <input class="input not-round-search" type="text" placeholder="Buscar propiedades..">
+              <input class="input not-round-search" type="text" placeholder="  Ingrese caracteristicas de la propiedad..">
             </p>
+
+            <p class="control ">
+              <span class="select">
+                <select>
+                  <option>Renta</option>
+                  <option>Venta</option>
+                </select>
+              </span>
+          </p>
 
             <p class="control ">
                 <span class="select">
@@ -34,7 +39,7 @@
 
             <p class="control">
                 <a class="button is-danger ">
-                  Buscar
+                  <input  class="button has-text-centered is-danger" type="submit" id="enviar" name="enviar" value="Buscar" >
                 </a>
             </p>
 
@@ -42,3 +47,4 @@
         </div>
     </div>
 </section>
+</form>
