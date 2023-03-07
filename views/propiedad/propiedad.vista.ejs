@@ -23,9 +23,13 @@
 <%- include('seccion.comercial.ejs', {propiedad: propiedad, comercial: comercial}) %>
 <% } %> 
 
-<iframe width="420" height="315"
-src="<%=propiedad.Video %>">
-</iframe>
+
+<iframe width="500" height="350" style="margin-left: 500px;"src="<%=propiedad.Video %>"></iframe>
+   
+
+  
+  
+
 
 <body onload="initialize()">
   <div id="map" ></div>
@@ -201,7 +205,7 @@ var geocoder;
 </script>   
 
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoH6Zli4y53NVP63fZrAlsVjiVmLq0IyE&callback=initMap">
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcodi6uIMZ_5W6z3D-jvg9lSD19uBAlTw">
 </script>
 
 <%- include('../includes/foot.ejs') %>
