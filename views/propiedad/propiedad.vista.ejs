@@ -24,8 +24,33 @@
 <% } %> 
 
 
-<iframe width="500" height="350" style="margin-left: 500px;"src="<%=propiedad.Video %>"></iframe>
-   
+<% 
+let html
+
+if(propiedad.Video)
+{
+
+  let text = propiedad.Video;
+  const ytb_url1 = text.split("/");
+
+  text = ytb_url1[3];
+
+  const ytb_url2 = text.split("=");
+
+
+  
+
+
+  if (ytb_url2[1] === undefined ){
+	  html = 'https://www.youtube.com/embed/' + ytb_url1[3] ; 
+  }else{
+	  html = 'https://www.youtube.com/embed/' +ytb_url2[1];
+  }
+}
+%>
+ 
+<iframe width="500" height="350" style="margin-left: 500px;"src="<%=html %>"></iframe>
+
 
   
   
