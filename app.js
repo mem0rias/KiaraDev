@@ -140,14 +140,9 @@ app.use('/aviso', aviso);
 app.use('/estatus', estatus);
 app.use('/servicios', servicios);
 
-app.use('/.well-known/pki-validation/0D904EC6317792BCE8425215BC9C8007.txt', (request, response, next) => {
-    response.download('./public/ssl/0D904EC6317792BCE8425215BC9C8007.txt');
+app.use('/.well-known/pki-validation/0C694262A840FD0526512F7222B5373C.txt', (request, response, next) => {
+    response.download('./public/ssl/0C694262A840FD0526512F7222B5373C.txt');
 })
-
-app.use('/.well-known/pki-validation/0D904EC6317792BCE8425215BC9C8007.txt', (request, response, next) => {
-    response.download('./public/ssl/0D904EC6317792BCE8425215BC9C8007.txt');
-})
-
 
 
 app.get('/', (request, response, next) => {
