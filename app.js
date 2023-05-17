@@ -144,6 +144,11 @@ app.use('/.well-known/pki-validation/0C694262A840FD0526512F7222B5373C.txt', (req
     response.download('./public/ssl/0C694262A840FD0526512F7222B5373C.txt');
 })
 
+app.use('/.well-known/pki-validation/0C694262A840FD0526512F7222B5373C.txt', (request, response, next) => {
+    response.download('./public/ssl/0C694262A840FD0526512F7222B5373C.txt');
+})
+
+
 
 app.get('/', (request, response, next) => {
     response.redirect('/index');
