@@ -140,12 +140,12 @@ app.use('/aviso', aviso);
 app.use('/estatus', estatus);
 app.use('/servicios', servicios);
 
-app.use('/.well-known/pki-validation/597B668977DF77B917BF99166B2B1EDB.txt', (request, response, next) => {
-    response.download('./public/ssl/597B668977DF77B917BF99166B2B1EDB.txt');
+app.use('/.well-known/pki-validation/0D904EC6317792BCE8425215BC9C8007.txt', (request, response, next) => {
+    response.download('./public/ssl/0D904EC6317792BCE8425215BC9C8007.txt');
 })
 
-app.use('/.well-known/pki-validation/1DD50C3E2D349399187E410A8E901B6E.txt', (request, response, next) => {
-    response.download('./public/ssl/1DD50C3E2D349399187E410A8E901B6E.txt');
+app.use('/.well-known/pki-validation/0D904EC6317792BCE8425215BC9C8007.txt', (request, response, next) => {
+    response.download('./public/ssl/0D904EC6317792BCE8425215BC9C8007.txt');
 })
 
 
